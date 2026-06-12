@@ -11,15 +11,19 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu G
 h1{font-size:28px;margin:8px 0}
 button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-size:17px;font-weight:800}
 .pink{background:#ff7eb6;color:white}.blue{background:#5b8def;color:white}.green{background:#31b97c;color:white}.red{background:#ff6b6b;color:white}.gray{background:#eef1f6;color:#333}
-.hidden{display:none}.q{font-size:20px;font-weight:900;line-height:1.6}
-.bubble{background:#fff7fb;border:2px solid #ffd2e6;border-radius:18px;padding:14px;margin:10px 0;line-height:1.7}
-.ok{background:#eafff2}.ng{background:#fff0f0}.score{text-align:center;font-size:44px;font-weight:900}
+.hidden{display:none}
+.q{font-size:20px;font-weight:900;line-height:1.8}
+.bubble{background:#fff7fb;border:2px solid #ffd2e6;border-radius:18px;padding:14px;margin:10px 0;line-height:1.8}
+.ok{background:#eafff2}.ng{background:#fff0f0}
+.score{text-align:center;font-size:44px;font-weight:900}
 .badge{display:inline-block;background:#ffe1ef;color:#d63384;padding:6px 12px;border-radius:999px;font-weight:800}
 .small{font-size:14px;color:#777}
+rt{font-size:10px;color:#777}
 </style>
 </head>
 <body>
 <div class="app">
+
 <div class="card" id="home">
 <span class="badge">普通二輪・3日集中</span>
 <h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
@@ -31,6 +35,7 @@ button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-
 <button class="red" onclick="startMistakes()">間違えた問題だけ</button>
 <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
+
 <div class="card hidden" id="quiz">
 <p id="modeTitle"></p>
 <p id="count"></p>
@@ -41,30 +46,59 @@ button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-
 <div id="feedback" class="bubble hidden"></div>
 <button id="nextBtn" class="pink hidden" onclick="nextQuestion()">次へ</button>
 </div>
+
 <div class="card hidden" id="result">
 <h2>結果発表 🎉</h2>
 <div class="score" id="score"></div>
 <p id="message"></p>
 <button class="pink" onclick="backHome()">ホームへ</button>
 </div>
+
 </div>
+
 <script>
+function r(text){
+return text
+.replaceAll("横断歩道","<ruby>横断歩道<rt>おうだんほどう</rt></ruby>")
+.replaceAll("歩行者","<ruby>歩行者<rt>ほこうしゃ</rt></ruby>")
+.replaceAll("一時停止","<ruby>一時停止<rt>いちじていし</rt></ruby>")
+.replaceAll("安全確認","<ruby>安全確認<rt>あんぜんかくにん</rt></ruby>")
+.replaceAll("黄色信号","<ruby>黄色信号<rt>きいろしんごう</rt></ruby>")
+.replaceAll("踏切","<ruby>踏切<rt>ふみきり</rt></ruby>")
+.replaceAll("酒気帯び運転","<ruby>酒気帯び運転<rt>しゅきおびうんてん</rt></ruby>")
+.replaceAll("優先道路","<ruby>優先道路<rt>ゆうせんどうろ</rt></ruby>")
+.replaceAll("徐行","<ruby>徐行<rt>じょこう</rt></ruby>")
+.replaceAll("急ブレーキ","<ruby>急ブレーキ<rt>きゅうブレーキ</rt></ruby>")
+.replaceAll("車間距離","<ruby>車間距離<rt>しゃかんきょり</rt></ruby>")
+.replaceAll("緊急自動車","<ruby>緊急自動車<rt>きんきゅうじどうしゃ</rt></ruby>")
+.replaceAll("停止距離","<ruby>停止距離<rt>ていしきょり</rt></ruby>")
+.replaceAll("進路","<ruby>進路<rt>しんろ</rt></ruby>")
+.replaceAll("標識","<ruby>標識<rt>ひょうしき</rt></ruby>");
+}
+
 const questions=[
 {day:"day1",q:"横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",a:true,e:"歩行者優先。これは絶対落とせない！",c:"🌸巫女ちゃん「歩行者さんがいたら…えっと…」<br>🐴ウマくん「止まる！本番でも超大事だよ」"},
-{day:"day1",q:"黄色信号は『注意して進め』という意味である。",a:false,e:"黄色は原則『止まれ』。止まれない場合だけ進行できる。",c:"🌸巫女ちゃん「黄色は急げ、じゃないの？」<br>🐴ウマくん「それ罠！原則止まれだよ」"},
+{day:"day1",q:"黄色信号は『注意して進め』という意味である。",a:false,e:"黄色信号は原則『止まれ』。止まれない場合だけ進行できる。",c:"🌸巫女ちゃん「黄色は急げ、じゃないの？」<br>🐴ウマくん「それ罠！原則止まれだよ」"},
 {day:"day1",q:"踏切では、警報機が鳴っていなくても一時停止して安全確認する。",a:true,e:"踏切は必ず一時停止。左右確認もセット。",c:"🌸巫女ちゃん「鳴ってなければ行っていい？」<br>🐴ウマくん「止まって確認！これ鉄板」"},
 {day:"day1",q:"酒気帯び運転は、短い距離であれば違反にならない。",a:false,e:"距離は関係なし。飲んだら絶対に運転しない。",c:"🌸巫女ちゃん「近所なら…？」<br>🐴ウマくん「絶対ダメ！」"},
+{day:"day1",q:"一時停止の標識がある場所では、徐行すれば停止しなくてもよい。",a:false,e:"徐行ではダメ。車輪を完全に止める。",c:"🌸巫女ちゃん「ゆっくりならOK？」<br>🐴ウマくん「完全停止だよ！」"},
+
 {day:"day2",q:"二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",a:true,e:"二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。",c:"🌸巫女ちゃん「白線ってそんなに危ないの？」<br>🐴ウマくん「雨の日はツルッといくよ！」"},
 {day:"day2",q:"カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",a:false,e:"カーブ中の急ブレーキは転倒の危険。手前で十分減速。",c:"🌸巫女ちゃん「曲がりながら止まればいい？」<br>🐴ウマくん「手前で減速が基本！」"},
 {day:"day2",q:"二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",a:true,e:"橋の上・トンネル出口・大型車の横は風に注意。",c:"🌸巫女ちゃん「風くらい平気？」<br>🐴ウマくん「バイクはかなり影響受けるよ」"},
 {day:"day2",q:"二輪車は小さいので、車間距離を短くして走ってもよい。",a:false,e:"二輪も十分な車間距離が必要。急停止に備える。",c:"🌸巫女ちゃん「小さいから詰めてもいい？」<br>🐴ウマくん「むしろ余裕が大事！」"},
+{day:"day2",q:"雨の日は停止距離が長くなるので、車間距離を長めにとる。",a:true,e:"ぬれた路面は止まりにくい。早めの判断が大切。",c:"🌸巫女ちゃん「雨でも同じ感覚でいい？」<br>🐴ウマくん「止まるまで長くなるよ！」"},
+
 {day:"day3",q:"優先道路を通行していても、安全確認は必要である。",a:true,e:"優先でも油断禁止。安全確認は常に必要。",c:"🌸巫女ちゃん「優先なら確認いらない？」<br>🐴ウマくん「それ本番の落とし穴」"},
-{day:"day3",q:"一時停止の標識がある場所では、車輪が完全に止まる必要がある。",a:true,e:"徐行ではダメ。完全停止。",c:"🌸巫女ちゃん「ゆっくりならOK？」<br>🐴ウマくん「完全に止まる！」"},
+{day:"day3",q:"緊急自動車が近づいてきたら、進路を譲る。",a:true,e:"サイレンが聞こえたら落ち着いて進路を譲る。",c:"🌸巫女ちゃん「救急車だ！」<br>🐴ウマくん「落ち着いて譲ろう」"},
 {day:"day3",q:"運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",a:false,e:"ながら運転は危険。短時間でもダメ。",c:"🌸巫女ちゃん「一瞬だけなら…」<br>🐴ウマくん「一瞬が事故につながる！」"},
-{day:"day3",q:"緊急自動車が近づいてきたら、進路を譲る。",a:true,e:"サイレンが聞こえたら落ち着いて進路を譲る。",c:"🌸巫女ちゃん「救急車だ！」<br>🐴ウマくん「落ち着いて譲ろう」"}
+{day:"day3",q:"交差点の近くでは、他の交通に注意して安全確認をする。",a:true,e:"交差点は事故が起きやすい場所。必ず安全確認。",c:"🌸巫女ちゃん「交差点って忙しいね」<br>🐴ウマくん「だから落ち着いて確認！」"},
+{day:"day3",q:"疲れているときは、無理をせず休憩することが大切である。",a:true,e:"眠気や疲れは事故のもと。休む勇気が大事。",c:"🌸巫女ちゃん「もう少し行けるかも…」<br>🐴ウマくん「休憩も運転技術だよ」"}
 ];
+
 const cheers=["真彩ちゃんナイス🌸","これは本番でも取れる！","いい判断！","ウマくんも拍手🐴","合格に近づいた！"];
 let quiz=[],index=0,score=0,mistakes=[];
+
 function startMode(day){
  quiz=questions.filter(x=>x.day===day);
  launch(day==="day1"?"Day1：基本ルール":day==="day2"?"Day2：二輪ひっかけ":"Day3：直前総復習");
@@ -85,8 +119,8 @@ function launch(title){
 }
 function showQuestion(){
  document.getElementById("count").innerText=(index+1)+" / "+quiz.length;
- document.getElementById("comic").innerHTML=quiz[index].c;
- document.getElementById("question").innerText=quiz[index].q;
+ document.getElementById("comic").innerHTML=r(quiz[index].c);
+ document.getElementById("question").innerHTML=r(quiz[index].q);
  document.getElementById("feedback").classList.add("hidden");
  document.getElementById("nextBtn").classList.add("hidden");
 }
@@ -94,8 +128,8 @@ function answer(choice){
  const item=quiz[index],ok=choice===item.a;
  const fb=document.getElementById("feedback");
  fb.className="bubble "+(ok?"ok":"ng");
- if(ok){score++;fb.innerHTML="⭕ 正解！<br>"+cheers[Math.floor(Math.random()*cheers.length)]+"<br><br>"+item.e;}
- else{mistakes.push(item);fb.innerHTML="❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>"+item.e;}
+ if(ok){score++;fb.innerHTML="⭕ 正解！<br>"+cheers[Math.floor(Math.random()*cheers.length)]+"<br><br>"+r(item.e);}
+ else{mistakes.push(item);fb.innerHTML="❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>"+r(item.e);}
  fb.classList.remove("hidden");
  document.getElementById("nextBtn").classList.remove("hidden");
 }
