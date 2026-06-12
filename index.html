@@ -465,24 +465,72 @@ rt{font-size:10px;color:#777}
 }
 
 
-/* ---- final feedback/question scroll anchors ---- */
-#quiz,
-#signChoiceQuiz40,
-#signChoiceQuiz{
-  scroll-margin-top:8px;
+/* ---- compact sign quiz layout / less whitespace ---- */
+.choice-sign{
+  width:100% !important;
+  max-width:360px !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:8px auto 12px !important;
+  padding:8px !important;
+  background:transparent !important;
+  border-radius:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
 }
-#feedback:not(.hidden),
-#signChoiceFeedback40:not(.hidden),
-#signChoiceFeedback:not(.hidden){
-  scroll-margin-top:18px;
-  border-width:3px !important;
-  box-shadow:0 10px 26px rgba(0,0,0,.08);
+.choice-sign .real-sign-img{
+  width:auto !important;
+  height:auto !important;
+  max-width:min(82vw, 310px) !important;
+  max-height:260px !important;
+  object-fit:contain !important;
+  display:block !important;
 }
-#nextBtn:not(.hidden),
-#signChoiceNextBtn40:not(.hidden),
-#signChoiceNextBtn:not(.hidden){
-  margin-top:18px !important;
-  box-shadow:0 8px 20px rgba(255,126,182,.35);
+#signChoiceQuiz40 .q,
+#signChoiceQuiz .q{
+  margin-top:10px !important;
+}
+.sign-figure40{
+  width:clamp(96px, 25vw, 132px) !important;
+  min-width:clamp(96px, 25vw, 132px) !important;
+  height:clamp(96px, 25vw, 132px) !important;
+  padding:6px !important;
+  background:#f7f9fd !important;
+  border-radius:16px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.sign-figure40 .real-sign-img{
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+}
+.sign-book-card40{
+  padding:12px !important;
+}
+.sign-book-row40{
+  gap:12px !important;
+}
+@media (min-width:700px){
+  .sign-book-grid40{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media (max-width:520px){
+  .sign-book-row40{
+    flex-direction:row !important;
+    align-items:flex-start !important;
+  }
+  .choice-grid{
+    gap:9px !important;
+  }
+  .choice-btn{
+    padding:14px !important;
+  }
 }
 
 </style>
@@ -1771,73 +1819,29 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-/* ---- final universal scroll control ---- */
-function scrollToSafe(id, offset){
-  offset = offset || 18;
+function goToElement(id){
+  setTimeout(function(){
+    const el = document.getElementById(id);
+    if(el){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
+  }, 80);
+}
+
+
+function jumpToAnswer(id){
   setTimeout(function(){
     const el = document.getElementById(id);
     if(!el) return;
-    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 24;
     window.scrollTo({top:y, behavior:"smooth"});
   }, 120);
+
   setTimeout(function(){
     const el = document.getElementById(id);
     if(!el) return;
-    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 24;
     window.scrollTo({top:y, behavior:"smooth"});
   }, 520);
 }
-
-function scrollToQuestionTop(){
-  setTimeout(function(){
-    const quiz = document.getElementById("quiz");
-    const sign40 = document.getElementById("signChoiceQuiz40");
-    const signOld = document.getElementById("signChoiceQuiz");
-    let el = null;
-
-    if(quiz && !quiz.classList.contains("hidden")) el = quiz;
-    else if(sign40 && !sign40.classList.contains("hidden")) el = sign40;
-    else if(signOld && !signOld.classList.contains("hidden")) el = signOld;
-
-    if(el){
-      const y = el.getBoundingClientRect().top + window.pageYOffset - 8;
-      window.scrollTo({top:y, behavior:"smooth"});
-    }else{
-      window.scrollTo({top:0, behavior:"smooth"});
-    }
-  }, 100);
-}
-
-function scrollToAnswerArea(){
-  setTimeout(function(){
-    const ids = ["feedback","signChoiceFeedback40","signChoiceFeedback"];
-    for(const id of ids){
-      const el = document.getElementById(id);
-      if(el && !el.classList.contains("hidden")){
-        const y = el.getBoundingClientRect().top + window.pageYOffset - 18;
-        window.scrollTo({top:y, behavior:"smooth"});
-        break;
-      }
-    }
-  }, 140);
-  setTimeout(function(){
-    const ids = ["feedback","signChoiceFeedback40","signChoiceFeedback"];
-    for(const id of ids){
-      const el = document.getElementById(id);
-      if(el && !el.classList.contains("hidden")){
-        const y = el.getBoundingClientRect().top + window.pageYOffset - 18;
-        window.scrollTo({top:y, behavior:"smooth"});
-        break;
-      }
-    }
-  }, 560);
-}
-
-
-function goToElement(id){ scrollToSafe(id,18); }
-
-
-function jumpToAnswer(id){ scrollToSafe(id,18); }
 
 function goTop(){
   setTimeout(function(){
@@ -3348,7 +3352,6 @@ function showSignChoice40(){
   document.getElementById("signChoiceIcon40").innerHTML = '<img src="' + item.file + '" alt="' + item.name + '" class="real-sign-img">';
   document.getElementById("signChoiceFeedback40").classList.add("hidden");
   document.getElementById("signChoiceNextBtn40").classList.add("hidden");
-  scrollToQuestionTop();
 
   const box = document.getElementById("signChoiceButtons40");
   box.innerHTML = item.choices.map((choice, i) => {
@@ -3391,7 +3394,6 @@ function answerSignChoice40(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn40").classList.remove("hidden");
-  scrollToAnswerArea();
   jumpToAnswer("signChoiceFeedback40");
 }
 
@@ -3401,7 +3403,6 @@ function nextSignChoice40(){
     finishSignChoice40();
   }else{
     showSignChoice40();
-  scrollToQuestionTop();
   }
 }
 
@@ -3459,7 +3460,6 @@ function showSignChoice(){
   document.getElementById("signChoiceIcon").innerHTML = item.icon;
   document.getElementById("signChoiceFeedback").classList.add("hidden");
   document.getElementById("signChoiceNextBtn").classList.add("hidden");
-  scrollToQuestionTop();
 
   const box = document.getElementById("signChoiceButtons");
   box.innerHTML = item.choices.map((choice, i) => {
@@ -3501,7 +3501,6 @@ function answerSignChoice(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn").classList.remove("hidden");
-  scrollToAnswerArea();
   jumpToAnswer("signChoiceFeedback");
 }
 
@@ -3511,7 +3510,6 @@ function nextSignChoice(){
     finishSignChoice();
   }else{
     showSignChoice();
-  scrollToQuestionTop();
   }
 }
 
@@ -3660,7 +3658,6 @@ function showQuestion(){
   document.getElementById("question").innerHTML = r(item.q);
   document.getElementById("feedback").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
-  scrollToQuestionTop();
 }
 
 function answer(choice){
@@ -3730,7 +3727,6 @@ function answer(choice){
 
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
-  scrollToAnswerArea();
   jumpToAnswer("feedback");
   
 }
@@ -3741,7 +3737,6 @@ function nextQuestion(){
     finish();
   }else{
     showQuestion();
-  scrollToQuestionTop();
   }
 }
 
@@ -3987,6 +3982,139 @@ function startFullExam(){
 })();
 
 updateExamCountdown();
+
+
+/* ---- stable compact sign quiz behavior override ---- */
+(function(){
+  function hideSignScreensFor40(){
+    ["home","quiz","result","mockReview","checklist","examDay","signGuide","signBook","signBook40","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+  }
+
+  function jumpToSignQuestion(){
+    setTimeout(function(){
+      var el = document.getElementById("signChoiceQuiz40") || document.getElementById("signChoiceQuiz");
+      if(!el) return;
+      var y = el.getBoundingClientRect().top + window.pageYOffset - 8;
+      window.scrollTo({top:y, behavior:"smooth"});
+    }, 80);
+  }
+
+  function jumpToSignAnswer(){
+    setTimeout(function(){
+      var el = document.getElementById("signChoiceFeedback40");
+      if(!el || el.classList.contains("hidden")) el = document.getElementById("signChoiceFeedback");
+      if(!el || el.classList.contains("hidden")) return;
+      var y = el.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({top:y, behavior:"smooth"});
+    }, 120);
+    setTimeout(function(){
+      var el = document.getElementById("signChoiceFeedback40");
+      if(!el || el.classList.contains("hidden")) el = document.getElementById("signChoiceFeedback");
+      if(!el || el.classList.contains("hidden")) return;
+      var y = el.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({top:y, behavior:"smooth"});
+    }, 520);
+  }
+
+  window.showSignBook40 = function(){
+    clearInterval(timerId);
+    hideSignScreensFor40();
+    var page = document.getElementById("signBook40");
+    if(page){
+      page.classList.remove("hidden");
+      if(typeof goTop === "function") goTop();
+      else window.scrollTo({top:0, behavior:"smooth"});
+    }
+  };
+  window.showSignBook = window.showSignBook40;
+
+  window.startSignChoiceQuiz40 = function(){
+    clearInterval(timerId);
+    if(typeof signChoiceQuestions40 === "undefined"){
+      alert("実標識4択クイズ40のデータが見つかりません。最新版コードを貼り直してください。");
+      return;
+    }
+    signChoiceQuiz40 = shuffle(signChoiceQuestions40);
+    signChoiceIndex40 = 0;
+    signChoiceScore40 = 0;
+    signChoiceAnswered40 = false;
+    hideSignScreensFor40();
+    var page = document.getElementById("signChoiceQuiz40");
+    if(page){
+      page.classList.remove("hidden");
+      window.showSignChoice40();
+      jumpToSignQuestion();
+    }
+  };
+  window.startSignChoiceQuiz = window.startSignChoiceQuiz40;
+
+  window.showSignChoice40 = function(){
+    signChoiceAnswered40 = false;
+    var item = signChoiceQuiz40[signChoiceIndex40];
+    if(!item) return;
+
+    document.getElementById("signChoiceCount40").innerText = (signChoiceIndex40 + 1) + " / " + signChoiceQuiz40.length;
+    document.getElementById("signChoiceIcon40").innerHTML = '<img src="' + item.file + '" alt="' + item.name + '" class="real-sign-img">';
+    document.getElementById("signChoiceFeedback40").classList.add("hidden");
+    document.getElementById("signChoiceNextBtn40").classList.add("hidden");
+
+    var box = document.getElementById("signChoiceButtons40");
+    box.innerHTML = item.choices.map(function(choice, i){
+      return '<button class="choice-btn" onclick="answerSignChoice40(' + i + ')">' + String.fromCharCode(65+i) + '. ' + choice + '</button>';
+    }).join("");
+    jumpToSignQuestion();
+  };
+
+  window.answerSignChoice40 = function(i){
+    if(signChoiceAnswered40) return;
+    signChoiceAnswered40 = true;
+
+    var item = signChoiceQuiz40[signChoiceIndex40];
+    var ok = i === item.answer;
+    var buttons = document.querySelectorAll("#signChoiceButtons40 button");
+
+    buttons.forEach(function(btn, idx){
+      if(idx === item.answer) btn.classList.add("correct");
+      if(idx === i && !ok) btn.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("signChoiceFeedback40");
+    fb.className = "bubble " + (ok ? "ok" : "ng");
+
+    if(ok){
+      signChoiceScore40++;
+      fb.innerHTML =
+        '<img src="miko_happy.png" class="feedback-img" alt="正解">' +
+        "⭕ 正解！<br>" + item.name + "。<br><br>" + r(item.e);
+    }else{
+      var counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+      var key = "実標識4択：" + item.name;
+      counts[key] = (counts[key] || 0) + 1;
+      localStorage.setItem("mayaBikeMistakeCounts", JSON.stringify(counts));
+
+      fb.innerHTML =
+        '<img src="pair_mistake.png" class="feedback-img" alt="惜しい">' +
+        "❌ 惜しい！<br>正解は「" + item.choices[item.answer] + "」。<br><br>" + r(item.e);
+    }
+
+    fb.classList.remove("hidden");
+    document.getElementById("signChoiceNextBtn40").classList.remove("hidden");
+    jumpToSignAnswer();
+  };
+
+  window.nextSignChoice40 = function(){
+    signChoiceIndex40++;
+    if(signChoiceIndex40 >= signChoiceQuiz40.length){
+      finishSignChoice40();
+    }else{
+      window.showSignChoice40();
+      jumpToSignQuestion();
+    }
+  };
+})();
 
 </script>
 </body>
