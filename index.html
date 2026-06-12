@@ -206,6 +206,19 @@ rt{font-size:10px;color:#777}
   color:white;
 }
 
+
+.real-sign-img{
+  width:82px;
+  height:82px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto;
+}
+.choice-sign .real-sign-img{
+  width:130px;
+  height:130px;
+}
+
 </style>
 </head>
 
@@ -246,8 +259,8 @@ rt{font-size:10px;color:#777}
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
   <button class="orange menu-button" onclick="startSigns()">🚧 標識・標示20問</button>
   <button class="yellow menu-button" onclick="showSignGuide()">🚧 標識の見分け方</button>
-  <button class="orange menu-button" onclick="showSignBook()">🖼️ 標識ミニ図鑑15</button>
-  <button class="purple menu-button" onclick="startSignChoiceQuiz()">🚦 画像つき標識4択クイズ</button>
+  <button class="orange menu-button" onclick="showSignBook()">🖼️ 実標識ミニ図鑑15</button>
+  <button class="purple menu-button" onclick="startSignChoiceQuiz()">🚦 実標識4択クイズ</button>
 
   <details class="more-menu">
     <summary>📚 3日集中メニューも開く</summary>
@@ -266,15 +279,15 @@ rt{font-size:10px;color:#777}
 
 
 <div class="card hidden" id="signChoiceQuiz">
-  <span class="badge">画像つき4択</span>
-  <h2>標識4択クイズ 🚦</h2>
+  <span class="badge">実標識4択</span>
+  <h2>実標識4択クイズ 🚦</h2>
   <p id="signChoiceCount"></p>
 
   <div class="bubble">
     <div class="dialogue-box">
       <div class="dialogue-line">
         <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
-        <div class="dialogue-text">この標識の意味を4択で選ぼう。本番っぽい確認だよ。</div>
+        <div class="dialogue-text">実際の標識画像を見て4択で選ぼう。本番にかなり近い確認だよ。</div>
       </div>
     </div>
   </div>
@@ -289,7 +302,7 @@ rt{font-size:10px;color:#777}
 
 <div class="card hidden" id="signBook">
   <span class="badge">参考画像つき・頻出15個</span>
-  <h2>標識ミニ図鑑 15 🚦</h2>
+  <h2>実標識ミニ図鑑 15 🚦</h2>
   <img src="pair_study.png" class="result-img" alt="標識ミニ図鑑">
 
   <div class="bubble">
@@ -600,7 +613,7 @@ rt{font-size:10px;color:#777}
 
   <div class="bubble ok">
     <p><strong>出典メモ</strong></p>
-    <p>標識の名称・分類は国土交通省「道路標識一覧」を参考に、学習用にわかりやすく整理しています。</p>
+    <p>標識の名称・分類は国土交通省「道路標識一覧」を参考に、学習用に整理しています。実際のPNGは <code>signs/</code> フォルダに入れてください。</p>
   </div>
 
   <button class="orange" onclick="showSignGuide()">🚧 標識の見分け方へ</button>
@@ -2371,7 +2384,7 @@ function finishSignChoice(){
 
   if(signChoiceScore === signChoiceQuiz.length){
     document.getElementById("resultImg").src = "pair_goal.png";
-    document.getElementById("message").innerText = "標識4択、満点！かなり強い🌸";
+    document.getElementById("message").innerText = "実標識4択、満点！かなり強い🌸";
   }else if(signChoiceScore >= 12){
     document.getElementById("resultImg").src = "pair_cheer.png";
     document.getElementById("message").innerText = "かなりいい感じ！間違えた標識だけ見直そう。";
