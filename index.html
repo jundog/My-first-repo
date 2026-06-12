@@ -94,6 +94,7 @@ rt{font-size:10px;color:#777}
   <button class="purple menu-button" onclick="startFinal20()">🎯 試験直前！絶対落とさない20問</button>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
+  <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
   <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
 
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
@@ -128,6 +129,7 @@ rt{font-size:10px;color:#777}
   <p id="message"></p>
   <button class="pink" onclick="backHome()">ホームへ</button>
   <button class="red" onclick="startMistakes()">間違えた問題だけもう一回</button>
+  <button class="purple" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
 </div>
 
 </div>
@@ -1244,6 +1246,19 @@ function startMistakes(){
   launch("間違えた問題だけ復習");
 }
 
+function startWeakOnly(){
+  const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+  const weak = questions.filter(q => counts[q.q] >= 2);
+
+  if(weak.length === 0){
+    alert("まだ2回以上間違えた苦手問題はないよ。まずは『間違えた問題だけ』を回してみよう！");
+    return;
+  }
+
+  quiz = weak;
+  launch("苦手だけ集中 🔥");
+}
+
 function launch(title){
   index = 0;
   score = 0;
@@ -1287,9 +1302,17 @@ function answer(choice){
       r(item.e);
   }else{
     mistakes.push(item);
+
+    const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+    counts[item.q] = (counts[item.q] || 0) + 1;
+    localStorage.setItem("mayaBikeMistakeCounts", JSON.stringify(counts));
+
+    const missCount = counts[item.q];
+
     fb.innerHTML =
       '<img src="pair_mistake.png" class="feedback-img" alt="惜しい">' +
-      "❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>" +
+      "❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br>" +
+      "この問題のミス回数：" + missCount + "回<br><br>" +
       r(item.e);
   }
 
