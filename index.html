@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>真彩のバイク免許チャレンジ</title>
+
 <link rel="apple-touch-icon" sizes="180x180" href="./maya-bike-icon.PNG">
 <link rel="apple-touch-icon" href="./maya-bike-icon.PNG">
 <link rel="icon" type="image/png" href="./maya-bike-icon.PNG">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="真彩の免許">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#ff7eb6">
+
 <style>
 body{
   margin:0;
@@ -19,192 +23,114 @@ body{
   background:linear-gradient(#fff3f8,#eef7ff);
   color:#333;
 }
-.app{
-  max-width:720px;
-  margin:auto;
-  padding:18px;
-}
-.card{
-  background:white;
-  border-radius:24px;
-  padding:22px;
-  margin:16px 0;
-  box-shadow:0 8px 25px rgba(0,0,0,.08);
-}
-h1{
-  font-size:28px;
-  margin:8px 0;
-}
-h2{
-  font-size:22px;
-}
-p{
-  line-height:1.7;
-}
-button{
-  width:100%;
-  border:0;
-  border-radius:18px;
-  padding:16px;
-  margin-top:12px;
-  font-size:17px;
-  font-weight:800;
-}
+.app{max-width:720px;margin:auto;padding:18px}
+.card{background:white;border-radius:24px;padding:22px;margin:16px 0;box-shadow:0 8px 25px rgba(0,0,0,.08)}
+h1{font-size:28px;margin:8px 0}
+h2{font-size:22px}
+p{line-height:1.7}
+button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-size:17px;font-weight:800}
 .pink{background:#ff7eb6;color:white}
 .blue{background:#5b8def;color:white}
 .green{background:#31b97c;color:white}
 .red{background:#ff6b6b;color:white}
 .gray{background:#eef1f6;color:#333}
+.yellow{background:#ffe28a;color:#5a3a00}
 .hidden{display:none}
-.q{
-  font-size:20px;
-  font-weight:900;
-  line-height:1.8;
-  margin-top:10px;
-}
-.bubble{
-  background:#fff7fb;
-  border:2px solid #ffd2e6;
-  border-radius:18px;
-  padding:14px;
-  margin:10px 0;
-  line-height:1.8;
-}
+.q{font-size:20px;font-weight:900;line-height:1.8;margin-top:10px}
+.bubble{background:#fff7fb;border:2px solid #ffd2e6;border-radius:18px;padding:14px;margin:10px 0;line-height:1.8}
 .ok{background:#eafff2}
 .ng{background:#fff0f0}
-.score{
-  text-align:center;
-  font-size:44px;
-  font-weight:900;
-}
-.badge{
-  display:inline-block;
-  background:#ffe1ef;
-  color:#d63384;
-  padding:6px 12px;
-  border-radius:999px;
-  font-weight:800;
-}
-.small{
-  font-size:14px;
-  color:#777;
-}
-rt{
-  font-size:10px;
-  color:#777;
-}
-.hero-img{
-  width:100%;
-  max-width:360px;
-  display:block;
-  margin:8px auto 14px;
-}
-.character-row{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  margin:10px 0;
-}
-.character{
-  width:92px;
-  max-width:34%;
-  flex-shrink:0;
-}
-.character-text{
-  flex:1;
-}
-.feedback-img{
-  width:120px;
-  display:block;
-  margin:4px auto 10px;
-}
-.result-img{
-  width:180px;
-  max-width:80%;
-  display:block;
-  margin:8px auto 14px;
-}
-.menu-button{
-  text-align:left;
-}
-/* ミニアイコン会話 */
-.dialogue-box{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.dialogue-line{
-  display:flex;
-  align-items:flex-start;
-  gap:8px;
-}
-.dialogue-icon{
-  width:34px;
-  height:34px;
-  flex-shrink:0;
-}
-.dialogue-text{
-  background:white;
-  border-radius:14px;
-  padding:8px 10px;
-  line-height:1.6;
-  font-size:15px;
-  box-shadow:0 2px 6px rgba(0,0,0,.05);
-}
+.score{text-align:center;font-size:44px;font-weight:900}
+.badge{display:inline-block;background:#ffe1ef;color:#d63384;padding:6px 12px;border-radius:999px;font-weight:800}
+.small{font-size:14px;color:#777}
+rt{font-size:10px;color:#777}
+.hero-img{width:100%;max-width:360px;display:block;margin:8px auto 14px}
+.character-row{display:flex;align-items:flex-start;gap:12px;margin:10px 0}
+.character{width:92px;max-width:34%;flex-shrink:0}
+.character-text{flex:1}
+.feedback-img{width:120px;display:block;margin:4px auto 10px}
+.result-img{width:180px;max-width:80%;display:block;margin:8px auto 14px}
+.menu-button{text-align:left}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.stat{background:#f7f8fb;border-radius:14px;padding:10px;text-align:center;font-weight:800}
+.dialogue-box{display:flex;flex-direction:column;gap:10px}
+.dialogue-line{display:flex;align-items:flex-start;gap:8px}
+.dialogue-icon{width:34px;height:34px;flex-shrink:0;border-radius:50%}
+.dialogue-text{background:white;border-radius:14px;padding:8px 10px;line-height:1.6;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.category{font-size:13px;color:#777;font-weight:800}
 @media (max-width:480px){
-  .character{
-    width:78px;
-  }
-  .dialogue-icon{
-    width:30px;
-    height:30px;
-  }
-  .dialogue-text{
-    font-size:14px;
-  }
+  .character{width:78px}
+  .dialogue-icon{width:30px;height:30px}
+  .dialogue-text{font-size:14px}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <div class="card" id="home">
-  <span class="badge">普通二輪・3日集中</span>
+  <span class="badge">普通二輪・問題65問版</span>
   <h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
+
   <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
+
   <p>
     巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！<br>
     電車でもサクッとできるよ。
   </p>
-  <button class="pink menu-button" onclick="startMode('day1')">📖 Day1：基本ルール</button>
-  <button class="blue menu-button" onclick="startMode('day2')">❓ Day2：二輪ひっかけ</button>
-  <button class="green menu-button" onclick="startMode('day3')">🎯 Day3：直前総復習</button>
+
+  <div class="stat-grid">
+    <div class="stat">全65問</div>
+    <div class="stat">二輪強化</div>
+    <div class="stat">ルビつき</div>
+    <div class="stat">ミス復習</div>
+  </div>
+
+  <button class="pink menu-button" onclick="startMode('day1')">📖 Day1：基本ルール 15問</button>
+  <button class="blue menu-button" onclick="startMode('day2')">❓ Day2：二輪ひっかけ 15問</button>
+  <button class="green menu-button" onclick="startMode('day3')">🎯 Day3：直前総復習 15問</button>
+  <button class="yellow menu-button" onclick="startMode('extra')">🔥 追加特訓 20問</button>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
+  <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
+
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
+
 <div class="card hidden" id="quiz">
   <p id="modeTitle"></p>
   <p id="count"></p>
+  <p class="category" id="category"></p>
+
   <div class="character-row">
     <img id="questionChar" src="uma_teacher.png" class="character" alt="キャラクター">
     <div class="bubble character-text">
       <div id="comic" class="dialogue-box"></div>
     </div>
   </div>
+
   <div class="q" id="question"></div>
+
   <button class="green" onclick="answer(true)">○ 正しい</button>
   <button class="red" onclick="answer(false)">× 誤り</button>
+
   <div id="feedback" class="bubble hidden"></div>
+
   <button id="nextBtn" class="pink hidden" onclick="nextQuestion()">次へ</button>
 </div>
+
 <div class="card hidden" id="result">
   <h2>結果発表 🎉</h2>
   <img id="resultImg" src="pair_goal.png" class="result-img" alt="結果">
   <div class="score" id="score"></div>
   <p id="message"></p>
   <button class="pink" onclick="backHome()">ホームへ</button>
+  <button class="red" onclick="startMistakes()">間違えた問題だけもう一回</button>
 </div>
+
 </div>
+
 <script>
 function r(text){
   return text
@@ -221,12 +147,19 @@ function r(text){
   .replaceAll("車間距離","<ruby>車間距離<rt>しゃかんきょり</rt></ruby>")
   .replaceAll("緊急自動車","<ruby>緊急自動車<rt>きんきゅうじどうしゃ</rt></ruby>")
   .replaceAll("停止距離","<ruby>停止距離<rt>ていしきょり</rt></ruby>")
+  .replaceAll("進路変更","<ruby>進路変更<rt>しんろへんこう</rt></ruby>")
   .replaceAll("進路","<ruby>進路<rt>しんろ</rt></ruby>")
   .replaceAll("標識","<ruby>標識<rt>ひょうしき</rt></ruby>")
   .replaceAll("交差点","<ruby>交差点<rt>こうさてん</rt></ruby>")
   .replaceAll("車輪","<ruby>車輪<rt>しゃりん</rt></ruby>")
-  .replaceAll("転倒","<ruby>転倒<rt>てんとう</rt></ruby>");
+  .replaceAll("転倒","<ruby>転倒<rt>てんとう</rt></ruby>")
+  .replaceAll("追越し","<ruby>追越し<rt>おいこし</rt></ruby>")
+  .replaceAll("前照灯","<ruby>前照灯<rt>ぜんしょうとう</rt></ruby>")
+  .replaceAll("眩惑","<ruby>眩惑<rt>げんわく</rt></ruby>")
+  .replaceAll("摩耗","<ruby>摩耗<rt>まもう</rt></ruby>")
+  .replaceAll("巻き込み","<ruby>巻き込み<rt>まきこみ</rt></ruby>");
 }
+
 function renderDialogue(dialogue){
   return dialogue.map(line => {
     const icon = line.speaker === "miko" ? "miko_mini.png" : "uma_mini.png";
@@ -238,164 +171,1004 @@ function renderDialogue(dialogue){
     `;
   }).join("");
 }
+
 const questions = [
   {
-    day:"day1",
-    char:"uma_teacher.png",
-    dialogue:[
-      {speaker:"uma", text:"歩行者さんがいたら、まず止まる！本番でも超大事だよ"}
+    "day": "day1",
+    "cat": "横断歩道",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "歩行者さんがいたら、まず止まる！本番でも超大事だよ"
+      }
     ],
-    q:"横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",
-    a:true,
-    e:"歩行者優先。これは絶対落とせない！"
+    "q": "横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",
+    "a": true,
+    "e": "歩行者優先。横断しようとしている人がいるときは一時停止。"
   },
   {
-    day:"day1",
-    char:"miko_surprised.png",
-    dialogue:[
-      {speaker:"miko", text:"黄色は急げ、じゃないの？"},
-      {speaker:"uma", text:"それ罠！原則止まれだよ"}
+    "day": "day1",
+    "cat": "信号",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "黄色は急げ、じゃないの？"
+      },
+      {
+        "speaker": "uma",
+        "text": "それ罠！原則止まれだよ"
+      }
     ],
-    q:"黄色信号は『注意して進め』という意味である。",
-    a:false,
-    e:"黄色信号は原則『止まれ』。止まれない場合だけ進行できる。"
+    "q": "黄色信号は『注意して進め』という意味である。",
+    "a": false,
+    "e": "黄色信号は原則『止まれ』。安全に停止できない場合だけ進行できる。"
   },
   {
-    day:"day1",
-    char:"uma_point.png",
-    dialogue:[
-      {speaker:"uma", text:"鳴ってなくても、踏切では止まって確認！"}
+    "day": "day1",
+    "cat": "踏切",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "鳴ってなくても、踏切では止まって確認！"
+      }
     ],
-    q:"踏切では、警報機が鳴っていなくても一時停止して安全確認する。",
-    a:true,
-    e:"踏切は必ず一時停止。左右確認もセット。"
+    "q": "踏切では、警報機が鳴っていなくても一時停止して安全確認する。",
+    "a": true,
+    "e": "踏切は必ず一時停止。左右確認もセット。"
   },
   {
-    day:"day1",
-    char:"uma_warning.png",
-    dialogue:[
-      {speaker:"miko", text:"近所なら…？"},
-      {speaker:"uma", text:"絶対ダメ！"}
+    "day": "day1",
+    "cat": "飲酒",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "近所なら…？"
+      },
+      {
+        "speaker": "uma",
+        "text": "絶対ダメ！"
+      }
     ],
-    q:"酒気帯び運転は、短い距離であれば違反にならない。",
-    a:false,
-    e:"距離は関係なし。飲んだら絶対に運転しない。"
+    "q": "酒気帯び運転は、短い距離であれば違反にならない。",
+    "a": false,
+    "e": "距離は関係なし。飲んだら絶対に運転しない。"
   },
   {
-    day:"day1",
-    char:"miko_thinking.png",
-    dialogue:[
-      {speaker:"miko", text:"ゆっくりならOK？"},
-      {speaker:"uma", text:"完全停止だよ！"}
+    "day": "day1",
+    "cat": "一時停止",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "ゆっくりならOK？"
+      },
+      {
+        "speaker": "uma",
+        "text": "完全停止だよ！"
+      }
     ],
-    q:"一時停止の標識がある場所では、徐行すれば停止しなくてもよい。",
-    a:false,
-    e:"徐行ではダメ。車輪を完全に止める。"
+    "q": "一時停止の標識がある場所では、徐行すれば停止しなくてもよい。",
+    "a": false,
+    "e": "徐行ではダメ。車輪を完全に止める。"
   },
   {
-    day:"day2",
-    char:"uma_warning.png",
-    dialogue:[
-      {speaker:"uma", text:"雨の日の白線とマンホールはツルッといくよ！"}
+    "day": "day1",
+    "cat": "優先",
+    "char": "uma_doya.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "優先でも確認！ここ本番の落とし穴"
+      }
     ],
-    q:"二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",
-    a:true,
-    e:"二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。"
+    "q": "優先道路を通行していても、安全確認は必要である。",
+    "a": true,
+    "e": "優先でも油断禁止。安全確認は常に必要。"
   },
   {
-    day:"day2",
-    char:"uma_teacher.png",
-    dialogue:[
-      {speaker:"uma", text:"カーブは曲がる前に減速。途中の急ブレーキは危ない！"}
+    "day": "day1",
+    "cat": "緊急車両",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "救急車や消防車が来たら、落ち着いて譲ろう"
+      }
     ],
-    q:"カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",
-    a:false,
-    e:"カーブ中の急ブレーキは転倒の危険。手前で十分減速。"
+    "q": "緊急自動車が近づいてきたら、進路を譲る。",
+    "a": true,
+    "e": "サイレンが聞こえたら落ち着いて進路を譲る。"
   },
   {
-    day:"day2",
-    char:"uma_point.png",
-    dialogue:[
-      {speaker:"uma", text:"バイクは風の影響を受けやすいよ"}
+    "day": "day1",
+    "cat": "スマホ",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "一瞬だけなら…"
+      },
+      {
+        "speaker": "uma",
+        "text": "一瞬が事故につながる！"
+      }
     ],
-    q:"二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",
-    a:true,
-    e:"橋の上・トンネル出口・大型車の横は風に注意。"
+    "q": "運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",
+    "a": false,
+    "e": "ながら運転は危険。短時間でもダメ。"
   },
   {
-    day:"day2",
-    char:"miko_surprised.png",
-    dialogue:[
-      {speaker:"miko", text:"小さいから詰めてもいい？"},
-      {speaker:"uma", text:"むしろ余裕が大事！"}
+    "day": "day1",
+    "cat": "交差点",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "交差点は落ち着いて確認！"
+      }
     ],
-    q:"二輪車は小さいので、車間距離を短くして走ってもよい。",
-    a:false,
-    e:"二輪も十分な車間距離が必要。急停止に備える。"
+    "q": "交差点の近くでは、他の交通に注意して安全確認をする。",
+    "a": true,
+    "e": "交差点は事故が起きやすい場所。必ず安全確認。"
   },
   {
-    day:"day2",
-    char:"uma_teacher.png",
-    dialogue:[
-      {speaker:"uma", text:"雨の日は止まるまで長くなるよ！"}
+    "day": "day1",
+    "cat": "休憩",
+    "char": "pair_study.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "もう少し行けるかも…"
+      },
+      {
+        "speaker": "uma",
+        "text": "休憩も運転技術だよ"
+      }
     ],
-    q:"雨の日は停止距離が長くなるので、車間距離を長めにとる。",
-    a:true,
-    e:"ぬれた路面は止まりにくい。早めの判断が大切。"
+    "q": "疲れているときは、無理をせず休憩することが大切である。",
+    "a": true,
+    "e": "眠気や疲れは事故のもと。休む勇気が大事。"
   },
   {
-    day:"day3",
-    char:"uma_doya.png",
-    dialogue:[
-      {speaker:"uma", text:"優先でも確認！ここ本番の落とし穴"}
+    "day": "day1",
+    "cat": "速度",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "標識がある時は、その速度を超えない！"
+      }
     ],
-    q:"優先道路を通行していても、安全確認は必要である。",
-    a:true,
-    e:"優先でも油断禁止。安全確認は常に必要。"
+    "q": "最高速度の標識がある道路では、その速度を超えて運転してはならない。",
+    "a": true,
+    "e": "標識や標示で示された最高速度を守る。"
   },
   {
-    day:"day3",
-    char:"uma_warning.png",
-    dialogue:[
-      {speaker:"uma", text:"救急車や消防車が来たら、落ち着いて譲ろう"}
+    "day": "day1",
+    "cat": "車間距離",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "前の車が急に止まっても大丈夫な距離をとろう"
+      }
     ],
-    q:"緊急自動車が近づいてきたら、進路を譲る。",
-    a:true,
-    e:"サイレンが聞こえたら落ち着いて進路を譲る。"
+    "q": "前の車が急停止しても追突を避けられるように、十分な車間距離をとる。",
+    "a": true,
+    "e": "車間距離は安全運転の基本。二輪でも大切。"
   },
   {
-    day:"day3",
-    char:"miko_surprised.png",
-    dialogue:[
-      {speaker:"miko", text:"一瞬だけなら…"},
-      {speaker:"uma", text:"一瞬が事故につながる！"}
+    "day": "day1",
+    "cat": "合図",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "曲がる直前に出せばいい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "早めに合図して、まわりに知らせよう"
+      }
     ],
-    q:"運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",
-    a:false,
-    e:"ながら運転は危険。短時間でもダメ。"
+    "q": "右左折や進路変更をするときは、合図をしてまわりに知らせる。",
+    "a": true,
+    "e": "合図は他の交通への大切なコミュニケーション。"
   },
   {
-    day:"day3",
-    char:"uma_teacher.png",
-    dialogue:[
-      {speaker:"uma", text:"交差点は落ち着いて確認！"}
+    "day": "day1",
+    "cat": "夜間",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "夜は見えにくいからライトも速度も大事"
+      }
     ],
-    q:"交差点の近くでは、他の交通に注意して安全確認をする。",
-    a:true,
-    e:"交差点は事故が起きやすい場所。必ず安全確認。"
+    "q": "夜間は昼間より見えにくいので、速度を控えめにして安全確認を十分にする。",
+    "a": true,
+    "e": "夜間は発見が遅れやすい。速度とライトに注意。"
   },
   {
-    day:"day3",
-    char:"pair_study.png",
-    dialogue:[
-      {speaker:"miko", text:"もう少し行けるかも…"},
-      {speaker:"uma", text:"休憩も運転技術だよ"}
+    "day": "day1",
+    "cat": "ながら",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "運転中は操作しない。これ大事！"
+      }
     ],
-    q:"疲れているときは、無理をせず休憩することが大切である。",
-    a:true,
-    e:"眠気や疲れは事故のもと。休む勇気が大事。"
+    "q": "信号待ちで停止していれば、いつでもスマートフォンを操作してよい。",
+    "a": false,
+    "e": "運転中のスマホ操作は危険。停止中でも周囲への注意が必要。"
+  },
+  {
+    "day": "day2",
+    "cat": "雨・路面",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "雨の日の白線とマンホールはツルッといくよ！"
+      }
+    ],
+    "q": "二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",
+    "a": true,
+    "e": "二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。"
+  },
+  {
+    "day": "day2",
+    "cat": "カーブ",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "カーブは曲がる前に減速。途中の急ブレーキは危ない！"
+      }
+    ],
+    "q": "カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",
+    "a": false,
+    "e": "カーブ中の急ブレーキは転倒の危険。手前で十分減速。"
+  },
+  {
+    "day": "day2",
+    "cat": "風",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "バイクは風の影響を受けやすいよ"
+      }
+    ],
+    "q": "二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",
+    "a": true,
+    "e": "橋の上・トンネル出口・大型車の横は風に注意。"
+  },
+  {
+    "day": "day2",
+    "cat": "車間距離",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "小さいから詰めてもいい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "むしろ余裕が大事！"
+      }
+    ],
+    "q": "二輪車は小さいので、車間距離を短くして走ってもよい。",
+    "a": false,
+    "e": "二輪も十分な車間距離が必要。急停止に備える。"
+  },
+  {
+    "day": "day2",
+    "cat": "雨天",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "雨の日は止まるまで長くなるよ！"
+      }
+    ],
+    "q": "雨の日は停止距離が長くなるので、車間距離を長めにとる。",
+    "a": true,
+    "e": "ぬれた路面は止まりにくい。早めの判断が大切。"
+  },
+  {
+    "day": "day2",
+    "cat": "急制動",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "急のつく操作は転倒につながりやすいよ"
+      }
+    ],
+    "q": "二輪車では、急発進、急加速、急ブレーキ、急ハンドルを避ける。",
+    "a": true,
+    "e": "二輪はバランスを崩しやすい。急操作を避ける。"
+  },
+  {
+    "day": "day2",
+    "cat": "視線",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "カーブでは行きたい方向を見るのが基本"
+      }
+    ],
+    "q": "二輪車でカーブを曲がるときは、カーブの先を見て進路を安定させる。",
+    "a": true,
+    "e": "視線をカーブの先へ向け、手前で減速する。"
+  },
+  {
+    "day": "day2",
+    "cat": "積載",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "荷物は高く積んだ方が見やすい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "バランスが崩れやすくなるよ"
+      }
+    ],
+    "q": "二輪車に荷物を積むときは、できるだけ高い位置に重く積むのがよい。",
+    "a": false,
+    "e": "荷物はバランスを考えて、しっかり固定する。高く重い積み方は不安定。"
+  },
+  {
+    "day": "day2",
+    "cat": "ヘルメット",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "あごひもまでしっかり！"
+      }
+    ],
+    "q": "二輪車を運転するときは、乗車用ヘルメットを正しく着用する。",
+    "a": true,
+    "e": "ヘルメットは正しくかぶり、あごひもを確実にしめる。"
+  },
+  {
+    "day": "day2",
+    "cat": "服装",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "肌を守れる服装が安全だよ"
+      }
+    ],
+    "q": "二輪車に乗るときは、体の露出が少なく、運転しやすい服装が望ましい。",
+    "a": true,
+    "e": "転倒時のけがを減らすため、長袖・長ズボン・手袋などが望ましい。"
+  },
+  {
+    "day": "day2",
+    "cat": "すり抜け",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "すり抜けは危険が多いから油断しない"
+      }
+    ],
+    "q": "二輪車は小回りが利くので、車の間をいつでも自由にすり抜けてよい。",
+    "a": false,
+    "e": "すり抜けは接触や見落としの危険がある。安全確認と法令遵守が必要。"
+  },
+  {
+    "day": "day2",
+    "cat": "大型車",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "大型車のそばは風と死角に注意！"
+      }
+    ],
+    "q": "大型車の近くを二輪車で走るときは、風圧や死角に注意する。",
+    "a": true,
+    "e": "大型車の横や後ろは見えにくく、風の影響も受けやすい。"
+  },
+  {
+    "day": "day2",
+    "cat": "下り坂",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "下り坂は速度が出やすいよ"
+      }
+    ],
+    "q": "長い下り坂では速度が出やすいので、早めに速度を調節する。",
+    "a": true,
+    "e": "下り坂では速度超過や制動距離に注意。"
+  },
+  {
+    "day": "day2",
+    "cat": "二人乗り",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "免許取ったらすぐ二人乗り？"
+      },
+      {
+        "speaker": "uma",
+        "text": "条件があるから注意！"
+      }
+    ],
+    "q": "普通二輪免許を取得した直後でも、一般道路で二人乗りをしてよい。",
+    "a": false,
+    "e": "二人乗りには免許取得後の期間など条件がある。教本で必ず確認。"
+  },
+  {
+    "day": "day2",
+    "cat": "高速二人乗り",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "高速道路の二人乗りはさらに条件が厳しいよ"
+      }
+    ],
+    "q": "高速道路での二輪車の二人乗りは、一般道路より条件が厳しい。",
+    "a": true,
+    "e": "年齢や経験年数などの条件がある。直前に教本で確認。"
+  },
+  {
+    "day": "day3",
+    "cat": "駐停車",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "横断歩道や交差点の近くは特に注意"
+      }
+    ],
+    "q": "横断歩道や交差点の近くでは、駐停車が禁止されている場所がある。",
+    "a": true,
+    "e": "交差点、横断歩道、踏切などの付近は駐停車禁止場所に注意。"
+  },
+  {
+    "day": "day3",
+    "cat": "駐停車",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "ちょっとだけなら止めてもいい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "停車も禁止の場所があるよ"
+      }
+    ],
+    "q": "駐車禁止の場所でなければ、どこでも停車してよい。",
+    "a": false,
+    "e": "駐車だけでなく停車も禁止される場所がある。"
+  },
+  {
+    "day": "day3",
+    "cat": "徐行",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "見通しが悪い場所はゆっくり確認"
+      }
+    ],
+    "q": "見通しの悪い交差点では、徐行して安全確認をする。",
+    "a": true,
+    "e": "見通しが悪い場所では徐行が基本。"
+  },
+  {
+    "day": "day3",
+    "cat": "歩行者",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "歩行者のそばは距離と速度が大事"
+      }
+    ],
+    "q": "歩行者のそばを通るときは、安全な間隔をあけるか、徐行する。",
+    "a": true,
+    "e": "歩行者保護は最重要。無理な通過はしない。"
+  },
+  {
+    "day": "day3",
+    "cat": "信号",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "青なら必ず進める？"
+      },
+      {
+        "speaker": "uma",
+        "text": "前が詰まってたら入らない！"
+      }
+    ],
+    "q": "青信号でも、前方が混雑して交差点内で止まるおそれがあるときは、交差点に入らない。",
+    "a": true,
+    "e": "交差点内で停止するおそれがあるときは進入しない。"
+  },
+  {
+    "day": "day3",
+    "cat": "追越し",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "見通しが悪い場所の追越しは危ない！"
+      }
+    ],
+    "q": "見通しの悪いカーブでは、危険なので追越しを避ける。",
+    "a": true,
+    "e": "対向車や障害物を確認しにくい場所での追越しは危険。"
+  },
+  {
+    "day": "day3",
+    "cat": "合図",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "曲がる前にまわりへ知らせる"
+      }
+    ],
+    "q": "右左折するときは、あらかじめ合図をして、後方や周囲の安全を確認する。",
+    "a": true,
+    "e": "合図と安全確認はセット。"
+  },
+  {
+    "day": "day3",
+    "cat": "進路変更",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "合図だけ出せばOK？"
+      },
+      {
+        "speaker": "uma",
+        "text": "安全確認も必要！"
+      }
+    ],
+    "q": "進路変更は、合図を出せば後方確認をしなくてもよい。",
+    "a": false,
+    "e": "合図だけでは不十分。後方・側方の安全確認が必要。"
+  },
+  {
+    "day": "day3",
+    "cat": "夜間",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "対向車がいる時はまぶしくしない"
+      }
+    ],
+    "q": "夜間、対向車と行き違うときは、前照灯を下向きにするなどして眩惑を避ける。",
+    "a": true,
+    "e": "相手をまぶしくさせないようにする。"
+  },
+  {
+    "day": "day3",
+    "cat": "ライト",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "明るい街ならライトいらない？"
+      },
+      {
+        "speaker": "uma",
+        "text": "自分を見せる意味もあるよ"
+      }
+    ],
+    "q": "夜間でも道路が明るければ、ライトをつけなくてもよい。",
+    "a": false,
+    "e": "夜間はライトをつけ、自分の存在を知らせる。"
+  },
+  {
+    "day": "day3",
+    "cat": "標識",
+    "char": "uma_doya.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "標識・標示・信号の意味は超頻出！"
+      }
+    ],
+    "q": "道路標識や道路標示は、交通の安全と円滑のために守らなければならない。",
+    "a": true,
+    "e": "標識・標示は必ず確認して従う。"
+  },
+  {
+    "day": "day3",
+    "cat": "警察官",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "現場の指示が最優先！"
+      }
+    ],
+    "q": "警察官の手信号や指示は、信号機や標識より優先される。",
+    "a": true,
+    "e": "警察官や交通巡視員の指示が最優先。"
+  },
+  {
+    "day": "day3",
+    "cat": "チャイルド?",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "これは四輪寄りだけど学科では出ることがあるよ"
+      }
+    ],
+    "q": "幼児を車に乗せるときは、原則としてチャイルドシートを使用する。",
+    "a": true,
+    "e": "普通二輪中心でも、学科は交通ルール全般から出る。"
+  },
+  {
+    "day": "day3",
+    "cat": "シートベルト",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "四輪の基本問題も落とさない！"
+      }
+    ],
+    "q": "四輪車を運転するとき、同乗者にもシートベルトを着用させるよう注意する。",
+    "a": true,
+    "e": "二輪受験でも、共通ルールとして出ることがある。"
+  },
+  {
+    "day": "day3",
+    "cat": "初心者",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "慣れてきたら基本は省略していい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "本番も運転も基本が勝つよ"
+      }
+    ],
+    "q": "運転に慣れてきたら、安全確認を省略してもよい。",
+    "a": false,
+    "e": "慣れた時ほど油断が危険。安全確認は省略しない。"
+  },
+  {
+    "day": "extra",
+    "cat": "横断歩道",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "横断歩道の手前は特に慎重に！"
+      }
+    ],
+    "q": "横断歩道の手前で止まっている車があるときは、その前方に歩行者がいるかもしれないので注意する。",
+    "a": true,
+    "e": "停止車両の陰から歩行者が出る可能性がある。"
+  },
+  {
+    "day": "extra",
+    "cat": "自転車",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "自転車も交通ルールの仲間だよ"
+      }
+    ],
+    "q": "自転車は車の仲間なので、信号や標識に従う必要がある。",
+    "a": true,
+    "e": "自転車も車両として交通ルールを守る。"
+  },
+  {
+    "day": "extra",
+    "cat": "二輪姿勢",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "体もバイクの一部みたいに安定させる"
+      }
+    ],
+    "q": "二輪車では、正しい乗車姿勢を保つことが安全運転につながる。",
+    "a": true,
+    "e": "姿勢が崩れると操作やバランスに影響する。"
+  },
+  {
+    "day": "extra",
+    "cat": "ブレーキ",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "前だけ強くかければ止まりやすい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "バランスが大事だよ"
+      }
+    ],
+    "q": "二輪車では、前輪ブレーキだけを強くかければ常に安全に止まれる。",
+    "a": false,
+    "e": "路面状況や速度に応じて、前後のブレーキを適切に使う。"
+  },
+  {
+    "day": "extra",
+    "cat": "路面",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "砂利や落ち葉もすべるよ"
+      }
+    ],
+    "q": "砂利道や落ち葉のある道路では、二輪車はすべりやすいので注意する。",
+    "a": true,
+    "e": "二輪は路面の状態に大きく影響される。"
+  },
+  {
+    "day": "extra",
+    "cat": "駐車",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "端ならどこでもいい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "標識と禁止場所を確認！"
+      }
+    ],
+    "q": "道路の左端に寄せれば、どこでも駐車してよい。",
+    "a": false,
+    "e": "駐停車禁止場所や標識・標示を確認する必要がある。"
+  },
+  {
+    "day": "extra",
+    "cat": "危険予測",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "見えない所に危険がある、と思って運転しよう"
+      }
+    ],
+    "q": "駐車車両のかげから歩行者が出てくることを予測して運転する。",
+    "a": true,
+    "e": "危険予測は本番でも実際の運転でも大事。"
+  },
+  {
+    "day": "extra",
+    "cat": "信号",
+    "char": "uma_doya.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "赤は止まる。これは迷わない！"
+      }
+    ],
+    "q": "赤信号では、停止位置を越えて進んではならない。",
+    "a": true,
+    "e": "赤信号は停止。停止位置を守る。"
+  },
+  {
+    "day": "extra",
+    "cat": "信号",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "矢印信号って難しい…"
+      },
+      {
+        "speaker": "uma",
+        "text": "矢印の方向だけ進めるよ"
+      }
+    ],
+    "q": "青色の矢印信号が出ているときは、その矢印の方向に進むことができる。",
+    "a": true,
+    "e": "矢印信号は表示された方向に進行できる。"
+  },
+  {
+    "day": "extra",
+    "cat": "通学路",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "子どもは急に飛び出すことがあるよ"
+      }
+    ],
+    "q": "学校や公園の近くでは、子どもの飛び出しを予測して慎重に運転する。",
+    "a": true,
+    "e": "子どもは予測しにくい動きをすることがある。"
+  },
+  {
+    "day": "extra",
+    "cat": "高速道路",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "高速は速度も車間距離も大事"
+      }
+    ],
+    "q": "高速道路では、速度が高いので一般道路よりも十分な車間距離をとる。",
+    "a": true,
+    "e": "高速では停止距離が長くなる。車間距離を長めに。"
+  },
+  {
+    "day": "extra",
+    "cat": "高速道路",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "止まりたい時は路肩にすぐ止める？"
+      },
+      {
+        "speaker": "uma",
+        "text": "むやみに止まるのは危険！"
+      }
+    ],
+    "q": "高速道路では、眠くなったら本線上に停車して休んでもよい。",
+    "a": false,
+    "e": "本線上の停車は非常に危険。休憩施設などを利用する。"
+  },
+  {
+    "day": "extra",
+    "cat": "点検",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "乗る前チェックで事故を防ごう"
+      }
+    ],
+    "q": "二輪車に乗る前には、タイヤやブレーキなどを点検することが大切である。",
+    "a": true,
+    "e": "日常点検は安全運転の基本。"
+  },
+  {
+    "day": "extra",
+    "cat": "タイヤ",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "タイヤは命を乗せてるよ"
+      }
+    ],
+    "q": "タイヤの空気圧や摩耗は、二輪車の安定性に影響する。",
+    "a": true,
+    "e": "タイヤの状態は制動や安定性に直結する。"
+  },
+  {
+    "day": "extra",
+    "cat": "泥はね",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "水たまりは平気？"
+      },
+      {
+        "speaker": "uma",
+        "text": "歩行者にも自分にも注意！"
+      }
+    ],
+    "q": "水たまりを通るときは、歩行者への泥はねにも注意する。",
+    "a": true,
+    "e": "歩行者への配慮も安全運転の一部。"
+  },
+  {
+    "day": "extra",
+    "cat": "故障",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "故障したら後続車に知らせるのも大事"
+      }
+    ],
+    "q": "道路上で故障したときは、後続車に危険を知らせる措置をとる。",
+    "a": true,
+    "e": "停止表示器材など、状況に応じて安全を確保する。"
+  },
+  {
+    "day": "extra",
+    "cat": "二輪注意",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "左折車の巻き込みに注意！"
+      }
+    ],
+    "q": "交差点付近では、左折する大型車の巻き込みに注意する。",
+    "a": true,
+    "e": "二輪車は巻き込まれやすい。大型車の近くでは特に注意。"
+  },
+  {
+    "day": "extra",
+    "cat": "速度調整",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "見えない時は速度を落とす"
+      }
+    ],
+    "q": "見通しが悪い場所では、危険に備えて速度を落とす。",
+    "a": true,
+    "e": "見えない場所ほど慎重に。"
+  },
+  {
+    "day": "extra",
+    "cat": "信号",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "青なら全部安全？"
+      },
+      {
+        "speaker": "uma",
+        "text": "青でも安全確認はするよ"
+      }
+    ],
+    "q": "青信号であれば、左右の安全確認をしなくてもよい。",
+    "a": false,
+    "e": "青でも安全確認は必要。信号無視の車や歩行者にも注意。"
+  },
+  {
+    "day": "extra",
+    "cat": "試験直前",
+    "char": "pair_goal.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "迷ったら『安全側』を選ぶのがコツ"
+      },
+      {
+        "speaker": "miko",
+        "text": "本番、落ち着いて読む！"
+      }
+    ],
+    "q": "学科試験では、問題文の『必ず』『どんな場合でも』などの強い表現に注意して読む。",
+    "a": true,
+    "e": "ひっかけ問題は言い切り表現がポイントになることが多い。"
   }
 ];
+
 const cheers = [
   "真彩ちゃんナイス🌸",
   "これは本番でも取れる！",
@@ -403,19 +1176,32 @@ const cheers = [
   "ウマくんも拍手🐴",
   "合格に近づいた！"
 ];
+
 let quiz = [];
 let index = 0;
 let score = 0;
 let mistakes = [];
 let answered = false;
+
+function shuffle(arr){
+  return [...arr].sort(()=>Math.random()-0.5);
+}
+
 function startMode(day){
   quiz = questions.filter(x => x.day === day);
-  launch(day==="day1" ? "Day1：基本ルール" : day==="day2" ? "Day2：二輪ひっかけ" : "Day3：直前総復習");
+  launch(day==="day1" ? "Day1：基本ルール" : day==="day2" ? "Day2：二輪ひっかけ" : day==="day3" ? "Day3：直前総復習" : "追加特訓");
 }
+
 function startTrain(){
-  quiz = [...questions].sort(()=>Math.random()-0.5).slice(0,5);
+  quiz = shuffle(questions).slice(0,5);
   launch("電車で5問復習 🚃");
 }
+
+function startAllRandom(){
+  quiz = shuffle(questions).slice(0,20);
+  launch("全65問からランダム20問 🌀");
+}
+
 function startMistakes(){
   const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   if(saved.length === 0){
@@ -425,6 +1211,7 @@ function startMistakes(){
   quiz = saved;
   launch("間違えた問題だけ復習");
 }
+
 function launch(title){
   index = 0;
   score = 0;
@@ -436,23 +1223,28 @@ function launch(title){
   document.getElementById("modeTitle").innerText = title;
   showQuestion();
 }
+
 function showQuestion(){
   answered = false;
   const item = quiz[index];
   document.getElementById("count").innerText = (index+1) + " / " + quiz.length;
+  document.getElementById("category").innerText = "カテゴリ：" + (item.cat || "総合");
   document.getElementById("questionChar").src = item.char || "uma_teacher.png";
-  document.getElementById("comic").innerHTML = renderDialogue(item.dialogue);
+  document.getElementById("comic").innerHTML = renderDialogue(item.dialogue || [{speaker:"uma", text:"落ち着いて読めば大丈夫！"}]);
   document.getElementById("question").innerHTML = r(item.q);
   document.getElementById("feedback").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
 }
+
 function answer(choice){
   if(answered) return;
   answered = true;
+
   const item = quiz[index];
   const ok = choice === item.a;
   const fb = document.getElementById("feedback");
   fb.className = "bubble " + (ok ? "ok" : "ng");
+
   if(ok){
     score++;
     fb.innerHTML =
@@ -468,9 +1260,11 @@ function answer(choice){
       "❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>" +
       r(item.e);
   }
+
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
 }
+
 function nextQuestion(){
   index++;
   if(index >= quiz.length){
@@ -479,6 +1273,7 @@ function nextQuestion(){
     showQuestion();
   }
 }
+
 function finish(){
   const old = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   const unique = [];
@@ -486,9 +1281,11 @@ function finish(){
     if(!unique.find(x => x.q === q.q)) unique.push(q);
   });
   localStorage.setItem("mayaBikeMistakes", JSON.stringify(unique));
+
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.remove("hidden");
   document.getElementById("score").innerText = score + " / " + quiz.length;
+
   if(score === quiz.length){
     document.getElementById("resultImg").src = "pair_goal.png";
     document.getElementById("message").innerText = "満点！真彩ちゃんすごい🌸 この調子なら本番もいける！";
@@ -500,6 +1297,7 @@ function finish(){
     document.getElementById("message").innerText = "まだ伸びる！間違えた問題だけもう一回。";
   }
 }
+
 function backHome(){
   document.getElementById("result").classList.add("hidden");
   document.getElementById("home").classList.remove("hidden");
