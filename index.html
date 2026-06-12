@@ -585,6 +585,61 @@ rt{font-size:10px;color:#777}
   filter:drop-shadow(0 12px 24px rgba(80,35,50,.22));
 }
 
+
+/* --- opening fail-safe visibility fix --- */
+.opening-screen{
+  background:linear-gradient(180deg,#bfeeff 0%, #fff4fb 60%, #ffe1ef 100%) !important;
+}
+.opening-fallback-title{
+  position:absolute;
+  top:8svh;
+  left:20px;
+  right:20px;
+  text-align:center;
+  color:white;
+  text-shadow:0 3px 12px rgba(0,0,0,.32);
+  font-weight:900;
+  font-size:30px;
+  line-height:1.25;
+  z-index:2;
+  pointer-events:none;
+}
+.opening-bg{
+  z-index:1;
+}
+.opening-start-area{
+  z-index:3;
+}
+.opening-start-fallback{
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  border:none;
+  border-radius:999px;
+  padding:18px 20px;
+  background:linear-gradient(135deg,#ff7eb6,#ff9d6c);
+  color:white;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:.08em;
+  box-shadow:0 12px 30px rgba(80,35,50,.28);
+  border:2px solid rgba(255,255,255,.78);
+}
+.opening-start-img{
+  position:absolute;
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  opacity:1;
+}
+.opening-start-img.is-missing{
+  display:none !important;
+}
+.opening-start-button-wrap{
+  position:relative;
+  width:min(86vw, 420px);
+}
+
 </style>
 </head>
 
@@ -4254,7 +4309,20 @@ updateExamCountdown();
   };
 })();
 
+
+/* --- opening fail-safe JS --- */
+(function(){
+  window.addEventListener("error", function(e){
+    const opening = document.getElementById("openingScreen");
+    const home = document.getElementById("home");
+    // If a script error happens during opening, do not leave the app blank.
+    if(opening && home && !opening.classList.contains("hidden")){
+      const fallback = document.querySelector(".opening-start-fallback");
+      if(fallback) fallback.style.display = "block";
+    }
+  });
+})();
+
 </script>
 </body>
 </html>
-
