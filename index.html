@@ -208,15 +208,88 @@ rt{font-size:10px;color:#777}
 
 
 .real-sign-img{
-  width:82px;
-  height:82px;
+  width:88px;
+  height:88px;
   object-fit:contain;
   display:block;
   margin:0 auto;
 }
 .choice-sign .real-sign-img{
-  width:130px;
-  height:130px;
+  width:140px;
+  height:140px;
+}
+.sign-book-grid40{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.sign-book-card40{
+  background:#fff;
+  border:2px solid #eef1f6;
+  border-radius:18px;
+  padding:14px;
+}
+.sign-book-row40{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+.sign-figure40{
+  width:104px;
+  min-width:104px;
+  height:104px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f8fbff;
+  border-radius:16px;
+}
+.sign-book-card40 h3{
+  margin:0 0 6px;
+  font-size:18px;
+}
+.sign-label40{
+  display:inline-block;
+  background:#eef6ff;
+  color:#2f6df6;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:12px;
+  font-weight:800;
+  margin:0 6px 8px 0;
+}
+.sign-tier-hot{background:#ffe1ef;color:#d63384}
+.sign-tier-mid{background:#fff4d8;color:#9a6500}
+.choice-sign{
+  width:160px;
+  height:160px;
+  margin:8px auto 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f8fbff;
+  border-radius:22px;
+}
+.choice-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.choice-btn{
+  background:#eef1f6;
+  color:#333;
+  text-align:left;
+}
+.choice-btn.correct{
+  background:#31b97c;
+  color:white;
+}
+.choice-btn.wrong{
+  background:#ff6b6b;
+  color:white;
+}
+@media (max-width:520px){
+  .sign-book-row40{flex-direction:column}
 }
 
 </style>
@@ -259,8 +332,8 @@ rt{font-size:10px;color:#777}
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
   <button class="orange menu-button" onclick="startSigns()">🚧 標識・標示20問</button>
   <button class="yellow menu-button" onclick="showSignGuide()">🚧 標識の見分け方</button>
-  <button class="orange menu-button" onclick="showSignBook()">🖼️ 実標識ミニ図鑑15</button>
-  <button class="purple menu-button" onclick="startSignChoiceQuiz()">🚦 実標識4択クイズ</button>
+  <button class="orange menu-button" onclick="showSignBook40()">🖼️ 実標識ミニ図鑑40</button>
+  <button class="purple menu-button" onclick="startSignChoiceQuiz40()">🚦 実標識4択クイズ40</button>
 
   <details class="more-menu">
     <summary>📚 3日集中メニューも開く</summary>
@@ -279,15 +352,15 @@ rt{font-size:10px;color:#777}
 
 
 <div class="card hidden" id="signChoiceQuiz">
-  <span class="badge">実標識4択</span>
-  <h2>実標識4択クイズ 🚦</h2>
+  <span class="badge">画像つき4択</span>
+  <h2>標識4択クイズ 🚦</h2>
   <p id="signChoiceCount"></p>
 
   <div class="bubble">
     <div class="dialogue-box">
       <div class="dialogue-line">
         <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
-        <div class="dialogue-text">実際の標識画像を見て4択で選ぼう。本番にかなり近い確認だよ。</div>
+        <div class="dialogue-text">この標識の意味を4択で選ぼう。本番っぽい確認だよ。</div>
       </div>
     </div>
   </div>
@@ -300,9 +373,671 @@ rt{font-size:10px;color:#777}
   <button id="signChoiceNextBtn" class="pink hidden" onclick="nextSignChoice()">次へ</button>
 </div>
 
+
+
+<div class="card hidden" id="signChoiceQuiz40">
+  <span class="badge">実標識4択・40問</span>
+  <h2>実標識4択クイズ 40 🚦</h2>
+  <p id="signChoiceCount40"></p>
+
+  <div class="bubble">
+    <div class="dialogue-box">
+      <div class="dialogue-line">
+        <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
+        <div class="dialogue-text">実際の標識画像を見て、意味を4択で選ぼう。本番対策にかなり近いよ。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="signChoiceIcon40" class="choice-sign"></div>
+  <div class="q">この標識の意味は？</div>
+  <div id="signChoiceButtons40" class="choice-grid"></div>
+  <div id="signChoiceFeedback40" class="bubble hidden"></div>
+
+  <button id="signChoiceNextBtn40" class="pink hidden" onclick="nextSignChoice40()">次へ</button>
+</div>
+
+<div class="card hidden" id="signBook40">
+  <span class="badge">実標識・40個</span>
+  <h2>実標識ミニ図鑑 40 🚦</h2>
+  <img src="pair_study.png" class="result-img" alt="標識ミニ図鑑">
+
+  <div class="bubble">
+    <div class="dialogue-box">
+      <div class="dialogue-line">
+        <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
+        <div class="dialogue-text">国交省PDFベースの実標識画像で覚えよう。本番対策はこっちが強いよ。</div>
+      </div>
+      <div class="dialogue-line">
+        <img src="miko_mini.png" class="dialogue-icon" alt="巫女ちゃん">
+        <div class="dialogue-text">画像を見て、名前・意味・ひっかけをセットで確認する！</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bubble">
+    <p><strong>見方</strong></p>
+    <p>① 標識画像を見る → ② 名前を読む → ③ 意味を読む → ④ ひっかけを確認</p>
+    <p class="small">※画像ファイル40個は <code>signs/</code> フォルダの中にアップする想定です。</p>
+  </div>
+
+  <div class="sign-book-grid40">
+    
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/201A_warning_cross_intersection.png" alt="十字路交差点あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>十字路交差点あり</h3>
+          <p><strong>意味：</strong>この先に十字路交差点があることを知らせる。</p>
+          <p><strong>ポイント：</strong>交差点は事故が多いので、速度を落として左右確認。</p>
+          <p><strong>ひっかけ：</strong>青信号や優先道路でも安全確認は必要。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/201C_warning_t_intersection.png" alt="T形道路交差点あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>T形道路交差点あり</h3>
+          <p><strong>意味：</strong>この先にT字型の交差点がある。</p>
+          <p><strong>ポイント：</strong>突き当たりや合流車に注意。</p>
+          <p><strong>ひっかけ：</strong>見通しが悪い場合は徐行を意識。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/201D_warning_y_intersection.png" alt="Y形道路交差点あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>Y形道路交差点あり</h3>
+          <p><strong>意味：</strong>この先にY字型の交差点がある。</p>
+          <p><strong>ポイント：</strong>進路が分かれるので、早めに進行方向を確認。</p>
+          <p><strong>ひっかけ：</strong>直前の急な進路変更は危険。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/20102_warning_roundabout.png" alt="ロータリーあり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>ロータリーあり</h3>
+          <p><strong>意味：</strong>この先にロータリーがある。</p>
+          <p><strong>ポイント：</strong>速度を落として、周囲の車両や歩行者に注意。</p>
+          <p><strong>ひっかけ：</strong>環状交差点の標識と混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/202_warning_curve.png" alt="右（又は左）方屈曲あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>右（又は左）方屈曲あり</h3>
+          <p><strong>意味：</strong>この先、道路が右または左に大きく曲がる。</p>
+          <p><strong>ポイント：</strong>カーブの手前で減速。二輪は曲がりながら急ブレーキしない。</p>
+          <p><strong>ひっかけ：</strong>カーブ中の急操作は転倒につながる。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/206_warning_winding_road.png" alt="つづら折りあり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>つづら折りあり</h3>
+          <p><strong>意味：</strong>この先、連続した急カーブがある。</p>
+          <p><strong>ポイント：</strong>速度を控えめに、視線はカーブの先へ。</p>
+          <p><strong>ひっかけ：</strong>一つ目のカーブを抜けても油断しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/207A_warning_railroad_crossing.png" alt="踏切あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>踏切あり</h3>
+          <p><strong>意味：</strong>この先に踏切がある。</p>
+          <p><strong>ポイント：</strong>踏切では必ず一時停止して安全確認。</p>
+          <p><strong>ひっかけ：</strong>警報機が鳴っていなくても一時停止。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/208_warning_school_zone.png" alt="学校・幼稚園・保育所等あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>学校・幼稚園・保育所等あり</h3>
+          <p><strong>意味：</strong>この先に学校などがあり、子どもの飛び出しに注意。</p>
+          <p><strong>ポイント：</strong>速度を落として、歩行者・自転車に注意。</p>
+          <p><strong>ひっかけ：</strong>子どもは予測しにくい動きをする。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/20802_warning_traffic_signal.png" alt="信号機あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>信号機あり</h3>
+          <p><strong>意味：</strong>この先に信号機がある。</p>
+          <p><strong>ポイント：</strong>早めに信号を確認し、急ブレーキを避ける。</p>
+          <p><strong>ひっかけ：</strong>黄色信号は原則止まれ。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/209_warning_slippery_road.png" alt="すべりやすい" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>すべりやすい</h3>
+          <p><strong>意味：</strong>この先、路面がすべりやすい。</p>
+          <p><strong>ポイント：</strong>雨の日・白線・マンホールは二輪で特に注意。</p>
+          <p><strong>ひっかけ：</strong>急ブレーキ・急ハンドルは避ける。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/20902_warning_falling_rocks.png" alt="落石のおそれあり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>落石のおそれあり</h3>
+          <p><strong>意味：</strong>この先、落石の危険がある。</p>
+          <p><strong>ポイント：</strong>山道では路面上の石や障害物に注意。</p>
+          <p><strong>ひっかけ：</strong>上だけでなく路面も確認。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/20903_warning_bump.png" alt="路面凹凸あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>路面凹凸あり</h3>
+          <p><strong>意味：</strong>この先、路面に凹凸がある。</p>
+          <p><strong>ポイント：</strong>二輪は姿勢を安定させて速度を控えめに。</p>
+          <p><strong>ひっかけ：</strong>段差でバランスを崩しやすい。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/210_warning_merge_traffic.png" alt="合流交通あり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>合流交通あり</h3>
+          <p><strong>意味：</strong>この先、他の道路から車が合流してくる。</p>
+          <p><strong>ポイント：</strong>合流車の動きを予測して車間距離を確保。</p>
+          <p><strong>ひっかけ：</strong>優先でも油断しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/211_warning_lane_reduction.png" alt="車線数減少" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>車線数減少</h3>
+          <p><strong>意味：</strong>この先、車線数が減る。</p>
+          <p><strong>ポイント：</strong>早めに進路を確認し、無理な割り込みをしない。</p>
+          <p><strong>ひっかけ：</strong>直前の進路変更は危険。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/212_warning_road_narrows.png" alt="幅員減少" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>幅員減少</h3>
+          <p><strong>意味：</strong>この先、道路の幅が狭くなる。</p>
+          <p><strong>ポイント：</strong>対向車や歩行者との間隔に注意。</p>
+          <p><strong>ひっかけ：</strong>二輪でも無理にすり抜けない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/21202_warning_two_way_traffic.png" alt="二方向交通" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>二方向交通</h3>
+          <p><strong>意味：</strong>この先、対面通行になる。</p>
+          <p><strong>ポイント：</strong>対向車に注意し、車線を守る。</p>
+          <p><strong>ひっかけ：</strong>一方通行と間違えない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/213_warning_roadwork.png" alt="道路工事中" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>道路工事中</h3>
+          <p><strong>意味：</strong>この先、道路工事中。</p>
+          <p><strong>ポイント：</strong>作業員・工事車両・段差に注意。</p>
+          <p><strong>ひっかけ：</strong>工事区間は路面が不安定なことがある。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/21402_warning_animal_crossing.png" alt="動物が飛び出すおそれあり" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">警戒標識</span>
+          <h3>動物が飛び出すおそれあり</h3>
+          <p><strong>意味：</strong>この先、動物が飛び出すおそれがある。</p>
+          <p><strong>ポイント：</strong>山道や夜間は特に注意。</p>
+          <p><strong>ひっかけ：</strong>急ハンドルではなく落ち着いて減速。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/301_regulation_road_closed.png" alt="通行止め" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>通行止め</h3>
+          <p><strong>意味：</strong>その道路の通行が禁止される。</p>
+          <p><strong>ポイント：</strong>補助標識があれば、時間や区間も確認。</p>
+          <p><strong>ひっかけ：</strong>二輪なら通れる、とは考えない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/302_regulation_no_vehicles.png" alt="車両通行止め" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>車両通行止め</h3>
+          <p><strong>意味：</strong>車両の通行が禁止される。</p>
+          <p><strong>ポイント：</strong>普通二輪も車両なので対象。</p>
+          <p><strong>ひっかけ：</strong>歩行者と車両の違いに注意。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/303_regulation_no_entry.png" alt="車両進入禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>車両進入禁止</h3>
+          <p><strong>意味：</strong>その方向から車両は進入できない。</p>
+          <p><strong>ポイント：</strong>一方通行の入口出口付近で見かけやすい。</p>
+          <p><strong>ひっかけ：</strong>二輪も車両なので進入不可。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/307_regulation_no_motorcycles.png" alt="二輪の自動車・一般原付通行止め" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>二輪の自動車・一般原付通行止め</h3>
+          <p><strong>意味：</strong>二輪の自動車や一般原付などの通行が禁止。</p>
+          <p><strong>ポイント：</strong>普通二輪試験では見ておきたい標識。</p>
+          <p><strong>ひっかけ：</strong>二輪だから小さいのでOK、ではない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/311B_regulation_left_turn_only.png" alt="指定方向外進行禁止（左折）" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>指定方向外進行禁止（左折）</h3>
+          <p><strong>意味：</strong>指定された方向以外へ進行できない。</p>
+          <p><strong>ポイント：</strong>この標識では左折方向に進む。</p>
+          <p><strong>ひっかけ：</strong>空いていても別方向へ進めない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/311C_regulation_straight_only.png" alt="指定方向外進行禁止（直進）" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>指定方向外進行禁止（直進）</h3>
+          <p><strong>意味：</strong>指定された方向以外へ進行できない。</p>
+          <p><strong>ポイント：</strong>この標識では直進方向に進む。</p>
+          <p><strong>ひっかけ：</strong>右左折できるとは限らない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/312_regulation_no_crossing.png" alt="車両横断禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>車両横断禁止</h3>
+          <p><strong>意味：</strong>車両は道路を横断してはならない。</p>
+          <p><strong>ポイント：</strong>横断・転回・右左折の違いに注意。</p>
+          <p><strong>ひっかけ：</strong>横断禁止と転回禁止を混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/313_regulation_no_u_turn.png" alt="転回禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>転回禁止</h3>
+          <p><strong>意味：</strong>Uターンが禁止される。</p>
+          <p><strong>ポイント：</strong>標識のある場所では転回しない。</p>
+          <p><strong>ひっかけ：</strong>安全そうでも標識があれば禁止。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/314_regulation_no_passing.png" alt="追越し禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>追越し禁止</h3>
+          <p><strong>意味：</strong>追越しが禁止される。</p>
+          <p><strong>ポイント：</strong>見通しが悪い場所などで重要。</p>
+          <p><strong>ひっかけ：</strong>安全そうに見えても追越し禁止。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/315_regulation_no_stopping.png" alt="駐停車禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>駐停車禁止</h3>
+          <p><strong>意味：</strong>駐車も停車も禁止。</p>
+          <p><strong>ポイント：</strong>駐車禁止より強い規制。</p>
+          <p><strong>ひっかけ：</strong>人を降ろすだけでも停車にあたる。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/316_regulation_no_parking.png" alt="駐車禁止" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>駐車禁止</h3>
+          <p><strong>意味：</strong>駐車が禁止される。</p>
+          <p><strong>ポイント：</strong>駐停車禁止との違いを区別。</p>
+          <p><strong>ひっかけ：</strong>停車まで常に禁止されるわけではない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/320_regulation_weight_limit.png" alt="重量制限" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>重量制限</h3>
+          <p><strong>意味：</strong>表示された重量を超える車両は通行できない。</p>
+          <p><strong>ポイント：</strong>二輪では直接関係が薄いが意味は知っておく。</p>
+          <p><strong>ひっかけ：</strong>最高速度の数字と混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/321_regulation_height_limit.png" alt="高さ制限" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>高さ制限</h3>
+          <p><strong>意味：</strong>表示された高さを超える車両は通行できない。</p>
+          <p><strong>ポイント：</strong>トンネルや高架下で見かける。</p>
+          <p><strong>ひっかけ：</strong>幅や重量制限と混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/322_regulation_max_width.png" alt="最大幅" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>最大幅</h3>
+          <p><strong>意味：</strong>表示された幅を超える車両は通行できない。</p>
+          <p><strong>ポイント：</strong>狭い道路や橋などで使われる。</p>
+          <p><strong>ひっかけ：</strong>高さ制限と混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/323_regulation_max_speed.png" alt="最高速度" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>最高速度</h3>
+          <p><strong>意味：</strong>表示速度を超えて運転してはならない。</p>
+          <p><strong>ポイント：</strong>天候や道路状況が悪い時はさらに控えめに。</p>
+          <p><strong>ひっかけ：</strong>その速度で必ず走る、という意味ではない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/324_regulation_min_speed.png" alt="最低速度" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-mid">押さえる</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>最低速度</h3>
+          <p><strong>意味：</strong>やむを得ない場合を除き、表示速度未満で走行してはならない。</p>
+          <p><strong>ポイント：</strong>高速道路などで見かける。</p>
+          <p><strong>ひっかけ：</strong>遅ければ必ず安全、ではない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/40602_directive_stop_line.png" alt="停止線" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">指示標識</span>
+          <h3>停止線</h3>
+          <p><strong>意味：</strong>停止する位置を示す。</p>
+          <p><strong>ポイント：</strong>赤信号や一時停止でこの線を越えずに止まる。</p>
+          <p><strong>ひっかけ：</strong>少し越えて止まるのはNG。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/407A_directive_crosswalk.png" alt="横断歩道" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">指示標識</span>
+          <h3>横断歩道</h3>
+          <p><strong>意味：</strong>歩行者が横断する場所。</p>
+          <p><strong>ポイント：</strong>渡ろうとしている歩行者がいれば一時停止。</p>
+          <p><strong>ひっかけ：</strong>歩行者優先は絶対に落とせない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/326B_directive_one_way.png" alt="一方通行" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">指示標識</span>
+          <h3>一方通行</h3>
+          <p><strong>意味：</strong>指定された一方向にだけ通行できる。</p>
+          <p><strong>ポイント：</strong>逆走は非常に危険。</p>
+          <p><strong>ひっかけ：</strong>少しだけなら逆から入れる、は×。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/329B_regulation_slow.png" alt="徐行" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>徐行</h3>
+          <p><strong>意味：</strong>すぐ停止できる速度で進む。</p>
+          <p><strong>ポイント：</strong>完全停止ではないが、すぐ止まれる速度。</p>
+          <p><strong>ひっかけ：</strong>一時停止と混同しない。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/330B_regulation_stop.png" alt="一時停止（止まれ）" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40 sign-tier-hot">頻出</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>一時停止（止まれ）</h3>
+          <p><strong>意味：</strong>必ず一時停止する。</p>
+          <p><strong>ポイント：</strong>徐行ではなく、車輪を完全に止める。</p>
+          <p><strong>ひっかけ：</strong>ゆっくり進めばよい、は×。</p>
+        </div>
+      </div>
+    </div>
+    <div class="sign-book-card40">
+      <div class="sign-book-row40">
+        <div class="sign-figure40">
+          <img src="signs/331_regulation_no_pedestrians.png" alt="歩行者等通行止め" class="real-sign-img">
+        </div>
+        <div>
+          <span class="sign-label40">知っておく</span>
+          <span class="sign-label40">規制標識</span>
+          <h3>歩行者等通行止め</h3>
+          <p><strong>意味：</strong>歩行者などの通行が禁止される。</p>
+          <p><strong>ポイント：</strong>車両系の標識との違いを見分ける。</p>
+          <p><strong>ひっかけ：</strong>車両通行止めと混同しない。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bubble ok">
+    <p><strong>出典メモ</strong></p>
+    <p>標識画像・名称は、国土交通省「道路標識一覧」PDFを学習用に切り出し・整理したものです。</p>
+  </div>
+
+  <button class="purple" onclick="startSignChoiceQuiz40()">🚦 実標識4択クイズ40へ</button>
+  <button class="orange" onclick="showSignGuide()">🚧 標識の見分け方へ</button>
+  <button class="pink" onclick="backHome()">ホームへ</button>
+</div>
+
 <div class="card hidden" id="signBook">
   <span class="badge">参考画像つき・頻出15個</span>
-  <h2>実標識ミニ図鑑 15 🚦</h2>
+  <h2>標識ミニ図鑑 15 🚦</h2>
   <img src="pair_study.png" class="result-img" alt="標識ミニ図鑑">
 
   <div class="bubble">
@@ -613,7 +1348,7 @@ rt{font-size:10px;color:#777}
 
   <div class="bubble ok">
     <p><strong>出典メモ</strong></p>
-    <p>標識の名称・分類は国土交通省「道路標識一覧」を参考に、学習用に整理しています。実際のPNGは <code>signs/</code> フォルダに入れてください。</p>
+    <p>標識の名称・分類は国土交通省「道路標識一覧」を参考に、学習用にわかりやすく整理しています。</p>
   </div>
 
   <button class="orange" onclick="showSignGuide()">🚧 標識の見分け方へ</button>
@@ -834,6 +1569,13 @@ rt{font-size:10px;color:#777}
 </div>
 
 <script>
+
+function goTop(){
+  setTimeout(function(){
+    window.scrollTo({top:0, behavior:"smooth"});
+  }, 60);
+}
+
 function r(text){
   return text
   .replaceAll("横断歩道","<ruby>横断歩道<rt>おうだんほどう</rt></ruby>")
@@ -2290,19 +3032,133 @@ function startWeakOnly(){
 
 
 
+
+const signChoiceQuestions40 = [{"name": "十字路交差点あり", "file": "signs/201A_warning_cross_intersection.png", "choices": ["十字路交差点あり", "学校・幼稚園・保育所等あり", "車線数減少", "二輪の自動車・一般原付通行止め"], "answer": 0, "e": "十字路交差点あり。この先に十字路交差点があることを知らせる。 交差点は事故が多いので、速度を落として左右確認。"}, {"name": "T形道路交差点あり", "file": "signs/201C_warning_t_intersection.png", "choices": ["信号機あり", "幅員減少", "指定方向外進行禁止（左折）", "T形道路交差点あり"], "answer": 3, "e": "T形道路交差点あり。この先にT字型の交差点がある。 突き当たりや合流車に注意。"}, {"name": "Y形道路交差点あり", "file": "signs/201D_warning_y_intersection.png", "choices": ["二方向交通", "指定方向外進行禁止（直進）", "Y形道路交差点あり", "すべりやすい"], "answer": 2, "e": "Y形道路交差点あり。この先にY字型の交差点がある。 進路が分かれるので、早めに進行方向を確認。"}, {"name": "ロータリーあり", "file": "signs/20102_warning_roundabout.png", "choices": ["車両横断禁止", "ロータリーあり", "落石のおそれあり", "道路工事中"], "answer": 1, "e": "ロータリーあり。この先にロータリーがある。 速度を落として、周囲の車両や歩行者に注意。"}, {"name": "右（又は左）方屈曲あり", "file": "signs/202_warning_curve.png", "choices": ["右（又は左）方屈曲あり", "路面凹凸あり", "動物が飛び出すおそれあり", "転回禁止"], "answer": 0, "e": "右（又は左）方屈曲あり。この先、道路が右または左に大きく曲がる。 カーブの手前で減速。二輪は曲がりながら急ブレーキしない。"}, {"name": "つづら折りあり", "file": "signs/206_warning_winding_road.png", "choices": ["合流交通あり", "通行止め", "追越し禁止", "つづら折りあり"], "answer": 3, "e": "つづら折りあり。この先、連続した急カーブがある。 速度を控えめに、視線はカーブの先へ。"}, {"name": "踏切あり", "file": "signs/207A_warning_railroad_crossing.png", "choices": ["車両通行止め", "駐停車禁止", "踏切あり", "車線数減少"], "answer": 2, "e": "踏切あり。この先に踏切がある。 踏切では必ず一時停止して安全確認。"}, {"name": "学校・幼稚園・保育所等あり", "file": "signs/208_warning_school_zone.png", "choices": ["駐車禁止", "学校・幼稚園・保育所等あり", "幅員減少", "車両進入禁止"], "answer": 1, "e": "学校・幼稚園・保育所等あり。この先に学校などがあり、子どもの飛び出しに注意。 速度を落として、歩行者・自転車に注意。"}, {"name": "信号機あり", "file": "signs/20802_warning_traffic_signal.png", "choices": ["信号機あり", "二方向交通", "二輪の自動車・一般原付通行止め", "重量制限"], "answer": 0, "e": "信号機あり。この先に信号機がある。 早めに信号を確認し、急ブレーキを避ける。"}, {"name": "すべりやすい", "file": "signs/209_warning_slippery_road.png", "choices": ["道路工事中", "指定方向外進行禁止（左折）", "高さ制限", "すべりやすい"], "answer": 3, "e": "すべりやすい。この先、路面がすべりやすい。 雨の日・白線・マンホールは二輪で特に注意。"}, {"name": "落石のおそれあり", "file": "signs/20902_warning_falling_rocks.png", "choices": ["指定方向外進行禁止（直進）", "最大幅", "落石のおそれあり", "動物が飛び出すおそれあり"], "answer": 2, "e": "落石のおそれあり。この先、落石の危険がある。 山道では路面上の石や障害物に注意。"}, {"name": "路面凹凸あり", "file": "signs/20903_warning_bump.png", "choices": ["最高速度", "路面凹凸あり", "通行止め", "車両横断禁止"], "answer": 1, "e": "路面凹凸あり。この先、路面に凹凸がある。 二輪は姿勢を安定させて速度を控えめに。"}, {"name": "合流交通あり", "file": "signs/210_warning_merge_traffic.png", "choices": ["合流交通あり", "車両通行止め", "転回禁止", "最低速度"], "answer": 0, "e": "合流交通あり。この先、他の道路から車が合流してくる。 合流車の動きを予測して車間距離を確保。"}, {"name": "車線数減少", "file": "signs/211_warning_lane_reduction.png", "choices": ["車両進入禁止", "追越し禁止", "停止線", "車線数減少"], "answer": 3, "e": "車線数減少。この先、車線数が減る。 早めに進路を確認し、無理な割り込みをしない。"}, {"name": "幅員減少", "file": "signs/212_warning_road_narrows.png", "choices": ["駐停車禁止", "横断歩道", "幅員減少", "二輪の自動車・一般原付通行止め"], "answer": 2, "e": "幅員減少。この先、道路の幅が狭くなる。 対向車や歩行者との間隔に注意。"}, {"name": "二方向交通", "file": "signs/21202_warning_two_way_traffic.png", "choices": ["一方通行", "二方向交通", "指定方向外進行禁止（左折）", "駐車禁止"], "answer": 1, "e": "二方向交通。この先、対面通行になる。 対向車に注意し、車線を守る。"}, {"name": "道路工事中", "file": "signs/213_warning_roadwork.png", "choices": ["道路工事中", "指定方向外進行禁止（直進）", "重量制限", "徐行"], "answer": 0, "e": "道路工事中。この先、道路工事中。 作業員・工事車両・段差に注意。"}, {"name": "動物が飛び出すおそれあり", "file": "signs/21402_warning_animal_crossing.png", "choices": ["車両横断禁止", "高さ制限", "一時停止（止まれ）", "動物が飛び出すおそれあり"], "answer": 3, "e": "動物が飛び出すおそれあり。この先、動物が飛び出すおそれがある。 山道や夜間は特に注意。"}, {"name": "通行止め", "file": "signs/301_regulation_road_closed.png", "choices": ["最大幅", "歩行者等通行止め", "通行止め", "転回禁止"], "answer": 2, "e": "通行止め。その道路の通行が禁止される。 補助標識があれば、時間や区間も確認。"}, {"name": "車両通行止め", "file": "signs/302_regulation_no_vehicles.png", "choices": ["十字路交差点あり", "車両通行止め", "追越し禁止", "最高速度"], "answer": 1, "e": "車両通行止め。車両の通行が禁止される。 普通二輪も車両なので対象。"}, {"name": "車両進入禁止", "file": "signs/303_regulation_no_entry.png", "choices": ["車両進入禁止", "駐停車禁止", "最低速度", "T形道路交差点あり"], "answer": 0, "e": "車両進入禁止。その方向から車両は進入できない。 一方通行の入口出口付近で見かけやすい。"}, {"name": "二輪の自動車・一般原付通行止め", "file": "signs/307_regulation_no_motorcycles.png", "choices": ["駐車禁止", "停止線", "Y形道路交差点あり", "二輪の自動車・一般原付通行止め"], "answer": 3, "e": "二輪の自動車・一般原付通行止め。二輪の自動車や一般原付などの通行が禁止。 普通二輪試験では見ておきたい標識。"}, {"name": "指定方向外進行禁止（左折）", "file": "signs/311B_regulation_left_turn_only.png", "choices": ["横断歩道", "ロータリーあり", "指定方向外進行禁止（左折）", "重量制限"], "answer": 2, "e": "指定方向外進行禁止（左折）。指定された方向以外へ進行できない。 この標識では左折方向に進む。"}, {"name": "指定方向外進行禁止（直進）", "file": "signs/311C_regulation_straight_only.png", "choices": ["右（又は左）方屈曲あり", "指定方向外進行禁止（直進）", "高さ制限", "一方通行"], "answer": 1, "e": "指定方向外進行禁止（直進）。指定された方向以外へ進行できない。 この標識では直進方向に進む。"}, {"name": "車両横断禁止", "file": "signs/312_regulation_no_crossing.png", "choices": ["車両横断禁止", "最大幅", "徐行", "つづら折りあり"], "answer": 0, "e": "車両横断禁止。車両は道路を横断してはならない。 横断・転回・右左折の違いに注意。"}, {"name": "転回禁止", "file": "signs/313_regulation_no_u_turn.png", "choices": ["最高速度", "一時停止（止まれ）", "踏切あり", "転回禁止"], "answer": 3, "e": "転回禁止。Uターンが禁止される。 標識のある場所では転回しない。"}, {"name": "追越し禁止", "file": "signs/314_regulation_no_passing.png", "choices": ["歩行者等通行止め", "学校・幼稚園・保育所等あり", "追越し禁止", "最低速度"], "answer": 2, "e": "追越し禁止。追越しが禁止される。 見通しが悪い場所などで重要。"}, {"name": "駐停車禁止", "file": "signs/315_regulation_no_stopping.png", "choices": ["信号機あり", "駐停車禁止", "停止線", "十字路交差点あり"], "answer": 1, "e": "駐停車禁止。駐車も停車も禁止。 駐車禁止より強い規制。"}, {"name": "駐車禁止", "file": "signs/316_regulation_no_parking.png", "choices": ["駐車禁止", "横断歩道", "T形道路交差点あり", "すべりやすい"], "answer": 0, "e": "駐車禁止。駐車が禁止される。 駐停車禁止との違いを区別。"}, {"name": "重量制限", "file": "signs/320_regulation_weight_limit.png", "choices": ["一方通行", "Y形道路交差点あり", "落石のおそれあり", "重量制限"], "answer": 3, "e": "重量制限。表示された重量を超える車両は通行できない。 二輪では直接関係が薄いが意味は知っておく。"}, {"name": "高さ制限", "file": "signs/321_regulation_height_limit.png", "choices": ["ロータリーあり", "路面凹凸あり", "高さ制限", "徐行"], "answer": 2, "e": "高さ制限。表示された高さを超える車両は通行できない。 トンネルや高架下で見かける。"}, {"name": "最大幅", "file": "signs/322_regulation_max_width.png", "choices": ["合流交通あり", "最大幅", "一時停止（止まれ）", "右（又は左）方屈曲あり"], "answer": 1, "e": "最大幅。表示された幅を超える車両は通行できない。 狭い道路や橋などで使われる。"}, {"name": "最高速度", "file": "signs/323_regulation_max_speed.png", "choices": ["最高速度", "歩行者等通行止め", "つづら折りあり", "車線数減少"], "answer": 0, "e": "最高速度。表示速度を超えて運転してはならない。 天候や道路状況が悪い時はさらに控えめに。"}, {"name": "最低速度", "file": "signs/324_regulation_min_speed.png", "choices": ["十字路交差点あり", "踏切あり", "幅員減少", "最低速度"], "answer": 3, "e": "最低速度。やむを得ない場合を除き、表示速度未満で走行してはならない。 高速道路などで見かける。"}, {"name": "停止線", "file": "signs/40602_directive_stop_line.png", "choices": ["学校・幼稚園・保育所等あり", "二方向交通", "停止線", "T形道路交差点あり"], "answer": 2, "e": "停止線。停止する位置を示す。 赤信号や一時停止でこの線を越えずに止まる。"}, {"name": "横断歩道", "file": "signs/407A_directive_crosswalk.png", "choices": ["道路工事中", "横断歩道", "Y形道路交差点あり", "信号機あり"], "answer": 1, "e": "横断歩道。歩行者が横断する場所。 渡ろうとしている歩行者がいれば一時停止。"}, {"name": "一方通行", "file": "signs/326B_directive_one_way.png", "choices": ["一方通行", "ロータリーあり", "すべりやすい", "動物が飛び出すおそれあり"], "answer": 0, "e": "一方通行。指定された一方向にだけ通行できる。 逆走は非常に危険。"}, {"name": "徐行", "file": "signs/329B_regulation_slow.png", "choices": ["右（又は左）方屈曲あり", "落石のおそれあり", "通行止め", "徐行"], "answer": 3, "e": "徐行。すぐ停止できる速度で進む。 完全停止ではないが、すぐ止まれる速度。"}, {"name": "一時停止（止まれ）", "file": "signs/330B_regulation_stop.png", "choices": ["路面凹凸あり", "車両通行止め", "一時停止（止まれ）", "つづら折りあり"], "answer": 2, "e": "一時停止（止まれ）。必ず一時停止する。 徐行ではなく、車輪を完全に止める。"}, {"name": "歩行者等通行止め", "file": "signs/331_regulation_no_pedestrians.png", "choices": ["車両進入禁止", "歩行者等通行止め", "踏切あり", "合流交通あり"], "answer": 1, "e": "歩行者等通行止め。歩行者などの通行が禁止される。 車両系の標識との違いを見分ける。"}];
+let signChoiceQuiz40 = [];
+let signChoiceIndex40 = 0;
+let signChoiceScore40 = 0;
+let signChoiceAnswered40 = false;
+
+function hideAllScreens40(){
+  ["home","quiz","result","mockReview","checklist","examDay","signGuide","signBook","signBook40","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
+    const el = document.getElementById(id);
+    if(el) el.classList.add("hidden");
+  });
+}
+
+function showSignBook40(){
+  clearInterval(timerId);
+  hideAllScreens40();
+  document.getElementById("signBook40").classList.remove("hidden");
+  goTop();
+}
+
+function startSignChoiceQuiz40(){
+  clearInterval(timerId);
+  signChoiceQuiz40 = shuffle(signChoiceQuestions40);
+  signChoiceIndex40 = 0;
+  signChoiceScore40 = 0;
+  signChoiceAnswered40 = false;
+  hideAllScreens40();
+  document.getElementById("signChoiceQuiz40").classList.remove("hidden");
+  showSignChoice40();
+  goTop();
+}
+
+function showSignChoice40(){
+  signChoiceAnswered40 = false;
+  const item = signChoiceQuiz40[signChoiceIndex40];
+
+  document.getElementById("signChoiceCount40").innerText = (signChoiceIndex40 + 1) + " / " + signChoiceQuiz40.length;
+  document.getElementById("signChoiceIcon40").innerHTML = '<img src="' + item.file + '" alt="' + item.name + '" class="real-sign-img">';
+  document.getElementById("signChoiceFeedback40").classList.add("hidden");
+  document.getElementById("signChoiceNextBtn40").classList.add("hidden");
+
+  const box = document.getElementById("signChoiceButtons40");
+  box.innerHTML = item.choices.map((choice, i) => {
+    return `<button class="choice-btn" onclick="answerSignChoice40(${i})">${String.fromCharCode(65+i)}. ${choice}</button>`;
+  }).join("");
+  goTop();
+}
+
+function answerSignChoice40(i){
+  if(signChoiceAnswered40) return;
+  signChoiceAnswered40 = true;
+
+  const item = signChoiceQuiz40[signChoiceIndex40];
+  const ok = i === item.answer;
+  const buttons = document.querySelectorAll("#signChoiceButtons40 button");
+
+  buttons.forEach((btn, idx) => {
+    if(idx === item.answer) btn.classList.add("correct");
+    if(idx === i && !ok) btn.classList.add("wrong");
+  });
+
+  const fb = document.getElementById("signChoiceFeedback40");
+  fb.className = "bubble " + (ok ? "ok" : "ng");
+
+  if(ok){
+    signChoiceScore40++;
+    fb.innerHTML =
+      '<img src="miko_happy.png" class="feedback-img" alt="正解">' +
+      "⭕ 正解！<br>" + item.name + "。<br><br>" + r(item.e);
+  }else{
+    const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+    const key = "実標識4択：" + item.name;
+    counts[key] = (counts[key] || 0) + 1;
+    localStorage.setItem("mayaBikeMistakeCounts", JSON.stringify(counts));
+
+    fb.innerHTML =
+      '<img src="pair_mistake.png" class="feedback-img" alt="惜しい">' +
+      "❌ 惜しい！<br>正解は「" + item.choices[item.answer] + "」。<br><br>" + r(item.e);
+  }
+
+  fb.classList.remove("hidden");
+  document.getElementById("signChoiceNextBtn40").classList.remove("hidden");
+}
+
+function nextSignChoice40(){
+  signChoiceIndex40++;
+  if(signChoiceIndex40 >= signChoiceQuiz40.length){
+    finishSignChoice40();
+  }else{
+    showSignChoice40();
+  }
+}
+
+function finishSignChoice40(){
+  hideAllScreens40();
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("score").innerText = signChoiceScore40 + " / " + signChoiceQuiz40.length;
+
+  if(signChoiceScore40 >= 36){
+    document.getElementById("resultImg").src = "pair_goal.png";
+    document.getElementById("message").innerText = "実標識4択、かなり強い！本番でも落ち着いて見れば大丈夫🌸";
+  }else if(signChoiceScore40 >= 30){
+    document.getElementById("resultImg").src = "pair_cheer.png";
+    document.getElementById("message").innerText = "かなりいい感じ！間違えた標識だけ図鑑で見直そう。";
+  }else{
+    document.getElementById("resultImg").src = "pair_study.png";
+    document.getElementById("message").innerText = "標識は見れば伸びる！図鑑40を見てからもう一回。";
+  }
+  goTop();
+}
+
 const signChoiceQuestions = [{"name": "一時停止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"一時停止\"><polygon points=\"50,8 92,80 8,80\" fill=\"#e53935\" stroke=\"#b71c1c\" stroke-width=\"4\"/><text x=\"50\" y=\"58\" text-anchor=\"middle\" font-size=\"18\" font-weight=\"700\" fill=\"white\">止まれ</text></svg>", "choices": ["一時停止", "徐行", "車両進入禁止", "優先道路"], "answer": 0, "e": "徐行ではなく、車輪を完全に止める。停止線があればその直前で停止。"}, {"name": "徐行", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"徐行\"><polygon points=\"50,8 92,80 8,80\" fill=\"white\" stroke=\"#d32f2f\" stroke-width=\"6\"/><text x=\"50\" y=\"58\" text-anchor=\"middle\" font-size=\"18\" font-weight=\"700\" fill=\"#d32f2f\">徐行</text></svg>", "choices": ["一時停止", "徐行", "最低速度", "追越し禁止"], "answer": 1, "e": "すぐに停止できるような速度で進む。完全停止とは違う。"}, {"name": "車両進入禁止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"車両進入禁止\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#e53935\"/><rect x=\"20\" y=\"43\" width=\"60\" height=\"14\" rx=\"6\" fill=\"white\"/></svg>", "choices": ["通行止め", "車両通行止め", "車両進入禁止", "駐停車禁止"], "answer": 2, "e": "その方向から車両は進入できない。二輪も車両なので注意。"}, {"name": "通行止め", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"通行止め\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"white\" stroke=\"#d32f2f\" stroke-width=\"8\"/><rect x=\"20\" y=\"43\" width=\"60\" height=\"14\" rx=\"6\" fill=\"#d32f2f\"/></svg>", "choices": ["通行止め", "車両進入禁止", "一方通行", "指定方向外進行禁止"], "answer": 0, "e": "道路の通行が禁止される。補助標識がある場合は条件も確認。"}, {"name": "車両通行止め", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"車両通行止め\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"white\" stroke=\"#d32f2f\" stroke-width=\"8\"/><rect x=\"28\" y=\"45\" width=\"44\" height=\"16\" rx=\"4\" fill=\"#444\"/><circle cx=\"38\" cy=\"63\" r=\"5\" fill=\"#444\"/><circle cx=\"62\" cy=\"63\" r=\"5\" fill=\"#444\"/><rect x=\"35\" y=\"38\" width=\"25\" height=\"10\" rx=\"3\" fill=\"#444\"/></svg>", "choices": ["車両通行止め", "通行止め", "駐車禁止", "横断歩道"], "answer": 0, "e": "車両の通行が禁止。普通二輪も車両なので対象。"}, {"name": "最高速度", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"最高速度\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"white\" stroke=\"#d32f2f\" stroke-width=\"8\"/><text x=\"50\" y=\"62\" text-anchor=\"middle\" font-size=\"30\" font-weight=\"700\" fill=\"#222\">50</text></svg>", "choices": ["最低速度", "最高速度", "徐行", "優先道路"], "answer": 1, "e": "表示された速度を超えて運転してはいけない。"}, {"name": "最低速度", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"最低速度\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#1976d2\" stroke=\"#0d47a1\" stroke-width=\"4\"/><text x=\"50\" y=\"62\" text-anchor=\"middle\" font-size=\"30\" font-weight=\"700\" fill=\"white\">30</text></svg>", "choices": ["最高速度", "最低速度", "車両通行区分", "一方通行"], "answer": 1, "e": "やむを得ない場合を除き、その速度に達しない速度で走行してはならない。"}, {"name": "駐車禁止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"駐車禁止\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#1976d2\" stroke=\"#d32f2f\" stroke-width=\"8\"/><line x1=\"25\" y1=\"75\" x2=\"75\" y2=\"25\" stroke=\"#d32f2f\" stroke-width=\"10\"/></svg>", "choices": ["駐停車禁止", "駐車禁止", "車両進入禁止", "通行止め"], "answer": 1, "e": "駐車は禁止。駐停車禁止とは区別する。"}, {"name": "駐停車禁止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"駐停車禁止\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#1976d2\" stroke=\"#d32f2f\" stroke-width=\"8\"/><line x1=\"25\" y1=\"75\" x2=\"75\" y2=\"25\" stroke=\"#d32f2f\" stroke-width=\"10\"/><line x1=\"25\" y1=\"25\" x2=\"75\" y2=\"75\" stroke=\"#d32f2f\" stroke-width=\"10\"/></svg>", "choices": ["駐車禁止", "駐停車禁止", "追越し禁止", "車両通行止め"], "answer": 1, "e": "駐車も停車も禁止。駐車禁止より強い規制。"}, {"name": "一方通行", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"一方通行\"><rect x=\"12\" y=\"28\" width=\"76\" height=\"44\" rx=\"10\" fill=\"#1976d2\"/><polygon points=\"28,50 54,34 54,43 74,43 74,57 54,57 54,66\" fill=\"white\"/></svg>", "choices": ["指定方向外進行禁止", "一方通行", "優先道路", "横断歩道"], "answer": 1, "e": "指定された一方向にだけ進む。逆走は危険。"}, {"name": "指定方向外進行禁止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"指定方向外進行禁止\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#1976d2\"/><polygon points=\"26,50 58,28 58,40 76,40 76,60 58,60 58,72\" fill=\"white\"/></svg>", "choices": ["一方通行", "指定方向外進行禁止", "進行方向別通行区分", "優先道路"], "answer": 1, "e": "標識で示された方向以外へ進んではいけない。"}, {"name": "追越し禁止", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"追越し禁止\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"white\" stroke=\"#d32f2f\" stroke-width=\"8\"/><rect x=\"28\" y=\"34\" width=\"14\" height=\"34\" rx=\"3\" fill=\"#d32f2f\"/><rect x=\"58\" y=\"34\" width=\"14\" height=\"34\" rx=\"3\" fill=\"#333\"/></svg>", "choices": ["追越し禁止", "駐車禁止", "車両通行止め", "最低速度"], "answer": 0, "e": "その場所では追越しをしてはならない。安全そうに見えても標識に従う。"}, {"name": "横断歩道", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"横断歩道\"><polygon points=\"50,8 90,35 75,86 25,86 10,35\" fill=\"#1976d2\"/><rect x=\"28\" y=\"60\" width=\"44\" height=\"8\" fill=\"white\"/><rect x=\"30\" y=\"52\" width=\"8\" height=\"8\" fill=\"white\"/><rect x=\"46\" y=\"52\" width=\"8\" height=\"8\" fill=\"white\"/><rect x=\"62\" y=\"52\" width=\"8\" height=\"8\" fill=\"white\"/><circle cx=\"50\" cy=\"28\" r=\"6\" fill=\"white\"/><line x1=\"50\" y1=\"34\" x2=\"50\" y2=\"48\" stroke=\"white\" stroke-width=\"5\"/><line x1=\"50\" y1=\"39\" x2=\"40\" y2=\"46\" stroke=\"white\" stroke-width=\"5\"/><line x1=\"50\" y1=\"39\" x2=\"60\" y2=\"44\" stroke=\"white\" stroke-width=\"5\"/><line x1=\"50\" y1=\"48\" x2=\"42\" y2=\"58\" stroke=\"white\" stroke-width=\"5\"/><line x1=\"50\" y1=\"48\" x2=\"60\" y2=\"58\" stroke=\"white\" stroke-width=\"5\"/></svg>", "choices": ["自転車横断帯", "横断歩道", "停止線", "安全地帯"], "answer": 1, "e": "横断しようとする歩行者がいるときは一時停止。"}, {"name": "停止線", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"停止線\"><rect x=\"14\" y=\"18\" width=\"72\" height=\"64\" rx=\"10\" fill=\"white\" stroke=\"#444\" stroke-width=\"4\"/><rect x=\"24\" y=\"62\" width=\"52\" height=\"10\" fill=\"#444\"/><line x1=\"24\" y1=\"40\" x2=\"76\" y2=\"40\" stroke=\"#999\" stroke-width=\"4\" stroke-dasharray=\"6 6\"/></svg>", "choices": ["停止線", "中央線", "横断歩道", "優先道路"], "answer": 0, "e": "赤信号や一時停止などで、この線を越えずに止まる。"}, {"name": "優先道路", "icon": "<svg viewBox=\"0 0 100 100\" aria-label=\"優先道路\"><polygon points=\"50,10 82,50 50,90 18,50\" fill=\"white\" stroke=\"#333\" stroke-width=\"3\"/><polygon points=\"50,18 74,50 50,82 26,50\" fill=\"#ffd54f\" stroke=\"#c49000\" stroke-width=\"3\"/></svg>", "choices": ["優先道路", "一方通行", "最高速度", "指定方向外進行禁止"], "answer": 0, "e": "優先道路でも安全確認は必要。"}];
 let signChoiceQuiz = [];
 let signChoiceIndex = 0;
 let signChoiceScore = 0;
 let signChoiceAnswered = false;
 
-function startSignChoiceQuiz(){
+function startSignChoiceQuiz40(){
   clearInterval(timerId);
   signChoiceQuiz = shuffle(signChoiceQuestions);
   signChoiceIndex = 0;
   signChoiceScore = 0;
   signChoiceAnswered = false;
 
+  const sb40=document.getElementById("signBook40"); if(sb40) sb40.classList.add("hidden");
+  const sc40=document.getElementById("signChoiceQuiz40"); if(sc40) sc40.classList.add("hidden");
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
@@ -2384,7 +3240,7 @@ function finishSignChoice(){
 
   if(signChoiceScore === signChoiceQuiz.length){
     document.getElementById("resultImg").src = "pair_goal.png";
-    document.getElementById("message").innerText = "実標識4択、満点！かなり強い🌸";
+    document.getElementById("message").innerText = "標識4択、満点！かなり強い🌸";
   }else if(signChoiceScore >= 12){
     document.getElementById("resultImg").src = "pair_cheer.png";
     document.getElementById("message").innerText = "かなりいい感じ！間違えた標識だけ見直そう。";
@@ -2394,7 +3250,7 @@ function finishSignChoice(){
   }
 }
 
-function showSignBook(){
+function showSignBook40(){
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -2508,6 +3364,7 @@ function launch(title){
   document.getElementById("modeTitle").innerText = title;
   document.getElementById("mockReviewBtn").classList.add("hidden");
   showQuestion();
+  goTop();
 }
 
 function showQuestion(){
@@ -2666,6 +3523,8 @@ function showMockReview(){
 }
 
 function backHome(){
+ const sb40=document.getElementById("signBook40"); if(sb40) sb40.classList.add("hidden");
+ const sc40=document.getElementById("signChoiceQuiz40"); if(sc40) sc40.classList.add("hidden");
  clearInterval(timerId);
  document.getElementById("timer").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
