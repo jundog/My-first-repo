@@ -345,6 +345,73 @@ rt{font-size:10px;color:#777}
   line-height:1.7;
 }
 
+
+/* ---- final responsive sign/image sizing ---- */
+.real-sign-img{
+  width:clamp(86px, 22vw, 132px);
+  height:clamp(86px, 22vw, 132px);
+  object-fit:contain;
+  display:block;
+  margin:0 auto;
+}
+.choice-sign{
+  width:clamp(170px, 52vw, 230px);
+  height:clamp(170px, 52vw, 230px);
+  margin:10px auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f8fbff;
+  border-radius:24px;
+}
+.choice-sign .real-sign-img{
+  width:clamp(145px, 44vw, 205px);
+  height:clamp(145px, 44vw, 205px);
+}
+.sign-figure40{
+  width:clamp(112px, 28vw, 148px);
+  min-width:clamp(112px, 28vw, 148px);
+  height:clamp(112px, 28vw, 148px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f8fbff;
+  border-radius:18px;
+}
+.sign-book-row40{
+  gap:16px;
+  align-items:flex-start;
+}
+.character{
+  width:clamp(76px, 22vw, 104px);
+}
+.feedback-img{
+  width:clamp(105px, 32vw, 150px);
+}
+.result-img{
+  width:clamp(150px, 52vw, 230px);
+}
+.hero-img{
+  width:min(100%, 390px);
+}
+.dialogue-icon{
+  width:clamp(30px, 9vw, 40px);
+  height:clamp(30px, 9vw, 40px);
+}
+@media (min-width:700px){
+  .sign-book-grid40{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media (max-width:520px){
+  .sign-book-row40{
+    flex-direction:row;
+  }
+  .sign-book-card40 h3{
+    font-size:17px;
+  }
+}
+
 </style>
 </head>
 
@@ -3798,3 +3865,4 @@ updateExamCountdown();
 </script>
 </body>
 </html>
+
