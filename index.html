@@ -534,86 +534,50 @@ rt{font-size:10px;color:#777}
 }
 
 
-/* --- summer opening hero --- */
-.opening-hero-card{
-  margin:14px auto 14px;
-  background:white;
-  border-radius:26px;
-  padding:10px;
-  box-shadow:0 12px 28px rgba(0,0,0,.10);
-}
-.opening-hero-img{
-  width:100%;
-  display:block;
-  border-radius:20px;
-}
-
-
-
-
-/* --- fullscreen opening splash image-button version --- */
-.opening-screen{
+/* --- simple safe opening overlay --- */
+#openingOverlay{
   position:fixed;
   inset:0;
-  z-index:9999;
+  z-index:99999;
   background:#fff7fb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   overflow:hidden;
 }
-.opening-bg{
+#openingOverlay.hidden{
+  display:none !important;
+}
+.openingOverlayImage{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
 }
-.opening-start-area{
+.openingOverlayFallback{
   position:absolute;
-  left:0;
-  right:0;
-  bottom:max(22px, env(safe-area-inset-bottom));
-  display:flex;
-  justify-content:center;
-  padding:0 18px;
+  inset:0;
+  background:linear-gradient(180deg,#9ee9ff 0%,#fff3fa 62%,#ffe2ef 100%);
 }
-.opening-start-img{
-  width:min(86vw, 420px);
-  display:block;
-  user-select:none;
-  -webkit-user-drag:none;
-  touch-action:manipulation;
-  cursor:pointer;
-  filter:drop-shadow(0 12px 24px rgba(80,35,50,.22));
-}
-
-
-/* --- opening fail-safe visibility fix --- */
-.opening-screen{
-  background:linear-gradient(180deg,#bfeeff 0%, #fff4fb 60%, #ffe1ef 100%) !important;
-}
-.opening-fallback-title{
+.openingOverlayButton{
   position:absolute;
-  top:8svh;
-  left:20px;
-  right:20px;
-  text-align:center;
-  color:white;
-  text-shadow:0 3px 12px rgba(0,0,0,.32);
-  font-weight:900;
-  font-size:30px;
-  line-height:1.25;
+  left:50%;
+  bottom:max(28px, env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:min(82vw,420px);
+  border:none;
+  background:transparent;
+  padding:0;
   z-index:2;
-  pointer-events:none;
 }
-.opening-bg{
-  z-index:1;
-}
-.opening-start-area{
-  z-index:3;
-}
-.opening-start-fallback{
+.openingOverlayButton img{
   width:100%;
-  max-width:420px;
-  margin:0 auto;
+  display:block;
+  filter:drop-shadow(0 12px 24px rgba(80,35,50,.24));
+}
+.openingOverlayButtonFallback{
+  width:100%;
   border:none;
   border-radius:999px;
   padding:18px 20px;
@@ -621,33 +585,26 @@ rt{font-size:10px;color:#777}
   color:white;
   font-size:28px;
   font-weight:900;
-  letter-spacing:.08em;
   box-shadow:0 12px 30px rgba(80,35,50,.28);
-  border:2px solid rgba(255,255,255,.78);
-}
-.opening-start-img{
-  position:absolute;
-  inset:0;
-  width:100% !important;
-  height:100% !important;
-  opacity:1;
-}
-.opening-start-img.is-missing{
-  display:none !important;
-}
-.opening-start-button-wrap{
-  position:relative;
-  width:min(86vw, 420px);
+  border:2px solid rgba(255,255,255,.85);
 }
 
 </style>
 </head>
 
 <body>
+
+<div id="openingOverlay">
+  <div class="openingOverlayFallback"></div>
+  <img class="openingOverlayImage" src="opening_splash_summer.png" alt="オープニング" onerror="this.style.display='none'">
+  <button class="openingOverlayButton" onclick="closeOpeningOverlay()">
+    <img src="start_button_normal.png" alt="はじめる" onerror="this.style.display='none'; this.parentElement.innerHTML='<button class=&quot;openingOverlayButtonFallback&quot; onclick=&quot;closeOpeningOverlay()&quot;>はじめる</button>';">
+  </button>
+</div>
+
 <div class="app">
 
-
-<div class="card hidden" id="home">
+<div class="card" id="home">
   <span class="badge">普通二輪・問題135問版</span>
   <h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
 
@@ -657,7 +614,9 @@ rt{font-size:10px;color:#777}
     <div class="countdown-sub" id="daysLeftSub">6月18日に向けて、今日も一歩ずつ。</div>
   </div>
 
+
   <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
+
   <p>
     巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！<br>
     電車でもサクッとできるよ。
@@ -1925,50 +1884,11 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-/* --- fullscreen opening control image-button version --- */
-function pressStartButton(){
-  const img = document.getElementById("startButtonImage");
-  if(img) img.src = "start_button_pressed.png";
-}
-function releaseStartButton(){
-  const img = document.getElementById("startButtonImage");
-  if(img) img.src = "start_button_normal.png";
-}
-function enterApp(){
-  releaseStartButton();
-  const opening = document.getElementById("openingScreen");
-  const home = document.getElementById("home");
-  if(opening) opening.classList.add("hidden");
-  if(home) home.classList.remove("hidden");
-  setTimeout(function(){ window.scrollTo({top:0, behavior:"smooth"}); }, 60);
-}
-document.addEventListener("DOMContentLoaded", function(){
-  const opening = document.getElementById("openingScreen");
-  const home = document.getElementById("home");
-  if(opening) opening.classList.remove("hidden");
-  if(home) home.classList.add("hidden");
-  releaseStartButton();
-});
-
-
-
-
-/* --- stable quiz scroll helpers --- */
-function scrollToFeedbackCard(){
-  setTimeout(function(){
-    var el = document.getElementById("feedback");
-    if(!el || el.classList.contains("hidden")) return;
-    var y = el.getBoundingClientRect().top + window.pageYOffset - 16;
-    window.scrollTo({top:y, behavior:"smooth"});
-  }, 120);
-}
-function scrollToQuizTop(){
-  setTimeout(function(){
-    var el = document.getElementById("quiz");
-    if(!el || el.classList.contains("hidden")) return;
-    var y = el.getBoundingClientRect().top + window.pageYOffset - 8;
-    window.scrollTo({top:y, behavior:"smooth"});
-  }, 90);
+/* --- simple safe opening overlay JS --- */
+function closeOpeningOverlay(){
+  var overlay = document.getElementById("openingOverlay");
+  if(overlay) overlay.classList.add("hidden");
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
 
@@ -3400,8 +3320,6 @@ function startAllRandom(){
 }
 
 function startMockExam(){
-  isTimedExam = false;
-  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   mockAnswers = [];
@@ -3409,8 +3327,6 @@ function startMockExam(){
 }
 
 function startFinal20(){
-  isMockExam = false;
-  isTimedExam = false;
   const priority = [
     "横断歩道",
     "信号",
@@ -3442,8 +3358,6 @@ function startFinal20(){
 }
 
 function startMistakes(){
-  isMockExam = false;
-  isTimedExam = false;
   const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   if(saved.length === 0){
     alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
@@ -3454,8 +3368,6 @@ function startMistakes(){
 }
 
 function startWeakOnly(){
-  isMockExam = false;
-  isTimedExam = false;
   const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
   const weak = questions.filter(q => counts[q.q] >= 2);
 
@@ -3487,10 +3399,6 @@ function hideAllScreens40(){
 }
 
 function showSignBook40(){
-  /* reset mode showSignBook40 */
-  clearInterval(timerId);
-  document.getElementById("timer").classList.add("hidden");
-  isTimedExam = false;
   clearInterval(timerId);
   hideAllScreens40();
   document.getElementById("signBook40").classList.remove("hidden");
@@ -3697,10 +3605,6 @@ function finishSignChoice(){
 }
 
 function showSignBook40(){
-  /* reset mode showSignBook40 */
-  clearInterval(timerId);
-  document.getElementById("timer").classList.add("hidden");
-  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3714,10 +3618,6 @@ function showSignBook40(){
 }
 
 function showSignGuide(){
-  /* reset mode showSignGuide */
-  clearInterval(timerId);
-  document.getElementById("timer").classList.add("hidden");
-  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3731,10 +3631,6 @@ function showSignGuide(){
 }
 
 function showExamDay(){
-  /* reset mode showExamDay */
-  clearInterval(timerId);
-  document.getElementById("timer").classList.add("hidden");
-  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
@@ -3760,10 +3656,6 @@ function startExamDayWarmup(){
 }
 
 function showChecklist(){
-  /* reset mode showChecklist */
-  clearInterval(timerId);
-  document.getElementById("timer").classList.add("hidden");
-  isTimedExam = false;
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
@@ -3780,8 +3672,6 @@ function startSigns(){
 }
 
 function startTimedExam(){
-  isTimedExam = true;
-  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   isTimedExam = true;
@@ -3841,7 +3731,6 @@ function showQuestion(){
   document.getElementById("question").innerHTML = r(item.q);
   document.getElementById("feedback").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
-  scrollToQuizTop();
 }
 
 function answer(choice){
@@ -3850,7 +3739,6 @@ function answer(choice){
 
   const item = quiz[index];
   const ok = choice === item.a;
-  const fb = document.getElementById("feedback");
 
   if(isMockExam){
     if(ok){
@@ -3872,22 +3760,18 @@ function answer(choice){
       ok: ok
     });
 
-    fb.className = "bubble " + (ok ? "ok" : "ng");
-    if(ok){
-      fb.innerHTML =
-        '<img src="miko_happy.png" class="feedback-img" alt="回答記録">' +
-        "🧪 回答を記録したよ。<br>正誤は最後にまとめて確認しよう。";
-    }else{
-      fb.innerHTML =
-        '<img src="uma_warning.png" class="feedback-img" alt="回答記録">' +
-        "🧪 回答を記録したよ。<br>この問題は復習候補に入れておくね。";
-    }
+    const fb = document.getElementById("feedback");
+    fb.className = "bubble";
+    fb.innerHTML =
+      '<img src="uma_teacher.png" class="feedback-img" alt="模試">' +
+      "🧪 回答を記録したよ。<br>本番風なので、正解発表は最後にまとめて見るよ。";
     fb.classList.remove("hidden");
     document.getElementById("nextBtn").classList.remove("hidden");
-    scrollToFeedbackCard();
+    
     return;
   }
 
+  const fb = document.getElementById("feedback");
   fb.className = "bubble " + (ok ? "ok" : "ng");
 
   if(ok){
@@ -3916,7 +3800,8 @@ function answer(choice){
 
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
-  scrollToFeedbackCard();
+  jumpToAnswer("feedback");
+  
 }
 
 function nextQuestion(){
@@ -3925,7 +3810,6 @@ function nextQuestion(){
     finish();
   }else{
     showQuestion();
-    scrollToQuizTop();
   }
 }
 
@@ -3999,13 +3883,9 @@ function backHome(){
  const sb40=document.getElementById("signBook40"); if(sb40) sb40.classList.add("hidden");
  const sc40=document.getElementById("signChoiceQuiz40"); if(sc40) sc40.classList.add("hidden");
  clearInterval(timerId);
- const timer=document.getElementById("timer"); if(timer) timer.classList.add("hidden");
- ["quiz","result","mockReview","checklist","examDay","signGuide","signBook","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
-   const el=document.getElementById(id); if(el) el.classList.add("hidden");
- });
- const opening=document.getElementById("openingScreen"); if(opening) opening.classList.add("hidden");
- document.getElementById("home").classList.remove("hidden");
- window.scrollTo({top:0, behavior:"smooth"});
+ document.getElementById("timer").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
 }
 
 /* ---- stable sign40 routing override ---- */
@@ -4307,20 +4187,6 @@ updateExamCountdown();
       jumpToSignQuestion();
     }
   };
-})();
-
-
-/* --- opening fail-safe JS --- */
-(function(){
-  window.addEventListener("error", function(e){
-    const opening = document.getElementById("openingScreen");
-    const home = document.getElementById("home");
-    // If a script error happens during opening, do not leave the app blank.
-    if(opening && home && !opening.classList.contains("hidden")){
-      const fallback = document.querySelector(".opening-start-fallback");
-      if(fallback) fallback.style.display = "block";
-    }
-  });
 })();
 
 </script>
