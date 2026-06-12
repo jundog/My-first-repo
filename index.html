@@ -549,12 +549,14 @@ rt{font-size:10px;color:#777}
 }
 
 
-/* --- fullscreen opening splash --- */
+
+
+/* --- fullscreen opening splash image-button version --- */
 .opening-screen{
   position:fixed;
   inset:0;
   z-index:9999;
-  background:#fff;
+  background:#fff7fb;
   overflow:hidden;
 }
 .opening-bg{
@@ -568,29 +570,19 @@ rt{font-size:10px;color:#777}
   position:absolute;
   left:0;
   right:0;
-  bottom:max(28px, env(safe-area-inset-bottom));
-  padding:0 28px;
+  bottom:max(22px, env(safe-area-inset-bottom));
+  display:flex;
+  justify-content:center;
+  padding:0 18px;
 }
-.opening-start-button{
-  width:100%;
-  max-width:420px;
+.opening-start-img{
+  width:min(86vw, 420px);
   display:block;
-  margin:0 auto;
-  border:none;
-  border-radius:999px;
-  padding:18px 20px;
-  background:rgba(255,126,182,.92);
-  color:white;
-  font-size:28px;
-  font-weight:900;
-  letter-spacing:.08em;
-  box-shadow:0 12px 30px rgba(80,35,50,.28);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  border:2px solid rgba(255,255,255,.75);
-}
-.opening-start-button:active{
-  transform:translateY(1px) scale(.99);
+  user-select:none;
+  -webkit-user-drag:none;
+  touch-action:manipulation;
+  cursor:pointer;
+  filter:drop-shadow(0 12px 24px rgba(80,35,50,.22));
 }
 
 </style>
@@ -599,13 +591,6 @@ rt{font-size:10px;color:#777}
 <body>
 <div class="app">
 
-
-<div class="opening-screen" id="openingScreen">
-  <img src="opening_summer_hero.png" class="opening-bg" alt="夏のオープニングイラスト">
-  <div class="opening-start-area">
-    <button class="opening-start-button" onclick="enterApp()">はじめる</button>
-  </div>
-</div>
 
 <div class="card hidden" id="home">
   <span class="badge">普通二輪・問題135問版</span>
@@ -1885,8 +1870,17 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-/* --- fullscreen opening control --- */
+/* --- fullscreen opening control image-button version --- */
+function pressStartButton(){
+  const img = document.getElementById("startButtonImage");
+  if(img) img.src = "start_button_pressed.png";
+}
+function releaseStartButton(){
+  const img = document.getElementById("startButtonImage");
+  if(img) img.src = "start_button_normal.png";
+}
 function enterApp(){
+  releaseStartButton();
   const opening = document.getElementById("openingScreen");
   const home = document.getElementById("home");
   if(opening) opening.classList.add("hidden");
@@ -1898,7 +1892,10 @@ document.addEventListener("DOMContentLoaded", function(){
   const home = document.getElementById("home");
   if(opening) opening.classList.remove("hidden");
   if(home) home.classList.add("hidden");
+  releaseStartButton();
 });
+
+
 
 
 /* --- stable quiz scroll helpers --- */
