@@ -549,100 +549,48 @@ rt{font-size:10px;color:#777}
 }
 
 
-/* --- app opening screen 9:16 --- */
+/* --- fullscreen opening splash --- */
 .opening-screen{
-  min-height:100svh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px 14px 26px;
-}
-.opening-shell{
-  width:100%;
-  max-width:430px;
-  min-height:min(92svh, 860px);
-  background:linear-gradient(180deg,#fff8fb 0%, #fffdf8 100%);
-  border-radius:34px;
-  box-shadow:0 16px 40px rgba(0,0,0,.12);
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  border:2px solid #ffd6e8;
-}
-.opening-topline{
-  text-align:center;
-  font-size:13px;
-  font-weight:800;
-  color:#d85f9b;
-  letter-spacing:.06em;
-}
-.opening-title{
-  margin:10px 0 8px;
-  text-align:center;
-  font-size:31px;
-  line-height:1.2;
-  font-weight:900;
-  color:#5a3a00;
-}
-.opening-subtitle{
-  text-align:center;
-  color:#7a6470;
-  font-size:15px;
-  line-height:1.7;
-  margin-bottom:14px;
-}
-.opening-visual-wrap{
-  background:white;
-  border-radius:28px;
-  padding:10px;
-  box-shadow:0 10px 28px rgba(0,0,0,.08);
-}
-.opening-visual{
-  width:100%;
-  aspect-ratio:9 / 16;
-  object-fit:cover;
-  display:block;
-  border-radius:22px;
-}
-.opening-bottom{
-  margin-top:14px;
-}
-.opening-chip-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  justify-content:center;
-  margin-bottom:12px;
-}
-.opening-chip{
+  position:fixed;
+  inset:0;
+  z-index:9999;
   background:#fff;
-  color:#8a6476;
-  border:1px solid #ffd1e3;
-  border-radius:999px;
-  padding:8px 12px;
-  font-size:12px;
-  font-weight:800;
+  overflow:hidden;
 }
-.start-button{
+.opening-bg{
+  position:absolute;
+  inset:0;
   width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.opening-start-area{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:max(28px, env(safe-area-inset-bottom));
+  padding:0 28px;
+}
+.opening-start-button{
+  width:100%;
+  max-width:420px;
+  display:block;
+  margin:0 auto;
   border:none;
-  border-radius:22px;
-  padding:18px;
-  background:linear-gradient(135deg,#ff8abb,#ff7eb6);
+  border-radius:999px;
+  padding:18px 20px;
+  background:rgba(255,126,182,.92);
   color:white;
-  font-size:24px;
+  font-size:28px;
   font-weight:900;
-  box-shadow:0 12px 28px rgba(255,126,182,.38);
+  letter-spacing:.08em;
+  box-shadow:0 12px 30px rgba(80,35,50,.28);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:2px solid rgba(255,255,255,.75);
 }
-.start-button:active{
-  transform:translateY(1px) scale(.995);
-}
-.opening-note{
-  margin-top:10px;
-  text-align:center;
-  color:#8f7a84;
-  font-size:12px;
+.opening-start-button:active{
+  transform:translateY(1px) scale(.99);
 }
 
 </style>
@@ -653,26 +601,9 @@ rt{font-size:10px;color:#777}
 
 
 <div class="opening-screen" id="openingScreen">
-  <div class="opening-shell">
-    <div>
-      <div class="opening-topline">MAYA BIKE LICENSE CHALLENGE</div>
-      <div class="opening-title">真彩のバイク免許<br>チャレンジ</div>
-      <div class="opening-subtitle">もうすぐ夏。<br>巫女ちゃんとウマくんと一緒に、<br>楽しくラストスパート！</div>
-      <div class="opening-visual-wrap">
-        <img src="opening_summer_hero.png" class="opening-visual" alt="夏のオープニングイラスト">
-      </div>
-    </div>
-
-    <div class="opening-bottom">
-      <div class="opening-chip-row">
-        <span class="opening-chip">普通二輪</span>
-        <span class="opening-chip">全135問</span>
-        <span class="opening-chip">標識40</span>
-        <span class="opening-chip">模試つき</span>
-      </div>
-      <button class="start-button" onclick="enterApp()">はじめる</button>
-      <div class="opening-note">Tapしてアプリをスタート</div>
-    </div>
+  <img src="opening_summer_hero.png" class="opening-bg" alt="夏のオープニングイラスト">
+  <div class="opening-start-area">
+    <button class="opening-start-button" onclick="enterApp()">はじめる</button>
   </div>
 </div>
 
@@ -686,12 +617,7 @@ rt{font-size:10px;color:#777}
     <div class="countdown-sub" id="daysLeftSub">6月18日に向けて、今日も一歩ずつ。</div>
   </div>
 
-
-  <div class="opening-hero-card">
-    <img src="opening_summer_hero.png" class="opening-hero-img" alt="夏のオープニングイラスト">
-  </div>
-
-
+  <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
   <p>
     巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！<br>
     電車でもサクッとできるよ。
@@ -1959,20 +1885,13 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-/* --- opening screen control --- */
+/* --- fullscreen opening control --- */
 function enterApp(){
   const opening = document.getElementById("openingScreen");
   const home = document.getElementById("home");
   if(opening) opening.classList.add("hidden");
   if(home) home.classList.remove("hidden");
-  setTimeout(function(){ window.scrollTo({top:0, behavior:"smooth"}); }, 50);
-}
-function showOpening(){
-  const opening = document.getElementById("openingScreen");
-  const home = document.getElementById("home");
-  if(opening) opening.classList.remove("hidden");
-  if(home) home.classList.add("hidden");
-  window.scrollTo({top:0, behavior:"auto"});
+  setTimeout(function(){ window.scrollTo({top:0, behavior:"smooth"}); }, 60);
 }
 document.addEventListener("DOMContentLoaded", function(){
   const opening = document.getElementById("openingScreen");
@@ -4028,7 +3947,7 @@ function backHome(){
  const sb40=document.getElementById("signBook40"); if(sb40) sb40.classList.add("hidden");
  const sc40=document.getElementById("signChoiceQuiz40"); if(sc40) sc40.classList.add("hidden");
  clearInterval(timerId);
- document.getElementById("timer").classList.add("hidden");
+ const timer=document.getElementById("timer"); if(timer) timer.classList.add("hidden");
  ["quiz","result","mockReview","checklist","examDay","signGuide","signBook","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
    const el=document.getElementById(id); if(el) el.classList.add("hidden");
  });
@@ -4341,3 +4260,4 @@ updateExamCountdown();
 </script>
 </body>
 </html>
+
