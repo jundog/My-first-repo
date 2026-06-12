@@ -309,6 +309,42 @@ rt{font-size:10px;color:#777}
   box-shadow:0 6px 18px rgba(255,126,182,.35);
 }
 
+
+.countdown-hero{
+  background:linear-gradient(135deg,#ff7eb6,#ffb86c);
+  color:white;
+  border-radius:24px;
+  padding:18px;
+  margin:16px 0;
+  text-align:center;
+  box-shadow:0 10px 26px rgba(255,126,182,.35);
+}
+.countdown-label{
+  font-size:15px;
+  font-weight:800;
+  opacity:.95;
+}
+.countdown-days{
+  font-size:46px;
+  line-height:1.1;
+  font-weight:1000;
+  letter-spacing:.03em;
+  margin:6px 0;
+}
+.countdown-sub{
+  font-size:14px;
+  font-weight:800;
+}
+.exam-note{
+  background:#fff8e7;
+  border:2px solid #ffe2a8;
+  color:#6b4300;
+  border-radius:16px;
+  padding:12px;
+  margin:10px 0;
+  line-height:1.7;
+}
+
 </style>
 </head>
 
@@ -316,8 +352,15 @@ rt{font-size:10px;color:#777}
 <div class="app">
 
 <div class="card" id="home">
-  <span class="badge">普通二輪・問題85問版</span>
+  <span class="badge">普通二輪・問題135問版</span>
   <h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
+
+  <div class="countdown-hero" id="countdownHero">
+    <div class="countdown-label">真彩ちゃんの試験まで</div>
+    <div class="countdown-days" id="daysLeftBig">あと--日！</div>
+    <div class="countdown-sub" id="daysLeftSub">6月18日に向けて、今日も一歩ずつ。</div>
+  </div>
+
 
   <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
 
@@ -327,7 +370,7 @@ rt{font-size:10px;color:#777}
   </p>
 
   <div class="stat-grid">
-    <div class="stat">全85問</div>
+    <div class="stat">全135問</div>
     <div class="stat">二輪強化</div>
     <div class="stat">ルビつき</div>
     <div class="stat">ミス復習</div>
@@ -341,7 +384,8 @@ rt{font-size:10px;color:#777}
   <div class="section-title">🧪 実力チェック</div>
   <button class="red menu-button main-action" onclick="startTimedExam()">⏱ 本番風タイマー模試30問</button>
   <button class="purple menu-button" onclick="startMockExam()">🧪 本番風ミニ模試30問</button>
-  <button class="blue menu-button" onclick="startAllRandom()">🌀 全85問からランダム20問</button>
+  <button class="pink menu-button main-action" onclick="startFullExam()">🏁 本番同様フル模試95問</button>
+  <button class="blue menu-button" onclick="startAllRandom()">🌀 全135問からランダム20問</button>
 
   <div class="section-title">📝 復習する</div>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
@@ -2654,6 +2698,12 @@ const questions = [
   }
 ];
 
+
+const extraQuestionsV2 = [{"day": "extra2", "cat": "安全確認", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "発進前の確認は基本中の基本だよ"}], "q": "発進するときは、周囲の安全を確認してから合図をし、静かに発進する。", "a": true, "e": "発進前は前後左右を確認し、合図で周囲に知らせる。"}, {"day": "extra2", "cat": "安全確認", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "ミラーだけ見ればいい？"}, {"speaker": "uma", "text": "目視も大事！"}], "q": "進路変更のときは、ミラーで確認すれば目視による安全確認は不要である。", "a": false, "e": "ミラーだけでは死角がある。必要に応じて目視確認も行う。"}, {"day": "extra2", "cat": "二輪・死角", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "大型車の左側は特に注意！"}], "q": "二輪車は大型車の死角に入りやすいので、大型車の近くでは十分注意する。", "a": true, "e": "大型車から見えにくい位置に入ると危険。特に左折時の巻き込みに注意。"}, {"day": "extra2", "cat": "二輪・巻き込み", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "左折車の内側に入らない！"}], "q": "交差点で左折しようとしている大型車の左側に入り込むのは危険である。", "a": true, "e": "巻き込み事故の危険がある。大型車の動きをよく見る。"}, {"day": "extra2", "cat": "交差点", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "交差点は予測が大事"}], "q": "交差点では、対向車や歩行者、自転車の動きに注意して進行する。", "a": true, "e": "交差点は事故が多い。左右・対向・歩行者・自転車を確認する。"}, {"day": "extra2", "cat": "交差点", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "右折は急いだ方がいい？"}, {"speaker": "uma", "text": "焦らず安全確認！"}], "q": "右折するときは、対向車が近づいていても素早く曲がればよい。", "a": false, "e": "対向車や歩行者の安全確認が必要。無理な右折は危険。"}, {"day": "extra2", "cat": "歩行者保護", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "歩行者優先は絶対に落とさない！"}], "q": "横断歩道のない場所でも、歩行者のそばを通るときは安全な間隔をあけるか徐行する。", "a": true, "e": "歩行者の安全を守るため、間隔をあけるか徐行する。"}, {"day": "extra2", "cat": "歩行者保護", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "クラクションで避けてもらうのは？"}, {"speaker": "uma", "text": "むやみに鳴らさないよ"}], "q": "歩行者のそばを通るときは、警音器を鳴らして避けさせればよい。", "a": false, "e": "警音器はむやみに鳴らさない。歩行者保護を優先する。"}, {"day": "extra2", "cat": "速度", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "道路状況で速度を調整！"}], "q": "最高速度以内であっても、雨や混雑など道路状況に応じて速度を控える必要がある。", "a": true, "e": "制限速度内でも、危険を避けるため状況に応じた速度が必要。"}, {"day": "extra2", "cat": "速度", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "制限速度なら絶対安全？"}, {"speaker": "uma", "text": "状況次第だよ"}], "q": "最高速度を守っていれば、どのような状況でも安全な速度である。", "a": false, "e": "天候・路面・交通量に応じて安全な速度を選ぶ。"}, {"day": "extra2", "cat": "雨天", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "雨の日は止まりにくい！"}], "q": "雨の日は路面がすべりやすく、停止距離が長くなる。", "a": true, "e": "雨天はブレーキが効きにくくなる。車間距離を長めに。"}, {"day": "extra2", "cat": "雨天", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "雨なら強くブレーキ？"}, {"speaker": "uma", "text": "急は危ない！"}], "q": "雨の日は早く止まるために、できるだけ急ブレーキを使うのがよい。", "a": false, "e": "急ブレーキはスリップの原因。早めの減速が大切。"}, {"day": "extra2", "cat": "二輪・カーブ", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "カーブは手前で減速！"}], "q": "二輪車でカーブに入る前には、十分に速度を落としておく。", "a": true, "e": "カーブ中の急操作は転倒につながる。手前で減速する。"}, {"day": "extra2", "cat": "二輪・カーブ", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "曲がりながら強くブレーキ？"}, {"speaker": "uma", "text": "それは危ない！"}], "q": "二輪車はカーブの途中で強くブレーキをかけるほど安定する。", "a": false, "e": "カーブ中の強いブレーキは不安定になりやすい。"}, {"day": "extra2", "cat": "夜間", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "夜は見えにくいから慎重に"}], "q": "夜間は歩行者や障害物を発見しにくいので、速度を控えめにする。", "a": true, "e": "夜は視認性が下がる。速度とライトに注意。"}, {"day": "extra2", "cat": "夜間", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "明るい道なら昼と同じ？"}, {"speaker": "uma", "text": "見落としに注意だよ"}], "q": "夜間でも街灯が多い道路では、昼間と同じ感覚で走行してよい。", "a": false, "e": "街灯があっても夜間は見落としが起きやすい。"}, {"day": "extra2", "cat": "合図", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "合図は周りへのお知らせ！"}], "q": "進路変更や右左折をするときは、あらかじめ合図を出す。", "a": true, "e": "合図は他の交通に自分の動きを知らせるために必要。"}, {"day": "extra2", "cat": "合図", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "誰もいなければ合図なし？"}, {"speaker": "uma", "text": "基本は出す！"}], "q": "周囲に車や歩行者が見えなければ、右左折の合図は出さなくてよい。", "a": false, "e": "合図は周囲への安全な意思表示。見落としもあるため基本を守る。"}, {"day": "extra2", "cat": "踏切", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "踏切で立ち往生は危険！"}], "q": "踏切内で前方が混雑して止まるおそれがあるときは、踏切に入らない。", "a": true, "e": "踏切内で止まる危険がある場合は進入しない。"}, {"day": "extra2", "cat": "踏切", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "前が詰まってても行ける？"}, {"speaker": "uma", "text": "入らない！"}], "q": "踏切の先が混雑していても、遮断機が上がっていれば踏切に入ってよい。", "a": false, "e": "踏切内で止まるおそれがあるなら入らない。"}, {"day": "extra2", "cat": "一時停止", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "停止線を越えない！"}], "q": "一時停止の場所に停止線があるときは、その直前で停止する。", "a": true, "e": "停止線の直前で完全停止する。"}, {"day": "extra2", "cat": "一時停止", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "ちょっと越えて止まるのは？"}, {"speaker": "uma", "text": "停止線の前で止まる！"}], "q": "停止線がある一時停止場所では、停止線を少し越えて止まってもよい。", "a": false, "e": "停止線を越えず、その直前で停止する。"}, {"day": "extra2", "cat": "駐停車", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "駐車禁止と駐停車禁止を区別！"}], "q": "駐停車禁止の標識がある場所では、駐車も停車もしてはならない。", "a": true, "e": "駐停車禁止は、駐車も停車も禁止。"}, {"day": "extra2", "cat": "駐停車", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "駐車禁止と同じ？"}, {"speaker": "uma", "text": "停車まで禁止かが違うよ"}], "q": "駐車禁止と駐停車禁止は、意味がまったく同じである。", "a": false, "e": "駐車禁止と駐停車禁止は違う。駐停車禁止の方が強い規制。"}, {"day": "extra2", "cat": "二輪・服装", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "肌を守る服装が安全！"}], "q": "二輪車に乗るときは、転倒時のけがを防ぐため、肌の露出を少なくするのが望ましい。", "a": true, "e": "長袖・長ズボン・手袋など、体を守る服装が望ましい。"}, {"day": "extra2", "cat": "二輪・服装", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "暑い日はサンダル？"}, {"speaker": "uma", "text": "運転しにくい履物は危ないよ"}], "q": "二輪車は足で支えることがあるので、運転しにくい履物は避ける。", "a": true, "e": "サンダルなどは操作や安全面で不適切。"}, {"day": "extra2", "cat": "二輪・乗車姿勢", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "姿勢が安定を作る！"}], "q": "二輪車では、正しい乗車姿勢を保つことで安定した運転につながる。", "a": true, "e": "視線・腕・ひざ・足の位置を安定させることが大切。"}, {"day": "extra2", "cat": "二輪・乗車姿勢", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "力いっぱい握る？"}, {"speaker": "uma", "text": "力みすぎもダメだよ"}], "q": "二輪車では、ハンドルを強く握りしめるほど安定して安全である。", "a": false, "e": "力みすぎは操作を妨げる。自然で安定した姿勢が大切。"}, {"day": "extra2", "cat": "二輪・荷物", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "荷物はしっかり固定！"}], "q": "二輪車に荷物を積むときは、走行中に落ちないよう確実に固定する。", "a": true, "e": "荷物の落下は自分にも周囲にも危険。しっかり固定する。"}, {"day": "extra2", "cat": "二輪・荷物", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "ちょっとなら手に持つ？"}, {"speaker": "uma", "text": "危ないよ！"}], "q": "二輪車では、片手に荷物を持って運転しても、短距離なら安全である。", "a": false, "e": "片手運転は操作が不安定になり危険。"}, {"day": "extra2", "cat": "二輪・点検", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "タイヤとブレーキは命に直結！"}], "q": "二輪車に乗る前には、タイヤの空気圧やブレーキの状態を確認することが大切である。", "a": true, "e": "日常点検は安全運転の基本。"}, {"day": "extra2", "cat": "二輪・点検", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "昨日大丈夫なら今日も？"}, {"speaker": "uma", "text": "乗る前に確認！"}], "q": "昨日点検した二輪車なら、今日乗る前の点検はまったく必要ない。", "a": false, "e": "乗車前には必要な点検を行う。"}, {"day": "extra2", "cat": "車間距離", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "追突しない距離をとる！"}], "q": "前車が急停止しても追突しないよう、十分な車間距離を保つ。", "a": true, "e": "速度・天候・路面状況に応じて車間距離を長めにする。"}, {"day": "extra2", "cat": "車間距離", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "二輪は小さいから詰める？"}, {"speaker": "uma", "text": "ダメ！"}], "q": "二輪車は車体が小さいので、四輪車より車間距離を短くしてよい。", "a": false, "e": "二輪でも十分な車間距離が必要。"}, {"day": "extra2", "cat": "緊急自動車", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "サイレンが聞こえたら落ち着いて譲る"}], "q": "緊急自動車が近づいてきたときは、進路を譲る。", "a": true, "e": "周囲の安全を確認し、落ち着いて進路を譲る。"}, {"day": "extra2", "cat": "緊急自動車", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "急いでるなら先に行く？"}, {"speaker": "uma", "text": "譲る！"}], "q": "自分が急いでいる場合は、緊急自動車より先に進んでもよい。", "a": false, "e": "緊急自動車の通行を妨げない。"}, {"day": "extra2", "cat": "標識・標示", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "補助標識も小さいけど重要！"}], "q": "補助標識は、本標識の意味を補足したり条件を示したりする。", "a": true, "e": "時間・車種・区間などを補足する。"}, {"day": "extra2", "cat": "標識・標示", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "小さい標識は無視？"}, {"speaker": "uma", "text": "補助標識を読む！"}], "q": "標識の下にある小さな補助標識は、学科試験では無視してよい。", "a": false, "e": "補助標識は条件を示すため重要。"}, {"day": "extra2", "cat": "危険予測", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "見えない所ほど予測！"}], "q": "駐車車両の陰から歩行者や自転車が出てくることを予測して運転する。", "a": true, "e": "見えない場所に危険があると考える。"}, {"day": "extra2", "cat": "危険予測", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "見えないなら大丈夫？"}, {"speaker": "uma", "text": "見えないから注意！"}], "q": "見えない場所に危険はないと考えて、速度を落とさず通過してよい。", "a": false, "e": "見えない場所ほど危険を予測する。"}, {"day": "extra2", "cat": "高速道路", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "高速は速度が高いぶん余裕を！"}], "q": "高速道路では、一般道路よりも速度が高いため、車間距離を十分にとる。", "a": true, "e": "高速では停止距離が長くなる。"}, {"day": "extra2", "cat": "高速道路", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "本線で休憩？"}, {"speaker": "uma", "text": "絶対危ない！"}], "q": "高速道路の本線上で、疲れたため停車して休憩してもよい。", "a": false, "e": "本線上の停車は非常に危険。休憩施設を利用する。"}, {"day": "extra2", "cat": "二人乗り", "char": "uma_warning.png", "dialogue": [{"speaker": "uma", "text": "二人乗りには条件があるよ"}], "q": "二輪車の二人乗りには、免許取得後の期間など一定の条件がある。", "a": true, "e": "一般道路・高速道路で条件が異なるため確認が必要。"}, {"day": "extra2", "cat": "二人乗り", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "免許取ったらすぐOK？"}, {"speaker": "uma", "text": "条件あり！"}], "q": "普通二輪免許を取得した直後でも、条件なしで二人乗りできる。", "a": false, "e": "二人乗りには経験期間など条件がある。"}, {"day": "extra2", "cat": "ひっかけ文", "char": "pair_study.png", "dialogue": [{"speaker": "uma", "text": "強い言い切りは要注意！"}, {"speaker": "miko", "text": "必ず、どんな場合でも、を疑う！"}], "q": "学科試験では、『必ず』『どんな場合でも』などの強い表現に注意して読む。", "a": true, "e": "例外がある内容なのに強く言い切る問題はひっかけの可能性がある。"}, {"day": "extra2", "cat": "ひっかけ文", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "長い文は雰囲気で答える？"}, {"speaker": "uma", "text": "最後まで読む！"}], "q": "問題文が長いときは、最初の数語だけ読んで直感で答えるのがよい。", "a": false, "e": "最後まで読む。後半にひっかけ条件があることが多い。"}, {"day": "extra2", "cat": "信号", "char": "uma_point.png", "dialogue": [{"speaker": "uma", "text": "青でも油断しない"}], "q": "青信号でも、交差点内で止まるおそれがあるときは進入しない。", "a": true, "e": "前方が混雑して交差点内で止まるおそれがある場合は進入しない。"}, {"day": "extra2", "cat": "信号", "char": "miko_thinking.png", "dialogue": [{"speaker": "miko", "text": "青なら絶対進む？"}, {"speaker": "uma", "text": "状況を見る！"}], "q": "青信号では、前方が混雑していても必ず交差点に入らなければならない。", "a": false, "e": "青信号でも安全に進めない場合は進入しない。"}, {"day": "extra2", "cat": "標識・標示", "char": "uma_teacher.png", "dialogue": [{"speaker": "uma", "text": "停止線は超えない！"}], "q": "停止線がある場所で停止するときは、停止線を越えないように止まる。", "a": true, "e": "停止線の直前で停止する。"}, {"day": "extra2", "cat": "標識・標示", "char": "miko_surprised.png", "dialogue": [{"speaker": "miko", "text": "ちょっとなら線を越えても？"}, {"speaker": "uma", "text": "ダメ！"}], "q": "停止線は目安なので、少し越えて停止しても問題ない。", "a": false, "e": "停止線を越えずに停止する。"}];
+if(typeof questions !== "undefined" && !questions.find(q => q.q === extraQuestionsV2[0].q)){
+  questions.push(...extraQuestionsV2);
+}
+
 const signQuestions = [
   {
     "day": "signs",
@@ -3003,13 +3053,13 @@ function startTrain(){
 }
 
 function startAllRandom(){
-  quiz = shuffle([...questions, ...signQuestions]).slice(0,20);
+  quiz = shuffle(allWrittenQuestions()).slice(0,20);
   isMockExam = false;
-  launch("全85問からランダム20問 🌀");
+  launch("全135問からランダム20問 🌀");
 }
 
 function startMockExam(){
-  quiz = shuffle([...questions, ...signQuestions]).slice(0,30);
+  quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   mockAnswers = [];
   launch("本番風ミニ模試30問 🧪");
@@ -3361,7 +3411,7 @@ function startSigns(){
 }
 
 function startTimedExam(){
-  quiz = shuffle([...questions, ...signQuestions]).slice(0,30);
+  quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   isTimedExam = true;
   mockAnswers = [];
@@ -3623,6 +3673,127 @@ function backHome(){
 
   window.startSignChoiceQuiz = window.startSignChoiceQuiz40;
 })();
+
+
+function updateExamCountdown(){
+  const target = new Date("2026-06-18T00:00:00+09:00");
+  const now = new Date();
+  const diff = target - now;
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  const big = document.getElementById("daysLeftBig");
+  const sub = document.getElementById("daysLeftSub");
+  if(!big) return;
+
+  if(days > 1){
+    big.innerText = "あと" + days + "日！";
+    if(sub) sub.innerText = "6月18日の試験まで、今日の積み上げが効くよ。";
+  }else if(days === 1){
+    big.innerText = "明日！";
+    if(sub) sub.innerText = "今日は新しいことより、落とさない問題を固めよう。";
+  }else if(days === 0){
+    big.innerText = "試験当日！";
+    if(sub) sub.innerText = "深呼吸。問題文を最後まで読めば大丈夫。";
+  }else{
+    big.innerText = "試験お疲れさま！";
+    if(sub) sub.innerText = "ここまで本当にがんばったね。";
+  }
+}
+
+function allWrittenQuestions(){
+  const a = typeof questions !== "undefined" ? questions : [];
+  const b = typeof signQuestions !== "undefined" ? signQuestions : [];
+  return [...a, ...b];
+}
+
+function buildFullExamQuiz(){
+  const all = allWrittenQuestions();
+  const mustKeywords = [
+    "横断歩道","黄色信号","一時停止","踏切","酒気帯び","スマートフォン",
+    "緊急自動車","優先道路","徐行","駐停車","雨","白線","マンホール",
+    "カーブ","車間距離","ヘルメット","巻き込み","進路変更","夜間",
+    "交差点","標識","停止線","最高速度","駐車禁止","補助標識"
+  ];
+
+  const must = [];
+  mustKeywords.forEach(key => {
+    const found = all.find(q =>
+      !must.includes(q) &&
+      ((q.cat && q.cat.includes(key)) || (q.q && q.q.includes(key)) || (q.e && q.e.includes(key)))
+    );
+    if(found) must.push(found);
+  });
+
+  const rest = shuffle(all.filter(q => !must.includes(q)));
+  return shuffle([...must, ...rest.slice(0, Math.max(0, 95 - must.length))]).slice(0,95);
+}
+
+function startFullExam(){
+  quiz = buildFullExamQuiz();
+  if(quiz.length < 50){
+    alert("問題データが不足しています。最新版コードを貼り直してください。");
+    return;
+  }
+  isMockExam = true;
+  isTimedExam = true;
+  mockAnswers = [];
+  timeLeft = 50 * 60;
+  launch("本番同様フル模試95問 🏁");
+  startTimer();
+  goTop();
+}
+
+/* Randomization overrides */
+(function(){
+  const oldStartMode = window.startMode;
+  window.startMode = function(day){
+    quiz = shuffle(questions.filter(x => x.day === day));
+    isMockExam = false;
+    isTimedExam = false;
+    launch(day==="day1"?"Day1：基本ルール":day==="day2"?"Day2：二輪ひっかけ":day==="day3"?"Day3：直前総復習":day==="extra"?"追加特訓":"追加問題");
+  };
+
+  if(typeof window.startSigns === "function"){
+    window.startSigns = function(){
+      quiz = shuffle(signQuestions);
+      isMockExam = false;
+      isTimedExam = false;
+      launch("標識・標示20問 🚧");
+    };
+  }
+
+  const oldStartMistakes = window.startMistakes;
+  if(typeof oldStartMistakes === "function"){
+    window.startMistakes = function(){
+      const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
+      if(saved.length === 0){
+        alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
+        return;
+      }
+      quiz = shuffle(saved);
+      isMockExam = false;
+      isTimedExam = false;
+      launch("間違えた問題だけ復習");
+    };
+  }
+
+  const oldStartWeakOnly = window.startWeakOnly;
+  if(typeof oldStartWeakOnly === "function"){
+    window.startWeakOnly = function(){
+      const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+      const weak = questions.filter(q => counts[q.q] >= 2);
+      if(weak.length === 0){
+        alert("まだ2回以上間違えた苦手問題はないよ。まずは『間違えた問題だけ』を回してみよう！");
+        return;
+      }
+      quiz = shuffle(weak);
+      isMockExam = false;
+      isTimedExam = false;
+      launch("苦手だけ集中 🔥");
+    };
+  }
+})();
+
+updateExamCountdown();
 
 </script>
 </body>
