@@ -57,7 +57,7 @@ rt{font-size:10px;color:#777}
 .dialogue-line{display:flex;align-items:flex-start;gap:8px}
 .dialogue-icon{width:34px;height:34px;flex-shrink:0;border-radius:50%}
 .dialogue-text{background:white;border-radius:14px;padding:8px 10px;line-height:1.6;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
-.category{font-size:13px;color:#777;font-weight:800}
+.category{font-size:13px;color:#777;font-weight:800}.review-item{background:#fff;border-radius:14px;padding:12px;margin:10px 0;border:1px solid #eee}.review-ok{border-left:6px solid #31b97c}.review-ng{border-left:6px solid #ff6b6b}.mock-note{background:#f4f0ff;border:2px solid #d7c8ff;border-radius:16px;padding:12px;margin:10px 0;line-height:1.7}
 @media (max-width:480px){
   .character{width:78px}
   .dialogue-icon{width:30px;height:30px}
@@ -97,6 +97,7 @@ rt{font-size:10px;color:#777}
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
   <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
+  <button class="purple menu-button" onclick="startMockExam()">🧪 本番風ミニ模試30問</button>
 
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
@@ -172,11 +173,22 @@ rt{font-size:10px;color:#777}
   <button id="nextBtn" class="pink hidden" onclick="nextQuestion()">次へ</button>
 </div>
 
+
+<div class="card hidden" id="mockReview">
+  <h2>ミニ模試の復習 🧪</h2>
+  <img src="pair_study.png" class="result-img" alt="復習">
+  <p class="small">間違えた問題は自動で「間違えた問題だけ」に保存されています。</p>
+  <div id="mockReviewList"></div>
+  <button class="purple" onclick="startMockExam()">もう一度ミニ模試</button>
+  <button class="pink" onclick="backHome()">ホームへ</button>
+</div>
+
 <div class="card hidden" id="result">
   <h2>結果発表 🎉</h2>
   <img id="resultImg" src="pair_goal.png" class="result-img" alt="結果">
   <div class="score" id="score"></div>
   <p id="message"></p>
+  <button id="mockReviewBtn" class="purple hidden" onclick="showMockReview()">ミニ模試の復習を見る</button>
   <button class="pink" onclick="backHome()">ホームへ</button>
   <button class="red" onclick="startMistakes()">間違えた問題だけもう一回</button>
   <button class="purple" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
@@ -1235,6 +1247,8 @@ let index = 0;
 let score = 0;
 let mistakes = [];
 let answered = false;
+let isMockExam = false;
+let mockAnswers = [];
 
 function shuffle(arr){
   return [...arr].sort(()=>Math.random()-0.5);
@@ -1252,7 +1266,15 @@ function startTrain(){
 
 function startAllRandom(){
   quiz = shuffle(questions).slice(0,20);
+  isMockExam = false;
   launch("全65問からランダム20問 🌀");
+}
+
+function startMockExam(){
+  quiz = shuffle(questions).slice(0,30);
+  isMockExam = true;
+  mockAnswers = [];
+  launch("本番風ミニ模試30問 🧪");
 }
 
 function startFinal20(){
@@ -1313,6 +1335,7 @@ function showChecklist(){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
+  document.getElementById("mockReview").classList.add("hidden");
   document.getElementById("checklist").classList.remove("hidden");
 }
 
@@ -1326,6 +1349,7 @@ function launch(title){
   document.getElementById("checklist").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   document.getElementById("modeTitle").innerText = title;
+  document.getElementById("mockReviewBtn").classList.add("hidden");
   showQuestion();
 }
 
@@ -1347,6 +1371,37 @@ function answer(choice){
 
   const item = quiz[index];
   const ok = choice === item.a;
+
+  if(isMockExam){
+    if(ok){
+      score++;
+    }else{
+      mistakes.push(item);
+
+      const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
+      counts[item.q] = (counts[item.q] || 0) + 1;
+      localStorage.setItem("mayaBikeMistakeCounts", JSON.stringify(counts));
+    }
+
+    mockAnswers.push({
+      q: item.q,
+      e: item.e,
+      cat: item.cat,
+      a: item.a,
+      choice: choice,
+      ok: ok
+    });
+
+    const fb = document.getElementById("feedback");
+    fb.className = "bubble";
+    fb.innerHTML =
+      '<img src="uma_teacher.png" class="feedback-img" alt="模試">' +
+      "🧪 回答を記録したよ。<br>本番風なので、正解発表は最後にまとめて見るよ。";
+    fb.classList.remove("hidden");
+    document.getElementById("nextBtn").classList.remove("hidden");
+    return;
+  }
+
   const fb = document.getElementById("feedback");
   fb.className = "bubble " + (ok ? "ok" : "ng");
 
@@ -1399,6 +1454,23 @@ function finish(){
   document.getElementById("result").classList.remove("hidden");
   document.getElementById("score").innerText = score + " / " + quiz.length;
 
+  if(isMockExam){
+    document.getElementById("mockReviewBtn").classList.remove("hidden");
+
+    const percent = Math.round((score / quiz.length) * 100);
+    if(percent >= 90){
+      document.getElementById("resultImg").src = "pair_goal.png";
+      document.getElementById("message").innerText = "ミニ模試 合格圏！この調子。間違えた問題だけ復習しよう。";
+    }else if(percent >= 80){
+      document.getElementById("resultImg").src = "pair_cheer.png";
+      document.getElementById("message").innerText = "あと少しで合格圏！復習すれば十分いける。";
+    }else{
+      document.getElementById("resultImg").src = "pair_study.png";
+      document.getElementById("message").innerText = "今のミスは本番前に見つけた宝物。復習で伸ばそう。";
+    }
+    return;
+  }
+
   if(score === quiz.length){
     document.getElementById("resultImg").src = "pair_goal.png";
     document.getElementById("message").innerText = "満点！真彩ちゃんすごい🌸 この調子なら本番もいける！";
@@ -1409,6 +1481,29 @@ function finish(){
     document.getElementById("resultImg").src = "pair_study.png";
     document.getElementById("message").innerText = "まだ伸びる！間違えた問題だけもう一回。";
   }
+}
+
+function showMockReview(){
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("mockReview").classList.remove("hidden");
+
+  const list = document.getElementById("mockReviewList");
+  if(mockAnswers.length === 0){
+    list.innerHTML = "<p>まだ模試の結果がありません。</p>";
+    return;
+  }
+
+  list.innerHTML = mockAnswers.map((x, i) => {
+    const mark = x.ok ? "⭕ 正解" : "❌ 不正解";
+    const cls = x.ok ? "review-ok" : "review-ng";
+    return `
+      <div class="review-item ${cls}">
+        <p><strong>Q${i+1}. ${r(x.q)}</strong></p>
+        <p>${mark} / あなたの答え：${x.choice ? "○" : "×"} / 正解：${x.a ? "○" : "×"}</p>
+        <p>${r(x.e)}</p>
+      </div>
+    `;
+  }).join("");
 }
 
 function backHome(){
