@@ -4,26 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>真彩のバイク免許チャレンジ</title>
-<link rel="apple-touch-icon" href="app-icon.png">
-<link rel="icon" type="image/png" href="app-icon.png">
+<!-- iPhoneホーム画面アイコン -->
+<link rel="apple-touch-icon" sizes="180x180" href="./maya-bike-icon.png">
+<link rel="apple-touch-icon" href="./maya-bike-icon.png">
+<!-- ブラウザ用アイコン -->
+<link rel="icon" type="image/png" href="./maya-bike-icon.png">
+<!-- ホーム画面に追加した時のアプリ風設定 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="真彩の免許">
- <style>
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:linear-gradient(#fff3f8,#eef7ff);color:#333}
-.app{max-width:720px;margin:auto;padding:18px}
-.card{background:white;border-radius:24px;padding:22px;margin:16px 0;box-shadow:0 8px 25px rgba(0,0,0,.08)}
-h1{font-size:28px;margin:8px 0}
-button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-size:17px;font-weight:800}
-.pink{background:#ff7eb6;color:white}.blue{background:#5b8def;color:white}.green{background:#31b97c;color:white}.red{background:#ff6b6b;color:white}.gray{background:#eef1f6;color:#333}
+<!-- Android / Chrome系向け -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ff7eb6">
+<style>
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+  background:linear-gradient(#fff3f8,#eef7ff);
+  color:#333;
+}
+.app{
+  max-width:720px;
+  margin:auto;
+  padding:18px;
+}
+.card{
+  background:white;
+  border-radius:24px;
+  padding:22px;
+  margin:16px 0;
+  box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+h1{
+  font-size:28px;
+  margin:8px 0;
+}
+button{
+  width:100%;
+  border:0;
+  border-radius:18px;
+  padding:16px;
+  margin-top:12px;
+  font-size:17px;
+  font-weight:800;
+}
+.pink{background:#ff7eb6;color:white}
+.blue{background:#5b8def;color:white}
+.green{background:#31b97c;color:white}
+.red{background:#ff6b6b;color:white}
+.gray{background:#eef1f6;color:#333}
 .hidden{display:none}
-.q{font-size:20px;font-weight:900;line-height:1.8}
-.bubble{background:#fff7fb;border:2px solid #ffd2e6;border-radius:18px;padding:14px;margin:10px 0;line-height:1.8}
-.ok{background:#eafff2}.ng{background:#fff0f0}
-.score{text-align:center;font-size:44px;font-weight:900}
-.badge{display:inline-block;background:#ffe1ef;color:#d63384;padding:6px 12px;border-radius:999px;font-weight:800}
-.small{font-size:14px;color:#777}
-rt{font-size:10px;color:#777}
+.q{
+  font-size:20px;
+  font-weight:900;
+  line-height:1.8;
+}
+.bubble{
+  background:#fff7fb;
+  border:2px solid #ffd2e6;
+  border-radius:18px;
+  padding:14px;
+  margin:10px 0;
+  line-height:1.8;
+}
+.ok{background:#eafff2}
+.ng{background:#fff0f0}
+.score{
+  text-align:center;
+  font-size:44px;
+  font-weight:900;
+}
+.badge{
+  display:inline-block;
+  background:#ffe1ef;
+  color:#d63384;
+  padding:6px 12px;
+  border-radius:999px;
+  font-weight:800;
+}
+.small{
+  font-size:14px;
+  color:#777;
+}
+rt{
+  font-size:10px;
+  color:#777;
+}
 </style>
 </head>
 <body>
