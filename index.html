@@ -292,6 +292,23 @@ rt{font-size:10px;color:#777}
   .sign-book-row40{flex-direction:column}
 }
 
+
+#feedback:not(.hidden),
+#signChoiceFeedback40:not(.hidden),
+#signChoiceFeedback:not(.hidden){
+  margin-top:22px;
+  border-width:3px;
+  scroll-margin-top:24px;
+}
+
+
+#nextBtn:not(.hidden),
+#signChoiceNextBtn40:not(.hidden),
+#signChoiceNextBtn:not(.hidden){
+  margin-top:16px;
+  box-shadow:0 6px 18px rgba(255,126,182,.35);
+}
+
 </style>
 </head>
 
@@ -1575,6 +1592,23 @@ function goToElement(id){
     const el = document.getElementById(id);
     if(el){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
   }, 80);
+}
+
+
+function jumpToAnswer(id){
+  setTimeout(function(){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 24;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 120);
+
+  setTimeout(function(){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 24;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 520);
 }
 
 function goTop(){
@@ -3122,6 +3156,7 @@ function answerSignChoice40(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn40").classList.remove("hidden");
+  jumpToAnswer("signChoiceFeedback40");
 }
 
 function nextSignChoice40(){
@@ -3228,6 +3263,7 @@ function answerSignChoice(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn").classList.remove("hidden");
+  jumpToAnswer("signChoiceFeedback");
 }
 
 function nextSignChoice(){
@@ -3420,7 +3456,7 @@ function answer(choice){
       "🧪 回答を記録したよ。<br>本番風なので、正解発表は最後にまとめて見るよ。";
     fb.classList.remove("hidden");
     document.getElementById("nextBtn").classList.remove("hidden");
-    goToElement("feedback");
+    
     return;
   }
 
@@ -3453,7 +3489,8 @@ function answer(choice){
 
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
-  goToElement("feedback");
+  jumpToAnswer("feedback");
+  
 }
 
 function nextQuestion(){
@@ -3590,4 +3627,3 @@ function backHome(){
 </script>
 </body>
 </html>
-
