@@ -93,6 +93,7 @@ rt{font-size:10px;color:#777}
   <button class="yellow menu-button" onclick="startMode('extra')">🔥 追加特訓 20問</button>
   <button class="purple menu-button" onclick="startFinal20()">🎯 試験直前！絶対落とさない20問</button>
   <button class="green menu-button" onclick="showChecklist()">📌 試験前1分チェックリスト</button>
+  <button class="orange menu-button" onclick="showExamDay()">🌅 試験当日モード</button>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
@@ -104,6 +105,53 @@ rt{font-size:10px;color:#777}
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
 
+
+
+<div class="card hidden" id="examDay">
+  <span class="badge">当日の朝・電車用</span>
+  <h2>試験当日モード 🌅</h2>
+  <img src="pair_goal.png" class="result-img" alt="試験当日">
+
+  <div class="bubble">
+    <div class="dialogue-box">
+      <div class="dialogue-line">
+        <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
+        <div class="dialogue-text">今日は新しいことを詰め込みすぎない。落ち着いて、取れる問題を取ろう。</div>
+      </div>
+      <div class="dialogue-line">
+        <img src="miko_mini.png" class="dialogue-icon" alt="巫女ちゃん">
+        <div class="dialogue-text">問題文を最後まで読む。焦ったら一回深呼吸！</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bubble">
+    <p><strong>当日の約束</strong></p>
+    <p>✅ 問題文を最後まで読む</p>
+    <p>✅ 「必ず」「どんな場合でも」は慎重に読む</p>
+    <p>✅ 迷ったら安全側で考える</p>
+    <p>✅ 二輪問題は、雨・白線・マンホール・カーブ・風を疑う</p>
+    <p>✅ 分からない問題で止まりすぎない</p>
+  </div>
+
+  <div class="bubble">
+    <p><strong>最後に確認</strong></p>
+    <p>🌸 黄色信号＝原則止まれ</p>
+    <p>🌸 横断歩道＝歩行者がいたら一時停止</p>
+    <p>🌸 踏切＝必ず一時停止</p>
+    <p>🌸 一時停止＝徐行ではなく完全停止</p>
+    <p>🌸 雨の日の白線・マンホール＝すべる</p>
+  </div>
+
+  <div class="bubble ok">
+    <p><strong>真彩ちゃんへ</strong></p>
+    <p>ここまでやったから大丈夫。知らない問題が出ても、落ち着いて「安全な運転ならどっち？」で考えよう。</p>
+  </div>
+
+  <button class="purple" onclick="startExamDayWarmup()">🌅 当日5問ウォームアップ</button>
+  <button class="green" onclick="showChecklist()">📌 1分チェックリストへ</button>
+  <button class="pink" onclick="backHome()">ホームへ</button>
+</div>
 
 <div class="card hidden" id="checklist">
   <span class="badge">電車で読むだけ</span>
@@ -1652,6 +1700,26 @@ function startWeakOnly(){
   launch("苦手だけ集中 🔥");
 }
 
+
+function showExamDay(){
+  clearInterval(timerId);
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("examDay").classList.add("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("mockReview").classList.add("hidden");
+  document.getElementById("checklist").classList.add("hidden");
+  document.getElementById("examDay").classList.remove("hidden");
+}
+
+function startExamDayWarmup(){
+  const cats = ["横断歩道","信号","踏切","一時停止","雨・路面"];
+  quiz = cats.map(cat => [...questions, ...signQuestions].find(q => q.cat === cat)).filter(Boolean);
+  isMockExam = false;
+  isTimedExam = false;
+  launch("当日5問ウォームアップ 🌅");
+}
+
 function showChecklist(){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -1707,6 +1775,7 @@ function launch(title){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
   document.getElementById("checklist").classList.add("hidden");
+  document.getElementById("examDay").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   document.getElementById("modeTitle").innerText = title;
   document.getElementById("mockReviewBtn").classList.add("hidden");
