@@ -3,88 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>免許学科 模擬テスト</title>
+<title>真彩のバイク免許チャレンジ</title>
 <style>
-body{font-family:sans-serif;background:#f4f4f4;padding:20px;max-width:700px;margin:auto}
-.card{background:#fff;padding:20px;border-radius:16px;box-shadow:0 4px 10px rgba(0,0,0,.1)}
-button{width:100%;padding:15px;margin-top:10px;border:none;border-radius:12px;font-size:18px}
-.true{background:#16a34a;color:white}
-.false{background:#dc2626;color:white}
-.primary{background:#2563eb;color:white}
-.hidden{display:none}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;background:linear-gradient(#fff3f8,#eef7ff);color:#333}
+.app{max-width:720px;margin:auto;padding:18px}
+.card{background:white;border-radius:24px;padding:22px;margin:16px 0;box-shadow:0 8px 25px rgba(0,0,0,.08)}
+h1{font-size:28px;margin:8px 0}
+button{width:100%;border:0;border-radius:18px;padding:16px;margin-top:12px;font-size:17px;font-weight:800}
+.pink{background:#ff7eb6;color:white}.blue{background:#5b8def;color:white}.green{background:#31b97c;color:white}.red{background:#ff6b6b;color:white}.gray{background:#eef1f6;color:#333}
+.hidden{display:none}.q{font-size:20px;font-weight:900;line-height:1.6}
+.bubble{background:#fff7fb;border:2px solid #ffd2e6;border-radius:18px;padding:14px;margin:10px 0;line-height:1.7}
+.ok{background:#eafff2}.ng{background:#fff0f0}.score{text-align:center;font-size:44px;font-weight:900}
+.badge{display:inline-block;background:#ffe1ef;color:#d63384;padding:6px 12px;border-radius:999px;font-weight:800}
+.small{font-size:14px;color:#777}
 </style>
 </head>
 <body>
-<div class="card" id="start">
-<h1>免許学科 模擬テスト</h1>
-<p>本番寄り10問・○×形式</p>
-<button class="primary" onclick="startQuiz()">開始</button>
+<div class="app">
+<div class="card" id="home">
+<span class="badge">普通二輪・3日集中</span>
+<h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
+<p>巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！</p>
+<button class="pink" onclick="startMode('day1')">Day1：基本ルール</button>
+<button class="blue" onclick="startMode('day2')">Day2：二輪ひっかけ</button>
+<button class="green" onclick="startMode('day3')">Day3：直前総復習</button>
+<button class="gray" onclick="startTrain()">電車で5問復習 🚃</button>
+<button class="red" onclick="startMistakes()">間違えた問題だけ</button>
+<p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
 <div class="card hidden" id="quiz">
+<p id="modeTitle"></p>
 <p id="count"></p>
-<h2 id="question"></h2>
-<button class="true" onclick="answer(true)">○ 正しい</button>
-<button class="false" onclick="answer(false)">× 誤り</button>
-<p id="feedback"></p>
-<button class="primary hidden" id="nextBtn" onclick="nextQuestion()">次へ</button>
+<div class="bubble" id="comic"></div>
+<div class="q" id="question"></div>
+<button class="green" onclick="answer(true)">○ 正しい</button>
+<button class="red" onclick="answer(false)">× 誤り</button>
+<div id="feedback" class="bubble hidden"></div>
+<button id="nextBtn" class="pink hidden" onclick="nextQuestion()">次へ</button>
 </div>
 <div class="card hidden" id="result">
-<h1 id="score"></h1>
+<h2>結果発表 🎉</h2>
+<div class="score" id="score"></div>
 <p id="message"></p>
-<button class="primary" onclick="location.reload()">もう一度</button>
+<button class="pink" onclick="backHome()">ホームへ</button>
+</div>
 </div>
 <script>
-const questions = [
-{q:"歩行者が横断しようとしている横断歩道では一時停止しなければならない。",a:true},
-{q:"黄色信号は注意して進めの意味である。",a:false},
-{q:"酒気帯び運転は短距離なら違反ではない。",a:false},
-{q:"踏切では一時停止し安全確認する。",a:true},
-{q:"警察官の指示より標識が優先される。",a:false},
-{q:"交差点から5m以内は駐停車禁止。",a:true},
-{q:"同乗者のシートベルトは運転者に関係ない。",a:false},
-{q:"夜間対向車がいる時はライトを下げる。",a:true},
-{q:"高速道路では極端に遅くても問題ない。",a:false},
-{q:"緊急車両が来たら進路を譲る。",a:true}
+const questions=[
+{day:"day1",q:"横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",a:true,e:"歩行者優先。これは絶対落とせない！",c:"🌸巫女ちゃん「歩行者さんがいたら…えっと…」<br>🐴ウマくん「止まる！本番でも超大事だよ」"},
+{day:"day1",q:"黄色信号は『注意して進め』という意味である。",a:false,e:"黄色は原則『止まれ』。止まれない場合だけ進行できる。",c:"🌸巫女ちゃん「黄色は急げ、じゃないの？」<br>🐴ウマくん「それ罠！原則止まれだよ」"},
+{day:"day1",q:"踏切では、警報機が鳴っていなくても一時停止して安全確認する。",a:true,e:"踏切は必ず一時停止。左右確認もセット。",c:"🌸巫女ちゃん「鳴ってなければ行っていい？」<br>🐴ウマくん「止まって確認！これ鉄板」"},
+{day:"day1",q:"酒気帯び運転は、短い距離であれば違反にならない。",a:false,e:"距離は関係なし。飲んだら絶対に運転しない。",c:"🌸巫女ちゃん「近所なら…？」<br>🐴ウマくん「絶対ダメ！」"},
+{day:"day2",q:"二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",a:true,e:"二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。",c:"🌸巫女ちゃん「白線ってそんなに危ないの？」<br>🐴ウマくん「雨の日はツルッといくよ！」"},
+{day:"day2",q:"カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",a:false,e:"カーブ中の急ブレーキは転倒の危険。手前で十分減速。",c:"🌸巫女ちゃん「曲がりながら止まればいい？」<br>🐴ウマくん「手前で減速が基本！」"},
+{day:"day2",q:"二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",a:true,e:"橋の上・トンネル出口・大型車の横は風に注意。",c:"🌸巫女ちゃん「風くらい平気？」<br>🐴ウマくん「バイクはかなり影響受けるよ」"},
+{day:"day2",q:"二輪車は小さいので、車間距離を短くして走ってもよい。",a:false,e:"二輪も十分な車間距離が必要。急停止に備える。",c:"🌸巫女ちゃん「小さいから詰めてもいい？」<br>🐴ウマくん「むしろ余裕が大事！」"},
+{day:"day3",q:"優先道路を通行していても、安全確認は必要である。",a:true,e:"優先でも油断禁止。安全確認は常に必要。",c:"🌸巫女ちゃん「優先なら確認いらない？」<br>🐴ウマくん「それ本番の落とし穴」"},
+{day:"day3",q:"一時停止の標識がある場所では、車輪が完全に止まる必要がある。",a:true,e:"徐行ではダメ。完全停止。",c:"🌸巫女ちゃん「ゆっくりならOK？」<br>🐴ウマくん「完全に止まる！」"},
+{day:"day3",q:"運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",a:false,e:"ながら運転は危険。短時間でもダメ。",c:"🌸巫女ちゃん「一瞬だけなら…」<br>🐴ウマくん「一瞬が事故につながる！」"},
+{day:"day3",q:"緊急自動車が近づいてきたら、進路を譲る。",a:true,e:"サイレンが聞こえたら落ち着いて進路を譲る。",c:"🌸巫女ちゃん「救急車だ！」<br>🐴ウマくん「落ち着いて譲ろう」"}
 ];
-let index=0;
-let score=0;
-function startQuiz(){
-document.getElementById("start").classList.add("hidden");
-document.getElementById("quiz").classList.remove("hidden");
-showQuestion();
+const cheers=["真彩ちゃんナイス🌸","これは本番でも取れる！","いい判断！","ウマくんも拍手🐴","合格に近づいた！"];
+let quiz=[],index=0,score=0,mistakes=[];
+function startMode(day){
+ quiz=questions.filter(x=>x.day===day);
+ launch(day==="day1"?"Day1：基本ルール":day==="day2"?"Day2：二輪ひっかけ":"Day3：直前総復習");
+}
+function startTrain(){quiz=[...questions].sort(()=>Math.random()-0.5).slice(0,5);launch("電車で5問復習 🚃")}
+function startMistakes(){
+ const saved=JSON.parse(localStorage.getItem("mayaBikeMistakes")||"[]");
+ if(saved.length===0){alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");return;}
+ quiz=saved;launch("間違えた問題だけ復習");
+}
+function launch(title){
+ index=0;score=0;mistakes=[];
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("result").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ document.getElementById("modeTitle").innerText=title;
+ showQuestion();
 }
 function showQuestion(){
-document.getElementById("count").innerText=`${index+1} / ${questions.length}`;
-document.getElementById("question").innerText=questions[index].q;
-document.getElementById("feedback").innerText="";
-document.getElementById("nextBtn").classList.add("hidden");
+ document.getElementById("count").innerText=(index+1)+" / "+quiz.length;
+ document.getElementById("comic").innerHTML=quiz[index].c;
+ document.getElementById("question").innerText=quiz[index].q;
+ document.getElementById("feedback").classList.add("hidden");
+ document.getElementById("nextBtn").classList.add("hidden");
 }
 function answer(choice){
-const correct=questions[index].a;
-if(choice===correct){
-score++;
-document.getElementById("feedback").innerText="⭕ 正解";
-}else{
-document.getElementById("feedback").innerText="❌ 不正解";
+ const item=quiz[index],ok=choice===item.a;
+ const fb=document.getElementById("feedback");
+ fb.className="bubble "+(ok?"ok":"ng");
+ if(ok){score++;fb.innerHTML="⭕ 正解！<br>"+cheers[Math.floor(Math.random()*cheers.length)]+"<br><br>"+item.e;}
+ else{mistakes.push(item);fb.innerHTML="❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>"+item.e;}
+ fb.classList.remove("hidden");
+ document.getElementById("nextBtn").classList.remove("hidden");
 }
-document.getElementById("nextBtn").classList.remove("hidden");
-}
-function nextQuestion(){
-index++;
-if(index>=questions.length){
-finish();
-}else{
-showQuestion();
-}
-}
+function nextQuestion(){index++;index>=quiz.length?finish():showQuestion();}
 function finish(){
-document.getElementById("quiz").classList.add("hidden");
-document.getElementById("result").classList.remove("hidden");
-document.getElementById("score").innerText=`${score}/10`;
-document.getElementById("message").innerText=
-score>=9?"合格圏！":
-score>=7?"あと少し！":
-"復習しよう！";
+ const old=JSON.parse(localStorage.getItem("mayaBikeMistakes")||"[]");
+ const unique=[];
+ [...old,...mistakes].forEach(q=>{if(!unique.find(x=>x.q===q.q))unique.push(q)});
+ localStorage.setItem("mayaBikeMistakes",JSON.stringify(unique));
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("result").classList.remove("hidden");
+ document.getElementById("score").innerText=score+" / "+quiz.length;
+ document.getElementById("message").innerText=score===quiz.length?"満点！真彩ちゃんすごい🌸":score>=Math.ceil(quiz.length*.8)?"かなり合格圏！間違えた所だけ復習しよう。":"まだ伸びる！間違えた問題だけもう一回。";
+}
+function backHome(){
+ document.getElementById("result").classList.add("hidden");
+ document.getElementById("home").classList.remove("hidden");
 }
 </script>
 </body>
