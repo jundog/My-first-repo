@@ -400,7 +400,6 @@ rt{font-size:10px;color:#777}
 <div class="card hidden" id="signBook40">
   <span class="badge">実標識・40個</span>
   <h2>実標識ミニ図鑑 40 🚦</h2>
-  <p class="small">※このページは signs/ フォルダ内の国交省PDF切り出し画像を表示します。</p>
   <img src="pair_study.png" class="result-img" alt="標識ミニ図鑑">
 
   <div class="bubble">
@@ -1036,9 +1035,9 @@ rt{font-size:10px;color:#777}
   <button class="pink" onclick="backHome()">ホームへ</button>
 </div>
 
-<div class="card hidden" id="signBookOld">
+<div class="card hidden" id="signBook">
   <span class="badge">参考画像つき・頻出15個</span>
-  <h2>実標識ミニ図鑑 40 🚦</h2>
+  <h2>標識ミニ図鑑 15 🚦</h2>
   <img src="pair_study.png" class="result-img" alt="標識ミニ図鑑">
 
   <div class="bubble">
@@ -1571,13 +1570,10 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-
 function goToElement(id){
   setTimeout(function(){
     const el = document.getElementById(id);
-    if(el){
-      el.scrollIntoView({behavior:"smooth", block:"start"});
-    }
+    if(el){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
   }, 80);
 }
 
@@ -3051,15 +3047,10 @@ let signChoiceScore40 = 0;
 let signChoiceAnswered40 = false;
 
 function hideAllScreens40(){
-  ["home","quiz","result","mockReview","checklist","examDay","signGuide","signBookOld","signBook","signBook40","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
+  ["home","quiz","result","mockReview","checklist","examDay","signGuide","signBook","signBook40","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
     const el = document.getElementById(id);
     if(el) el.classList.add("hidden");
   });
-}
-
-
-function showSignBook(){
-  showSignBook40();
 }
 
 function showSignBook40(){
@@ -3131,7 +3122,6 @@ function answerSignChoice40(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn40").classList.remove("hidden");
-  goToElement("signChoiceFeedback40");
 }
 
 function nextSignChoice40(){
@@ -3140,7 +3130,6 @@ function nextSignChoice40(){
     finishSignChoice40();
   }else{
     showSignChoice40();
-    goTop();
   }
 }
 
@@ -3184,7 +3173,7 @@ function startSignChoiceQuiz40(){
   document.getElementById("checklist").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
   document.getElementById("signGuide").classList.add("hidden");
-  const oldBook=document.getElementById("signBookOld"); if(oldBook) oldBook.classList.add("hidden");
+  document.getElementById("signBook").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.remove("hidden");
 
   showSignChoice();
@@ -3239,7 +3228,6 @@ function answerSignChoice(i){
 
   fb.classList.remove("hidden");
   document.getElementById("signChoiceNextBtn").classList.remove("hidden");
-  goToElement("signChoiceFeedback");
 }
 
 function nextSignChoice(){
@@ -3248,7 +3236,6 @@ function nextSignChoice(){
     finishSignChoice();
   }else{
     showSignChoice();
-    goTop();
   }
 }
 
@@ -3280,7 +3267,7 @@ function showSignBook40(){
   document.getElementById("examDay").classList.add("hidden");
   document.getElementById("signGuide").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.add("hidden");
-  showSignBook40();
+  document.getElementById("signBook").classList.remove("hidden");
 }
 
 function showSignGuide(){
@@ -3291,7 +3278,7 @@ function showSignGuide(){
   document.getElementById("mockReview").classList.add("hidden");
   document.getElementById("checklist").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
-  const oldBook=document.getElementById("signBookOld"); if(oldBook) oldBook.classList.add("hidden");
+  document.getElementById("signBook").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.add("hidden");
   document.getElementById("signGuide").classList.remove("hidden");
 }
@@ -3301,14 +3288,14 @@ function showExamDay(){
   document.getElementById("home").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
   document.getElementById("signGuide").classList.add("hidden");
-  const oldBook=document.getElementById("signBookOld"); if(oldBook) oldBook.classList.add("hidden");
+  document.getElementById("signBook").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
   document.getElementById("mockReview").classList.add("hidden");
   document.getElementById("checklist").classList.add("hidden");
   document.getElementById("signGuide").classList.add("hidden");
-  const oldBook=document.getElementById("signBookOld"); if(oldBook) oldBook.classList.add("hidden");
+  document.getElementById("signBook").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.add("hidden");
   document.getElementById("examDay").classList.remove("hidden");
 }
@@ -3378,7 +3365,7 @@ function launch(title){
   document.getElementById("checklist").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
   document.getElementById("signGuide").classList.add("hidden");
-  const oldBook=document.getElementById("signBookOld"); if(oldBook) oldBook.classList.add("hidden");
+  document.getElementById("signBook").classList.add("hidden");
   document.getElementById("signChoiceQuiz").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   document.getElementById("modeTitle").innerText = title;
@@ -3475,7 +3462,6 @@ function nextQuestion(){
     finish();
   }else{
     showQuestion();
-    goTop();
   }
 }
 
@@ -3553,6 +3539,55 @@ function backHome(){
   document.getElementById("result").classList.add("hidden");
   document.getElementById("home").classList.remove("hidden");
 }
+
+/* ---- stable sign40 routing override ---- */
+(function(){
+  function hideIds(ids){
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+  }
+
+  window.showSignBook40 = function(){
+    clearInterval(timerId);
+    hideIds(["home","quiz","result","mockReview","checklist","examDay","signGuide","signBook","signChoiceQuiz","signChoiceQuiz40"]);
+    var page = document.getElementById("signBook40");
+    if(page){
+      page.classList.remove("hidden");
+      goTop();
+    }else{
+      alert("実標識ミニ図鑑40ページが見つかりません。最新版コードを貼り直してください。");
+    }
+  };
+
+  window.showSignBook = window.showSignBook40;
+
+  window.startSignChoiceQuiz40 = function(){
+    clearInterval(timerId);
+    if(typeof signChoiceQuestions40 === "undefined"){
+      alert("実標識4択クイズ40のデータが見つかりません。最新版コードを貼り直してください。");
+      return;
+    }
+    signChoiceQuiz40 = shuffle(signChoiceQuestions40);
+    signChoiceIndex40 = 0;
+    signChoiceScore40 = 0;
+    signChoiceAnswered40 = false;
+    hideIds(["home","quiz","result","mockReview","checklist","examDay","signGuide","signBook","signBook40","signChoiceQuiz"]);
+    var page = document.getElementById("signChoiceQuiz40");
+    if(page){
+      page.classList.remove("hidden");
+      showSignChoice40();
+      goTop();
+    }else{
+      alert("実標識4択クイズ40ページが見つかりません。最新版コードを貼り直してください。");
+    }
+  };
+
+  window.startSignChoiceQuiz = window.startSignChoiceQuiz40;
+})();
+
 </script>
 </body>
 </html>
+
