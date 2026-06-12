@@ -533,6 +533,21 @@ rt{font-size:10px;color:#777}
   }
 }
 
+
+/* --- summer opening hero --- */
+.opening-hero-card{
+  margin:14px auto 14px;
+  background:white;
+  border-radius:26px;
+  padding:10px;
+  box-shadow:0 12px 28px rgba(0,0,0,.10);
+}
+.opening-hero-img{
+  width:100%;
+  display:block;
+  border-radius:20px;
+}
+
 </style>
 </head>
 
@@ -550,7 +565,10 @@ rt{font-size:10px;color:#777}
   </div>
 
 
-  <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
+  <div class="opening-hero-card">
+    <img src="opening_summer_hero.png" class="opening-hero-img" alt="夏のオープニングイラスト">
+  </div>
+
 
   <p>
     巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！<br>
@@ -1818,6 +1836,25 @@ rt{font-size:10px;color:#777}
 </div>
 
 <script>
+
+/* --- stable quiz scroll helpers --- */
+function scrollToFeedbackCard(){
+  setTimeout(function(){
+    var el = document.getElementById("feedback");
+    if(!el || el.classList.contains("hidden")) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 16;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 120);
+}
+function scrollToQuizTop(){
+  setTimeout(function(){
+    var el = document.getElementById("quiz");
+    if(!el || el.classList.contains("hidden")) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 8;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 90);
+}
+
 
 function goToElement(id){
   setTimeout(function(){
@@ -3247,6 +3284,8 @@ function startAllRandom(){
 }
 
 function startMockExam(){
+  isTimedExam = false;
+  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   mockAnswers = [];
@@ -3254,6 +3293,8 @@ function startMockExam(){
 }
 
 function startFinal20(){
+  isMockExam = false;
+  isTimedExam = false;
   const priority = [
     "横断歩道",
     "信号",
@@ -3285,6 +3326,8 @@ function startFinal20(){
 }
 
 function startMistakes(){
+  isMockExam = false;
+  isTimedExam = false;
   const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   if(saved.length === 0){
     alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
@@ -3295,6 +3338,8 @@ function startMistakes(){
 }
 
 function startWeakOnly(){
+  isMockExam = false;
+  isTimedExam = false;
   const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
   const weak = questions.filter(q => counts[q.q] >= 2);
 
@@ -3326,6 +3371,10 @@ function hideAllScreens40(){
 }
 
 function showSignBook40(){
+  /* reset mode showSignBook40 */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   hideAllScreens40();
   document.getElementById("signBook40").classList.remove("hidden");
@@ -3532,6 +3581,10 @@ function finishSignChoice(){
 }
 
 function showSignBook40(){
+  /* reset mode showSignBook40 */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3545,6 +3598,10 @@ function showSignBook40(){
 }
 
 function showSignGuide(){
+  /* reset mode showSignGuide */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3558,6 +3615,10 @@ function showSignGuide(){
 }
 
 function showExamDay(){
+  /* reset mode showExamDay */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
@@ -3583,6 +3644,10 @@ function startExamDayWarmup(){
 }
 
 function showChecklist(){
+  /* reset mode showChecklist */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
@@ -3599,6 +3664,8 @@ function startSigns(){
 }
 
 function startTimedExam(){
+  isTimedExam = true;
+  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   isTimedExam = true;
@@ -3658,6 +3725,7 @@ function showQuestion(){
   document.getElementById("question").innerHTML = r(item.q);
   document.getElementById("feedback").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
+  scrollToQuizTop();
 }
 
 function answer(choice){
@@ -3666,6 +3734,7 @@ function answer(choice){
 
   const item = quiz[index];
   const ok = choice === item.a;
+  const fb = document.getElementById("feedback");
 
   if(isMockExam){
     if(ok){
@@ -3687,18 +3756,22 @@ function answer(choice){
       ok: ok
     });
 
-    const fb = document.getElementById("feedback");
-    fb.className = "bubble";
-    fb.innerHTML =
-      '<img src="uma_teacher.png" class="feedback-img" alt="模試">' +
-      "🧪 回答を記録したよ。<br>本番風なので、正解発表は最後にまとめて見るよ。";
+    fb.className = "bubble " + (ok ? "ok" : "ng");
+    if(ok){
+      fb.innerHTML =
+        '<img src="miko_happy.png" class="feedback-img" alt="回答記録">' +
+        "🧪 回答を記録したよ。<br>正誤は最後にまとめて確認しよう。";
+    }else{
+      fb.innerHTML =
+        '<img src="uma_warning.png" class="feedback-img" alt="回答記録">' +
+        "🧪 回答を記録したよ。<br>この問題は復習候補に入れておくね。";
+    }
     fb.classList.remove("hidden");
     document.getElementById("nextBtn").classList.remove("hidden");
-    
+    scrollToFeedbackCard();
     return;
   }
 
-  const fb = document.getElementById("feedback");
   fb.className = "bubble " + (ok ? "ok" : "ng");
 
   if(ok){
@@ -3727,8 +3800,7 @@ function answer(choice){
 
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
-  jumpToAnswer("feedback");
-  
+  scrollToFeedbackCard();
 }
 
 function nextQuestion(){
@@ -3737,6 +3809,7 @@ function nextQuestion(){
     finish();
   }else{
     showQuestion();
+    scrollToQuizTop();
   }
 }
 
