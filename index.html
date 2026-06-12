@@ -92,12 +92,62 @@ rt{font-size:10px;color:#777}
   <button class="green menu-button" onclick="startMode('day3')">🎯 Day3：直前総復習 15問</button>
   <button class="yellow menu-button" onclick="startMode('extra')">🔥 追加特訓 20問</button>
   <button class="purple menu-button" onclick="startFinal20()">🎯 試験直前！絶対落とさない20問</button>
+  <button class="green menu-button" onclick="showChecklist()">📌 試験前1分チェックリスト</button>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
   <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
 
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
+</div>
+
+
+<div class="card hidden" id="checklist">
+  <span class="badge">電車で読むだけ</span>
+  <h2>試験前1分チェックリスト 📌</h2>
+  <img src="pair_study.png" class="result-img" alt="試験前チェック">
+  <div class="bubble">
+    <div class="dialogue-box">
+      <div class="dialogue-line">
+        <img src="uma_mini.png" class="dialogue-icon" alt="ウマくん">
+        <div class="dialogue-text">本番前は、新しいことより「落とさない問題」を確認しよう。</div>
+      </div>
+      <div class="dialogue-line">
+        <img src="miko_mini.png" class="dialogue-icon" alt="巫女ちゃん">
+        <div class="dialogue-text">深呼吸して、問題文を最後まで読む！</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bubble">
+    <p><strong>絶対落とさない基本</strong></p>
+    <p>✅ 黄色信号＝原則「止まれ」</p>
+    <p>✅ 横断歩道＝歩行者がいたら一時停止</p>
+    <p>✅ 踏切＝警報が鳴っていなくても一時停止</p>
+    <p>✅ 一時停止＝徐行ではなく、車輪を完全に止める</p>
+    <p>✅ 飲酒運転＝距離に関係なく絶対ダメ</p>
+  </div>
+
+  <div class="bubble">
+    <p><strong>普通二輪で狙われやすい</strong></p>
+    <p>✅ 雨の日の白線・マンホール＝すべりやすい</p>
+    <p>✅ カーブ＝手前で減速、曲がりながら急ブレーキしない</p>
+    <p>✅ 風＝橋・トンネル出口・大型車の横で注意</p>
+    <p>✅ 二輪も車間距離は十分にとる</p>
+    <p>✅ ヘルメットは正しく着用、あごひもも確実に</p>
+  </div>
+
+  <div class="bubble">
+    <p><strong>ひっかけ文の読み方</strong></p>
+    <p>✅ 「必ず」「どんな場合でも」は一度疑う</p>
+    <p>✅ 「〜してよい」は危険側なら×のことが多い</p>
+    <p>✅ 青信号でも安全確認は必要</p>
+    <p>✅ 優先道路でも安全確認は必要</p>
+    <p>✅ 迷ったら「安全側」を選ぶ</p>
+  </div>
+
+  <button class="purple" onclick="startFinal20()">🎯 そのまま直前20問へ</button>
+  <button class="pink" onclick="backHome()">ホームへ</button>
 </div>
 
 <div class="card hidden" id="quiz">
@@ -1259,6 +1309,13 @@ function startWeakOnly(){
   launch("苦手だけ集中 🔥");
 }
 
+function showChecklist(){
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("checklist").classList.remove("hidden");
+}
+
 function launch(title){
   index = 0;
   score = 0;
@@ -1266,6 +1323,7 @@ function launch(title){
   answered = false;
   document.getElementById("home").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
+  document.getElementById("checklist").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   document.getElementById("modeTitle").innerText = title;
   showQuestion();
