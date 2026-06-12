@@ -60,6 +60,7 @@ button{
   font-size:20px;
   font-weight:900;
   line-height:1.8;
+  margin-top:10px;
 }
 .bubble{
   background:#fff7fb;
@@ -100,7 +101,7 @@ rt{
 }
 .character-row{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   gap:12px;
   margin:10px 0;
 }
@@ -108,9 +109,6 @@ rt{
   width:92px;
   max-width:34%;
   flex-shrink:0;
-}
-.character.small-char{
-  width:76px;
 }
 .character-text{
   flex:1;
@@ -128,6 +126,42 @@ rt{
 }
 .menu-button{
   text-align:left;
+}
+/* ミニアイコン会話 */
+.dialogue-box{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.dialogue-line{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+.dialogue-icon{
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+}
+.dialogue-text{
+  background:white;
+  border-radius:14px;
+  padding:8px 10px;
+  line-height:1.6;
+  font-size:15px;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+@media (max-width:480px){
+  .character{
+    width:78px;
+  }
+  .dialogue-icon{
+    width:30px;
+    height:30px;
+  }
+  .dialogue-text{
+    font-size:14px;
+  }
 }
 </style>
 </head>
@@ -152,8 +186,10 @@ rt{
   <p id="modeTitle"></p>
   <p id="count"></p>
   <div class="character-row">
-    <img id="questionChar" src="uma_teacher.png" class="character" alt="ウマくん">
-    <div class="bubble character-text" id="comic"></div>
+    <img id="questionChar" src="uma_teacher.png" class="character" alt="キャラクター">
+    <div class="bubble character-text">
+      <div id="comic" class="dialogue-box"></div>
+    </div>
   </div>
   <div class="q" id="question"></div>
   <button class="green" onclick="answer(true)">○ 正しい</button>
@@ -171,150 +207,302 @@ rt{
 </div>
 <script>
 function r(text){
-return text
-.replaceAll("横断歩道","<ruby>横断歩道<rt>おうだんほどう</rt></ruby>")
-.replaceAll("歩行者","<ruby>歩行者<rt>ほこうしゃ</rt></ruby>")
-.replaceAll("一時停止","<ruby>一時停止<rt>いちじていし</rt></ruby>")
-.replaceAll("安全確認","<ruby>安全確認<rt>あんぜんかくにん</rt></ruby>")
-.replaceAll("黄色信号","<ruby>黄色信号<rt>きいろしんごう</rt></ruby>")
-.replaceAll("踏切","<ruby>踏切<rt>ふみきり</rt></ruby>")
-.replaceAll("酒気帯び運転","<ruby>酒気帯び運転<rt>しゅきおびうんてん</rt></ruby>")
-.replaceAll("優先道路","<ruby>優先道路<rt>ゆうせんどうろ</rt></ruby>")
-.replaceAll("徐行","<ruby>徐行<rt>じょこう</rt></ruby>")
-.replaceAll("急ブレーキ","<ruby>急ブレーキ<rt>きゅうブレーキ</rt></ruby>")
-.replaceAll("車間距離","<ruby>車間距離<rt>しゃかんきょり</rt></ruby>")
-.replaceAll("緊急自動車","<ruby>緊急自動車<rt>きんきゅうじどうしゃ</rt></ruby>")
-.replaceAll("停止距離","<ruby>停止距離<rt>ていしきょり</rt></ruby>")
-.replaceAll("進路","<ruby>進路<rt>しんろ</rt></ruby>")
-.replaceAll("標識","<ruby>標識<rt>ひょうしき</rt></ruby>")
-.replaceAll("交差点","<ruby>交差点<rt>こうさてん</rt></ruby>")
-.replaceAll("車輪","<ruby>車輪<rt>しゃりん</rt></ruby>")
-.replaceAll("転倒","<ruby>転倒<rt>てんとう</rt></ruby>");
+  return text
+  .replaceAll("横断歩道","<ruby>横断歩道<rt>おうだんほどう</rt></ruby>")
+  .replaceAll("歩行者","<ruby>歩行者<rt>ほこうしゃ</rt></ruby>")
+  .replaceAll("一時停止","<ruby>一時停止<rt>いちじていし</rt></ruby>")
+  .replaceAll("安全確認","<ruby>安全確認<rt>あんぜんかくにん</rt></ruby>")
+  .replaceAll("黄色信号","<ruby>黄色信号<rt>きいろしんごう</rt></ruby>")
+  .replaceAll("踏切","<ruby>踏切<rt>ふみきり</rt></ruby>")
+  .replaceAll("酒気帯び運転","<ruby>酒気帯び運転<rt>しゅきおびうんてん</rt></ruby>")
+  .replaceAll("優先道路","<ruby>優先道路<rt>ゆうせんどうろ</rt></ruby>")
+  .replaceAll("徐行","<ruby>徐行<rt>じょこう</rt></ruby>")
+  .replaceAll("急ブレーキ","<ruby>急ブレーキ<rt>きゅうブレーキ</rt></ruby>")
+  .replaceAll("車間距離","<ruby>車間距離<rt>しゃかんきょり</rt></ruby>")
+  .replaceAll("緊急自動車","<ruby>緊急自動車<rt>きんきゅうじどうしゃ</rt></ruby>")
+  .replaceAll("停止距離","<ruby>停止距離<rt>ていしきょり</rt></ruby>")
+  .replaceAll("進路","<ruby>進路<rt>しんろ</rt></ruby>")
+  .replaceAll("標識","<ruby>標識<rt>ひょうしき</rt></ruby>")
+  .replaceAll("交差点","<ruby>交差点<rt>こうさてん</rt></ruby>")
+  .replaceAll("車輪","<ruby>車輪<rt>しゃりん</rt></ruby>")
+  .replaceAll("転倒","<ruby>転倒<rt>てんとう</rt></ruby>");
 }
-const questions=[
-{day:"day1",char:"uma_teacher.png",q:"横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",a:true,e:"歩行者優先。これは絶対落とせない！",c:"🐴ウマくん「歩行者さんがいたら、まず止まる！本番でも超大事だよ」"},
-{day:"day1",char:"miko_surprised.png",q:"黄色信号は『注意して進め』という意味である。",a:false,e:"黄色信号は原則『止まれ』。止まれない場合だけ進行できる。",c:"🌸巫女ちゃん「黄色は急げ、じゃないの？」<br>🐴ウマくん「それ罠！原則止まれだよ」"},
-{day:"day1",char:"uma_point.png",q:"踏切では、警報機が鳴っていなくても一時停止して安全確認する。",a:true,e:"踏切は必ず一時停止。左右確認もセット。",c:"🐴ウマくん「鳴ってなくても、踏切では止まって確認！」"},
-{day:"day1",char:"uma_warning.png",q:"酒気帯び運転は、短い距離であれば違反にならない。",a:false,e:"距離は関係なし。飲んだら絶対に運転しない。",c:"🌸巫女ちゃん「近所なら…？」<br>🐴ウマくん「絶対ダメ！」"},
-{day:"day1",char:"miko_thinking.png",q:"一時停止の標識がある場所では、徐行すれば停止しなくてもよい。",a:false,e:"徐行ではダメ。車輪を完全に止める。",c:"🌸巫女ちゃん「ゆっくりならOK？」<br>🐴ウマくん「完全停止だよ！」"},
-{day:"day2",char:"uma_warning.png",q:"二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",a:true,e:"二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。",c:"🐴ウマくん「雨の日の白線とマンホールはツルッといくよ！」"},
-{day:"day2",char:"uma_teacher.png",q:"カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",a:false,e:"カーブ中の急ブレーキは転倒の危険。手前で十分減速。",c:"🐴ウマくん「カーブは曲がる前に減速。途中の急ブレーキは危ない！」"},
-{day:"day2",char:"uma_point.png",q:"二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",a:true,e:"橋の上・トンネル出口・大型車の横は風に注意。",c:"🐴ウマくん「バイクは風の影響を受けやすいよ」"},
-{day:"day2",char:"miko_surprised.png",q:"二輪車は小さいので、車間距離を短くして走ってもよい。",a:false,e:"二輪も十分な車間距離が必要。急停止に備える。",c:"🌸巫女ちゃん「小さいから詰めてもいい？」<br>🐴ウマくん「むしろ余裕が大事！」"},
-{day:"day2",char:"uma_teacher.png",q:"雨の日は停止距離が長くなるので、車間距離を長めにとる。",a:true,e:"ぬれた路面は止まりにくい。早めの判断が大切。",c:"🐴ウマくん「雨の日は止まるまで長くなるよ！」"},
-{day:"day3",char:"uma_doya.png",q:"優先道路を通行していても、安全確認は必要である。",a:true,e:"優先でも油断禁止。安全確認は常に必要。",c:"🐴ウマくん「優先でも確認！ここ本番の落とし穴」"},
-{day:"day3",char:"uma_warning.png",q:"緊急自動車が近づいてきたら、進路を譲る。",a:true,e:"サイレンが聞こえたら落ち着いて進路を譲る。",c:"🐴ウマくん「救急車や消防車が来たら、落ち着いて譲ろう」"},
-{day:"day3",char:"miko_surprised.png",q:"運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",a:false,e:"ながら運転は危険。短時間でもダメ。",c:"🌸巫女ちゃん「一瞬だけなら…」<br>🐴ウマくん「一瞬が事故につながる！」"},
-{day:"day3",char:"uma_teacher.png",q:"交差点の近くでは、他の交通に注意して安全確認をする。",a:true,e:"交差点は事故が起きやすい場所。必ず安全確認。",c:"🐴ウマくん「交差点は落ち着いて確認！」"},
-{day:"day3",char:"pair_study.png",q:"疲れているときは、無理をせず休憩することが大切である。",a:true,e:"眠気や疲れは事故のもと。休む勇気が大事。",c:"🌸巫女ちゃん「もう少し行けるかも…」<br>🐴ウマくん「休憩も運転技術だよ」"}
+function renderDialogue(dialogue){
+  return dialogue.map(line => {
+    const icon = line.speaker === "miko" ? "miko_mini.png" : "uma_mini.png";
+    return `
+      <div class="dialogue-line">
+        <img src="${icon}" class="dialogue-icon" alt="${line.speaker}">
+        <div class="dialogue-text">${r(line.text)}</div>
+      </div>
+    `;
+  }).join("");
+}
+const questions = [
+  {
+    day:"day1",
+    char:"uma_teacher.png",
+    dialogue:[
+      {speaker:"uma", text:"歩行者さんがいたら、まず止まる！本番でも超大事だよ"}
+    ],
+    q:"横断歩道を渡ろうとしている歩行者がいるときは、一時停止しなければならない。",
+    a:true,
+    e:"歩行者優先。これは絶対落とせない！"
+  },
+  {
+    day:"day1",
+    char:"miko_surprised.png",
+    dialogue:[
+      {speaker:"miko", text:"黄色は急げ、じゃないの？"},
+      {speaker:"uma", text:"それ罠！原則止まれだよ"}
+    ],
+    q:"黄色信号は『注意して進め』という意味である。",
+    a:false,
+    e:"黄色信号は原則『止まれ』。止まれない場合だけ進行できる。"
+  },
+  {
+    day:"day1",
+    char:"uma_point.png",
+    dialogue:[
+      {speaker:"uma", text:"鳴ってなくても、踏切では止まって確認！"}
+    ],
+    q:"踏切では、警報機が鳴っていなくても一時停止して安全確認する。",
+    a:true,
+    e:"踏切は必ず一時停止。左右確認もセット。"
+  },
+  {
+    day:"day1",
+    char:"uma_warning.png",
+    dialogue:[
+      {speaker:"miko", text:"近所なら…？"},
+      {speaker:"uma", text:"絶対ダメ！"}
+    ],
+    q:"酒気帯び運転は、短い距離であれば違反にならない。",
+    a:false,
+    e:"距離は関係なし。飲んだら絶対に運転しない。"
+  },
+  {
+    day:"day1",
+    char:"miko_thinking.png",
+    dialogue:[
+      {speaker:"miko", text:"ゆっくりならOK？"},
+      {speaker:"uma", text:"完全停止だよ！"}
+    ],
+    q:"一時停止の標識がある場所では、徐行すれば停止しなくてもよい。",
+    a:false,
+    e:"徐行ではダメ。車輪を完全に止める。"
+  },
+  {
+    day:"day2",
+    char:"uma_warning.png",
+    dialogue:[
+      {speaker:"uma", text:"雨の日の白線とマンホールはツルッといくよ！"}
+    ],
+    q:"二輪車で雨の日にマンホールや白線の上を通るときは、すべりやすいので注意する。",
+    a:true,
+    e:"二輪は路面の影響を受けやすい。雨・白線・マンホールは要注意。"
+  },
+  {
+    day:"day2",
+    char:"uma_teacher.png",
+    dialogue:[
+      {speaker:"uma", text:"カーブは曲がる前に減速。途中の急ブレーキは危ない！"}
+    ],
+    q:"カーブでは、曲がっている途中で急ブレーキをかけるのが安全である。",
+    a:false,
+    e:"カーブ中の急ブレーキは転倒の危険。手前で十分減速。"
+  },
+  {
+    day:"day2",
+    char:"uma_point.png",
+    dialogue:[
+      {speaker:"uma", text:"バイクは風の影響を受けやすいよ"}
+    ],
+    q:"二輪車は四輪車より体が外に出ているため、風の影響を受けやすい。",
+    a:true,
+    e:"橋の上・トンネル出口・大型車の横は風に注意。"
+  },
+  {
+    day:"day2",
+    char:"miko_surprised.png",
+    dialogue:[
+      {speaker:"miko", text:"小さいから詰めてもいい？"},
+      {speaker:"uma", text:"むしろ余裕が大事！"}
+    ],
+    q:"二輪車は小さいので、車間距離を短くして走ってもよい。",
+    a:false,
+    e:"二輪も十分な車間距離が必要。急停止に備える。"
+  },
+  {
+    day:"day2",
+    char:"uma_teacher.png",
+    dialogue:[
+      {speaker:"uma", text:"雨の日は止まるまで長くなるよ！"}
+    ],
+    q:"雨の日は停止距離が長くなるので、車間距離を長めにとる。",
+    a:true,
+    e:"ぬれた路面は止まりにくい。早めの判断が大切。"
+  },
+  {
+    day:"day3",
+    char:"uma_doya.png",
+    dialogue:[
+      {speaker:"uma", text:"優先でも確認！ここ本番の落とし穴"}
+    ],
+    q:"優先道路を通行していても、安全確認は必要である。",
+    a:true,
+    e:"優先でも油断禁止。安全確認は常に必要。"
+  },
+  {
+    day:"day3",
+    char:"uma_warning.png",
+    dialogue:[
+      {speaker:"uma", text:"救急車や消防車が来たら、落ち着いて譲ろう"}
+    ],
+    q:"緊急自動車が近づいてきたら、進路を譲る。",
+    a:true,
+    e:"サイレンが聞こえたら落ち着いて進路を譲る。"
+  },
+  {
+    day:"day3",
+    char:"miko_surprised.png",
+    dialogue:[
+      {speaker:"miko", text:"一瞬だけなら…"},
+      {speaker:"uma", text:"一瞬が事故につながる！"}
+    ],
+    q:"運転中にスマートフォンを手に持って使っても、短時間なら問題ない。",
+    a:false,
+    e:"ながら運転は危険。短時間でもダメ。"
+  },
+  {
+    day:"day3",
+    char:"uma_teacher.png",
+    dialogue:[
+      {speaker:"uma", text:"交差点は落ち着いて確認！"}
+    ],
+    q:"交差点の近くでは、他の交通に注意して安全確認をする。",
+    a:true,
+    e:"交差点は事故が起きやすい場所。必ず安全確認。"
+  },
+  {
+    day:"day3",
+    char:"pair_study.png",
+    dialogue:[
+      {speaker:"miko", text:"もう少し行けるかも…"},
+      {speaker:"uma", text:"休憩も運転技術だよ"}
+    ],
+    q:"疲れているときは、無理をせず休憩することが大切である。",
+    a:true,
+    e:"眠気や疲れは事故のもと。休む勇気が大事。"
+  }
 ];
-const cheers=[
-"真彩ちゃんナイス🌸",
-"これは本番でも取れる！",
-"いい判断！",
-"ウマくんも拍手🐴",
-"合格に近づいた！"
+const cheers = [
+  "真彩ちゃんナイス🌸",
+  "これは本番でも取れる！",
+  "いい判断！",
+  "ウマくんも拍手🐴",
+  "合格に近づいた！"
 ];
-let quiz=[];
-let index=0;
-let score=0;
-let mistakes=[];
-let answered=false;
+let quiz = [];
+let index = 0;
+let score = 0;
+let mistakes = [];
+let answered = false;
 function startMode(day){
- quiz=questions.filter(x=>x.day===day);
- launch(day==="day1"?"Day1：基本ルール":day==="day2"?"Day2：二輪ひっかけ":"Day3：直前総復習");
+  quiz = questions.filter(x => x.day === day);
+  launch(day==="day1" ? "Day1：基本ルール" : day==="day2" ? "Day2：二輪ひっかけ" : "Day3：直前総復習");
 }
 function startTrain(){
- quiz=[...questions].sort(()=>Math.random()-0.5).slice(0,5);
- launch("電車で5問復習 🚃");
+  quiz = [...questions].sort(()=>Math.random()-0.5).slice(0,5);
+  launch("電車で5問復習 🚃");
 }
 function startMistakes(){
- const saved=JSON.parse(localStorage.getItem("mayaBikeMistakes")||"[]");
- if(saved.length===0){
-   alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
-   return;
- }
- quiz=saved;
- launch("間違えた問題だけ復習");
+  const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
+  if(saved.length === 0){
+    alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
+    return;
+  }
+  quiz = saved;
+  launch("間違えた問題だけ復習");
 }
 function launch(title){
- index=0;
- score=0;
- mistakes=[];
- answered=false;
- document.getElementById("home").classList.add("hidden");
- document.getElementById("result").classList.add("hidden");
- document.getElementById("quiz").classList.remove("hidden");
- document.getElementById("modeTitle").innerText=title;
- showQuestion();
+  index = 0;
+  score = 0;
+  mistakes = [];
+  answered = false;
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("modeTitle").innerText = title;
+  showQuestion();
 }
 function showQuestion(){
- answered=false;
- const item=quiz[index];
- document.getElementById("count").innerText=(index+1)+" / "+quiz.length;
- document.getElementById("questionChar").src=item.char || "uma_teacher.png";
- document.getElementById("comic").innerHTML=r(item.c);
- document.getElementById("question").innerHTML=r(item.q);
- document.getElementById("feedback").classList.add("hidden");
- document.getElementById("nextBtn").classList.add("hidden");
+  answered = false;
+  const item = quiz[index];
+  document.getElementById("count").innerText = (index+1) + " / " + quiz.length;
+  document.getElementById("questionChar").src = item.char || "uma_teacher.png";
+  document.getElementById("comic").innerHTML = renderDialogue(item.dialogue);
+  document.getElementById("question").innerHTML = r(item.q);
+  document.getElementById("feedback").classList.add("hidden");
+  document.getElementById("nextBtn").classList.add("hidden");
 }
 function answer(choice){
- if(answered)return;
- answered=true;
- const item=quiz[index];
- const ok=choice===item.a;
- const fb=document.getElementById("feedback");
- fb.className="bubble "+(ok?"ok":"ng");
- if(ok){
-   score++;
-   fb.innerHTML=
-     '<img src="miko_happy.png" class="feedback-img" alt="正解">' +
-     "⭕ 正解！<br>" +
-     cheers[Math.floor(Math.random()*cheers.length)] +
-     "<br><br>" +
-     r(item.e);
- }else{
-   mistakes.push(item);
-   fb.innerHTML=
-     '<img src="pair_mistake.png" class="feedback-img" alt="惜しい">' +
-     "❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>" +
-     r(item.e);
- }
- fb.classList.remove("hidden");
- document.getElementById("nextBtn").classList.remove("hidden");
+  if(answered) return;
+  answered = true;
+  const item = quiz[index];
+  const ok = choice === item.a;
+  const fb = document.getElementById("feedback");
+  fb.className = "bubble " + (ok ? "ok" : "ng");
+  if(ok){
+    score++;
+    fb.innerHTML =
+      '<img src="miko_happy.png" class="feedback-img" alt="正解">' +
+      "⭕ 正解！<br>" +
+      cheers[Math.floor(Math.random()*cheers.length)] +
+      "<br><br>" +
+      r(item.e);
+  }else{
+    mistakes.push(item);
+    fb.innerHTML =
+      '<img src="pair_mistake.png" class="feedback-img" alt="惜しい">' +
+      "❌ 惜しい！<br>ここで覚えたから本番では勝ち。<br><br>" +
+      r(item.e);
+  }
+  fb.classList.remove("hidden");
+  document.getElementById("nextBtn").classList.remove("hidden");
 }
 function nextQuestion(){
- index++;
- if(index>=quiz.length){
-   finish();
- }else{
-   showQuestion();
- }
+  index++;
+  if(index >= quiz.length){
+    finish();
+  }else{
+    showQuestion();
+  }
 }
 function finish(){
- const old=JSON.parse(localStorage.getItem("mayaBikeMistakes")||"[]");
- const unique=[];
- [...old,...mistakes].forEach(q=>{
-   if(!unique.find(x=>x.q===q.q))unique.push(q);
- });
- localStorage.setItem("mayaBikeMistakes",JSON.stringify(unique));
- document.getElementById("quiz").classList.add("hidden");
- document.getElementById("result").classList.remove("hidden");
- document.getElementById("score").innerText=score+" / "+quiz.length;
- if(score===quiz.length){
-   document.getElementById("resultImg").src="pair_goal.png";
-   document.getElementById("message").innerText="満点！真彩ちゃんすごい🌸 この調子なら本番もいける！";
- }else if(score>=Math.ceil(quiz.length*.8)){
-   document.getElementById("resultImg").src="pair_cheer.png";
-   document.getElementById("message").innerText="かなり合格圏！間違えた所だけ復習しよう。";
- }else{
-   document.getElementById("resultImg").src="pair_study.png";
-   document.getElementById("message").innerText="まだ伸びる！間違えた問題だけもう一回。";
- }
+  const old = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
+  const unique = [];
+  [...old, ...mistakes].forEach(q => {
+    if(!unique.find(x => x.q === q.q)) unique.push(q);
+  });
+  localStorage.setItem("mayaBikeMistakes", JSON.stringify(unique));
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("score").innerText = score + " / " + quiz.length;
+  if(score === quiz.length){
+    document.getElementById("resultImg").src = "pair_goal.png";
+    document.getElementById("message").innerText = "満点！真彩ちゃんすごい🌸 この調子なら本番もいける！";
+  }else if(score >= Math.ceil(quiz.length * .8)){
+    document.getElementById("resultImg").src = "pair_cheer.png";
+    document.getElementById("message").innerText = "かなり合格圏！間違えた所だけ復習しよう。";
+  }else{
+    document.getElementById("resultImg").src = "pair_study.png";
+    document.getElementById("message").innerText = "まだ伸びる！間違えた問題だけもう一回。";
+  }
 }
 function backHome(){
- document.getElementById("result").classList.add("hidden");
- document.getElementById("home").classList.remove("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
 }
 </script>
 </body>
