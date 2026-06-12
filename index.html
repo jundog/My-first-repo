@@ -57,7 +57,7 @@ rt{font-size:10px;color:#777}
 .dialogue-line{display:flex;align-items:flex-start;gap:8px}
 .dialogue-icon{width:34px;height:34px;flex-shrink:0;border-radius:50%}
 .dialogue-text{background:white;border-radius:14px;padding:8px 10px;line-height:1.6;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
-.category{font-size:13px;color:#777;font-weight:800}.review-item{background:#fff;border-radius:14px;padding:12px;margin:10px 0;border:1px solid #eee}.review-ok{border-left:6px solid #31b97c}.review-ng{border-left:6px solid #ff6b6b}.mock-note{background:#f4f0ff;border:2px solid #d7c8ff;border-radius:16px;padding:12px;margin:10px 0;line-height:1.7}
+.category{font-size:13px;color:#777;font-weight:800}.timer{font-size:18px;font-weight:900;text-align:right;color:#d63384;background:#fff0f6;border-radius:14px;padding:8px 10px}.review-item{background:#fff;border-radius:14px;padding:12px;margin:10px 0;border:1px solid #eee}.review-ok{border-left:6px solid #31b97c}.review-ng{border-left:6px solid #ff6b6b}.mock-note{background:#f4f0ff;border:2px solid #d7c8ff;border-radius:16px;padding:12px;margin:10px 0;line-height:1.7}
 @media (max-width:480px){
   .character{width:78px}
   .dialogue-icon{width:30px;height:30px}
@@ -70,7 +70,7 @@ rt{font-size:10px;color:#777}
 <div class="app">
 
 <div class="card" id="home">
-  <span class="badge">普通二輪・問題65問版</span>
+  <span class="badge">普通二輪・問題85問版</span>
   <h1>真彩のバイク免許チャレンジ 🏍️🌸</h1>
 
   <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
@@ -81,7 +81,7 @@ rt{font-size:10px;color:#777}
   </p>
 
   <div class="stat-grid">
-    <div class="stat">全65問</div>
+    <div class="stat">全85問</div>
     <div class="stat">二輪強化</div>
     <div class="stat">ルビつき</div>
     <div class="stat">ミス復習</div>
@@ -96,8 +96,10 @@ rt{font-size:10px;color:#777}
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
   <button class="purple menu-button" onclick="startWeakOnly()">🔥 苦手だけ集中</button>
-  <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
+  <button class="blue menu-button" onclick="startAllRandom()">🌀 全85問からランダム20問</button>
   <button class="purple menu-button" onclick="startMockExam()">🧪 本番風ミニ模試30問</button>
+  <button class="orange menu-button" onclick="startSigns()">🚧 標識・標示20問</button>
+  <button class="red menu-button" onclick="startTimedExam()">⏱ 本番風タイマー模試30問</button>
 
   <p class="small">※学習補助アプリです。最終確認は教本・教習所の内容で。</p>
 </div>
@@ -154,6 +156,7 @@ rt{font-size:10px;color:#777}
 <div class="card hidden" id="quiz">
   <p id="modeTitle"></p>
   <p id="count"></p>
+  <p id="timer" class="timer hidden">残り時間 15:00</p>
   <p class="category" id="category"></p>
 
   <div class="character-row">
@@ -1234,6 +1237,321 @@ const questions = [
   }
 ];
 
+const signQuestions = [
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "標識は本番でもかなり出るよ。形と意味をセットで覚えよう"
+      }
+    ],
+    "q": "一時停止の標識がある場所では、停止線の直前で一時停止しなければならない。",
+    "a": true,
+    "e": "一時停止は徐行ではなく完全停止。停止線がある場合は停止線の直前で止まる。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "進入禁止って二輪もダメ？"
+      },
+      {
+        "speaker": "uma",
+        "text": "車両進入禁止は二輪も対象になるよ"
+      }
+    ],
+    "q": "車両進入禁止の標識がある道路には、二輪車も進入してはならない。",
+    "a": true,
+    "e": "二輪車も車両。車両進入禁止の標識には従う。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "通行止めは、軽い気持ちで入らない！"
+      }
+    ],
+    "q": "通行止めの標識がある道路でも、二輪車なら通行してよい。",
+    "a": false,
+    "e": "通行止めは原則として車両も歩行者も通行できない。補助標識がある場合は内容を確認。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "徐行は“すぐ止まれる速度”だよ"
+      }
+    ],
+    "q": "徐行の標識がある場所では、すぐに停止できるような速度で進行する。",
+    "a": true,
+    "e": "徐行とは、車がすぐ停止できるような速度で進むこと。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "追越し禁止って、空いててもダメ？"
+      },
+      {
+        "speaker": "uma",
+        "text": "標識があるなら従う！"
+      }
+    ],
+    "q": "追越し禁止の標識がある場所では、安全そうに見えても追越しをしてはならない。",
+    "a": true,
+    "e": "追越し禁止の標識や標示がある場所では追越しは禁止。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "最高速度の標識はその速度を超えちゃダメ"
+      }
+    ],
+    "q": "最高速度の標識がある道路では、その速度を超えて運転してはならない。",
+    "a": true,
+    "e": "標識で指定された最高速度を守る。天候や道路状況によってはさらに控えめに。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "最低速度もあるの？"
+      },
+      {
+        "speaker": "uma",
+        "text": "高速道路などで出ることがあるよ"
+      }
+    ],
+    "q": "最低速度の標識がある道路では、やむを得ない場合を除き、その速度に達しない速度で走行してはならない。",
+    "a": true,
+    "e": "最低速度が指定されている場合は、その速度を下回らないようにする。ただし危険防止などやむを得ない場合を除く。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "駐車禁止と駐停車禁止は違うよ"
+      }
+    ],
+    "q": "駐車禁止の標識がある場所では、駐車はできないが、停車まで常に禁止されるわけではない。",
+    "a": true,
+    "e": "駐車禁止と駐停車禁止は別。標識の意味を区別する。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "駐停車禁止は“止まること”にも注意！"
+      }
+    ],
+    "q": "駐停車禁止の標識がある場所では、駐車も停車も禁止される。",
+    "a": true,
+    "e": "駐停車禁止は駐車だけでなく停車も禁止。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "自転車専用っぽい道も二輪で行ける？"
+      },
+      {
+        "speaker": "uma",
+        "text": "指定された車両以外はダメなことがあるよ"
+      }
+    ],
+    "q": "自転車専用道路の標識がある道路を、普通二輪車で自由に通行してよい。",
+    "a": false,
+    "e": "自転車専用など、通行できる車両が指定されている場合はそれに従う。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "指定方向外進行禁止は、矢印の方向が大事"
+      }
+    ],
+    "q": "指定方向外進行禁止の標識がある交差点では、標識で示された方向以外へ進行してはならない。",
+    "a": true,
+    "e": "矢印で示された方向にだけ進める。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "一方通行は逆から少しだけなら？"
+      },
+      {
+        "speaker": "uma",
+        "text": "少しでも逆走は危険！"
+      }
+    ],
+    "q": "一方通行の標識がある道路では、指定された方向に通行しなければならない。",
+    "a": true,
+    "e": "一方通行は指定方向にだけ進む。逆走は危険。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "車両通行止めは、車両の仲間に注意"
+      }
+    ],
+    "q": "車両通行止めの標識がある道路を、普通二輪車で通行してよい。",
+    "a": false,
+    "e": "普通二輪車は車両なので、車両通行止めの標識に従う。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "補助標識は小さいけど重要！"
+      }
+    ],
+    "q": "標識の下に補助標識がある場合は、時間や車両の種類などの条件を確認する。",
+    "a": true,
+    "e": "補助標識は本標識の意味を限定・補足する。見落とさない。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_surprised.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "道路の白い線も標識と同じくらい大事？"
+      },
+      {
+        "speaker": "uma",
+        "text": "標示も守る対象だよ"
+      }
+    ],
+    "q": "道路標示も交通規制を示すものなので、標識と同じように守らなければならない。",
+    "a": true,
+    "e": "標識だけでなく、道路上の標示にも従う。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_teacher.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "停止線は“ここで止まる”の線だよ"
+      }
+    ],
+    "q": "停止線がある場所では、停止線を越えずに停止する。",
+    "a": true,
+    "e": "赤信号や一時停止などでは停止線の直前で止まる。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_warning.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "横断歩道の標示を見たら歩行者優先！"
+      }
+    ],
+    "q": "横断歩道の標示がある場所では、歩行者の有無に注意し、横断しようとする歩行者がいれば一時停止する。",
+    "a": true,
+    "e": "横断歩道では歩行者優先。標示の見落としに注意。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "miko_thinking.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "標識が古く見えたら無視していい？"
+      },
+      {
+        "speaker": "uma",
+        "text": "勝手に判断しないで従うよ"
+      }
+    ],
+    "q": "道路標識が見えにくいと感じた場合は、自分の判断で無視してよい。",
+    "a": false,
+    "e": "標識は勝手に無視しない。見えにくい場合ほど慎重に運転する。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "uma_point.png",
+    "dialogue": [
+      {
+        "speaker": "uma",
+        "text": "規制標識は“禁止・制限・指定”を表すよ"
+      }
+    ],
+    "q": "規制標識は、通行の禁止や制限、指定などを示す標識である。",
+    "a": true,
+    "e": "規制標識は交通ルールを直接示す重要な標識。"
+  },
+  {
+    "day": "signs",
+    "cat": "標識・標示",
+    "char": "pair_study.png",
+    "dialogue": [
+      {
+        "speaker": "miko",
+        "text": "標識は丸暗記だけじゃなく意味で覚える！"
+      },
+      {
+        "speaker": "uma",
+        "text": "その通り。安全のためのサインだよ"
+      }
+    ],
+    "q": "標識や標示は、意味を理解して安全運転に役立てることが大切である。",
+    "a": true,
+    "e": "標識・標示は暗記だけでなく、実際の安全判断に使う。"
+  }
+];
+
 const cheers = [
   "真彩ちゃんナイス🌸",
   "これは本番でも取れる！",
@@ -1249,6 +1567,9 @@ let mistakes = [];
 let answered = false;
 let isMockExam = false;
 let mockAnswers = [];
+let isTimedExam = false;
+let timeLeft = 0;
+let timerId = null;
 
 function shuffle(arr){
   return [...arr].sort(()=>Math.random()-0.5);
@@ -1265,13 +1586,13 @@ function startTrain(){
 }
 
 function startAllRandom(){
-  quiz = shuffle(questions).slice(0,20);
+  quiz = shuffle([...questions, ...signQuestions]).slice(0,20);
   isMockExam = false;
-  launch("全65問からランダム20問 🌀");
+  launch("全85問からランダム20問 🌀");
 }
 
 function startMockExam(){
-  quiz = shuffle(questions).slice(0,30);
+  quiz = shuffle([...questions, ...signQuestions]).slice(0,30);
   isMockExam = true;
   mockAnswers = [];
   launch("本番風ミニ模試30問 🧪");
@@ -1339,11 +1660,50 @@ function showChecklist(){
   document.getElementById("checklist").classList.remove("hidden");
 }
 
+
+function startSigns(){
+  quiz = signQuestions;
+  isMockExam = false;
+  isTimedExam = false;
+  launch("標識・標示20問 🚧");
+}
+
+function startTimedExam(){
+  quiz = shuffle([...questions, ...signQuestions]).slice(0,30);
+  isMockExam = true;
+  isTimedExam = true;
+  mockAnswers = [];
+  timeLeft = 15 * 60;
+  launch("本番風タイマー模試30問 ⏱");
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerId);
+  updateTimerDisplay();
+  document.getElementById("timer").classList.remove("hidden");
+  timerId = setInterval(function(){
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft <= 0){
+      clearInterval(timerId);
+      finish();
+    }
+  },1000);
+}
+
+function updateTimerDisplay(){
+  const m = String(Math.floor(timeLeft / 60)).padStart(2,"0");
+  const s = String(timeLeft % 60).padStart(2,"0");
+  document.getElementById("timer").innerText = "残り時間 " + m + ":" + s;
+}
+
 function launch(title){
   index = 0;
   score = 0;
   mistakes = [];
   answered = false;
+  if(!isTimedExam){ clearInterval(timerId); document.getElementById("timer").classList.add("hidden"); }
   document.getElementById("home").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
   document.getElementById("checklist").classList.add("hidden");
@@ -1443,6 +1803,8 @@ function nextQuestion(){
 }
 
 function finish(){
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
   const old = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   const unique = [];
   [...old, ...mistakes].forEach(q => {
@@ -1507,6 +1869,8 @@ function showMockReview(){
 }
 
 function backHome(){
+ clearInterval(timerId);
+ document.getElementById("timer").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
   document.getElementById("home").classList.remove("hidden");
 }
