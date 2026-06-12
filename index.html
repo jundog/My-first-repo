@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免許学科 模擬テスト</title>
+<style>
+body{font-family:sans-serif;background:#f4f4f4;padding:20px;max-width:700px;margin:auto}
+.card{background:#fff;padding:20px;border-radius:16px;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+button{width:100%;padding:15px;margin-top:10px;border:none;border-radius:12px;font-size:18px}
+.true{background:#16a34a;color:white}
+.false{background:#dc2626;color:white}
+.primary{background:#2563eb;color:white}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="card" id="start">
+<h1>免許学科 模擬テスト</h1>
+<p>本番寄り10問・○×形式</p>
+<button class="primary" onclick="startQuiz()">開始</button>
+</div>
+<div class="card hidden" id="quiz">
+<p id="count"></p>
+<h2 id="question"></h2>
+<button class="true" onclick="answer(true)">○ 正しい</button>
+<button class="false" onclick="answer(false)">× 誤り</button>
+<p id="feedback"></p>
+<button class="primary hidden" id="nextBtn" onclick="nextQuestion()">次へ</button>
+</div>
+<div class="card hidden" id="result">
+<h1 id="score"></h1>
+<p id="message"></p>
+<button class="primary" onclick="location.reload()">もう一度</button>
+</div>
+<script>
+const questions = [
+{q:"歩行者が横断しようとしている横断歩道では一時停止しなければならない。",a:true},
+{q:"黄色信号は注意して進めの意味である。",a:false},
+{q:"酒気帯び運転は短距離なら違反ではない。",a:false},
+{q:"踏切では一時停止し安全確認する。",a:true},
+{q:"警察官の指示より標識が優先される。",a:false},
+{q:"交差点から5m以内は駐停車禁止。",a:true},
+{q:"同乗者のシートベルトは運転者に関係ない。",a:false},
+{q:"夜間対向車がいる時はライトを下げる。",a:true},
+{q:"高速道路では極端に遅くても問題ない。",a:false},
+{q:"緊急車両が来たら進路を譲る。",a:true}
+];
+let index=0;
+let score=0;
+function startQuiz(){
+document.getElementById("start").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+showQuestion();
+}
+function showQuestion(){
+document.getElementById("count").innerText=`${index+1} / ${questions.length}`;
+document.getElementById("question").innerText=questions[index].q;
+document.getElementById("feedback").innerText="";
+document.getElementById("nextBtn").classList.add("hidden");
+}
+function answer(choice){
+const correct=questions[index].a;
+if(choice===correct){
+score++;
+document.getElementById("feedback").innerText="⭕ 正解";
+}else{
+document.getElementById("feedback").innerText="❌ 不正解";
+}
+document.getElementById("nextBtn").classList.remove("hidden");
+}
+function nextQuestion(){
+index++;
+if(index>=questions.length){
+finish();
+}else{
+showQuestion();
+}
+}
+function finish(){
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+document.getElementById("score").innerText=`${score}/10`;
+document.getElementById("message").innerText=
+score>=9?"合格圏！":
+score>=7?"あと少し！":
+"復習しよう！";
+}
+</script>
+</body>
+</html>
