@@ -91,6 +91,7 @@ rt{font-size:10px;color:#777}
   <button class="blue menu-button" onclick="startMode('day2')">❓ Day2：二輪ひっかけ 15問</button>
   <button class="green menu-button" onclick="startMode('day3')">🎯 Day3：直前総復習 15問</button>
   <button class="yellow menu-button" onclick="startMode('extra')">🔥 追加特訓 20問</button>
+  <button class="purple menu-button" onclick="startFinal20()">🎯 試験直前！絶対落とさない20問</button>
   <button class="gray menu-button" onclick="startTrain()">🚃 電車で5問復習</button>
   <button class="red menu-button" onclick="startMistakes()">📝 間違えた問題だけ</button>
   <button class="blue menu-button" onclick="startAllRandom()">🌀 全65問からランダム20問</button>
@@ -1200,6 +1201,37 @@ function startTrain(){
 function startAllRandom(){
   quiz = shuffle(questions).slice(0,20);
   launch("全65問からランダム20問 🌀");
+}
+
+function startFinal20(){
+  const priority = [
+    "横断歩道",
+    "信号",
+    "踏切",
+    "飲酒",
+    "一時停止",
+    "優先",
+    "緊急車両",
+    "スマホ",
+    "交差点",
+    "車間距離",
+    "雨・路面",
+    "カーブ",
+    "風",
+    "雨天",
+    "急制動",
+    "ヘルメット",
+    "すり抜け",
+    "二人乗り",
+    "二輪注意",
+    "試験直前"
+  ];
+
+  quiz = priority
+    .map(cat => questions.find(q => q.cat === cat))
+    .filter(Boolean);
+
+  launch("試験直前！絶対落とさない20問 🎯");
 }
 
 function startMistakes(){
