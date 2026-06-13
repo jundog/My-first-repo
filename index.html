@@ -534,49 +534,41 @@ rt{font-size:10px;color:#777}
 }
 
 
-/* --- simple safe opening overlay --- */
+
+/* --- minimal stable opening overlay --- */
 #openingOverlay{
   position:fixed;
   inset:0;
   z-index:99999;
-  background:#fff7fb;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   overflow:hidden;
+  background:#fff7fb;
 }
-#openingOverlay.hidden{
-  display:none !important;
-}
-.openingOverlayImage{
+#openingOverlay.hidden{display:none !important;}
+#openingOverlay .opening-bg{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
 }
-.openingOverlayFallback{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,#9ee9ff 0%,#fff3fa 62%,#ffe2ef 100%);
-}
-.openingOverlayButton{
+#openingOverlay .opening-button-wrap{
   position:absolute;
   left:50%;
-  bottom:max(28px, env(safe-area-inset-bottom));
+  bottom:max(26px, env(safe-area-inset-bottom));
   transform:translateX(-50%);
-  width:min(82vw,420px);
-  border:none;
-  background:transparent;
-  padding:0;
-  z-index:2;
+  width:min(82vw, 420px);
+  z-index:3;
 }
-.openingOverlayButton img{
+#openingOverlay .opening-button-img{
   width:100%;
   display:block;
-  filter:drop-shadow(0 12px 24px rgba(80,35,50,.24));
+  user-select:none;
+  -webkit-user-drag:none;
+  touch-action:manipulation;
+  cursor:pointer;
+  filter:drop-shadow(0 12px 26px rgba(80,35,50,.28));
 }
-.openingOverlayButtonFallback{
+#openingOverlay .opening-button-fallback{
   width:100%;
   border:none;
   border-radius:999px;
@@ -585,8 +577,13 @@ rt{font-size:10px;color:#777}
   color:white;
   font-size:28px;
   font-weight:900;
-  box-shadow:0 12px 30px rgba(80,35,50,.28);
+  box-shadow:0 12px 28px rgba(80,35,50,.25);
   border:2px solid rgba(255,255,255,.85);
+}
+#openingOverlay .opening-fallback-bg{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,#9fe7ff 0%, #fff5fb 60%, #ffdfea 100%);
 }
 
 </style>
@@ -595,11 +592,23 @@ rt{font-size:10px;color:#777}
 <body>
 
 <div id="openingOverlay">
-  <div class="openingOverlayFallback"></div>
-  <img class="openingOverlayImage" src="opening_splash_summer.png" alt="オープニング" onerror="this.style.display='none'">
-  <button class="openingOverlayButton" onclick="closeOpeningOverlay()">
-    <img src="start_button_normal.png" alt="はじめる" onerror="this.style.display='none'; this.parentElement.innerHTML='<button class=&quot;openingOverlayButtonFallback&quot; onclick=&quot;closeOpeningOverlay()&quot;>はじめる</button>';">
-  </button>
+  <div class="opening-fallback-bg"></div>
+  <img class="opening-bg" src="opening_splash_summer_clean.png" alt="夏のオープニング" onerror="this.style.display='none'">
+  <div class="opening-button-wrap">
+    <button id="openingButtonFallback" class="opening-button-fallback hidden" onclick="closeOpeningOverlay()">はじめる</button>
+    <img
+      id="openingButtonImage"
+      class="opening-button-img"
+      src="start_button_normal.png"
+      alt="はじめる"
+      onclick="closeOpeningOverlay()"
+      onerror="showOpeningButtonFallback()"
+      onpointerdown="pressOpeningButton()"
+      onpointerup="releaseOpeningButton()"
+      onpointercancel="releaseOpeningButton()"
+      onpointerleave="releaseOpeningButton()"
+    >
+  </div>
 </div>
 
 <div class="app">
@@ -615,7 +624,10 @@ rt{font-size:10px;color:#777}
   </div>
 
 
+  <div class="opening-hero-card">
   <img src="pair_cheer.png" class="hero-img" alt="巫女ちゃんとウマくん">
+</div>
+
 
   <p>
     巫女ちゃんとウマくんと一緒に、18日の試験まで楽しく復習！<br>
@@ -1884,11 +1896,45 @@ rt{font-size:10px;color:#777}
 
 <script>
 
-/* --- simple safe opening overlay JS --- */
+/* --- minimal stable opening overlay JS --- */
+function pressOpeningButton(){
+  var btn = document.getElementById("openingButtonImage");
+  if(btn){ btn.src = "start_button_pressed.png"; }
+}
+function releaseOpeningButton(){
+  var btn = document.getElementById("openingButtonImage");
+  if(btn){ btn.src = "start_button_normal.png"; }
+}
+function showOpeningButtonFallback(){
+  var img = document.getElementById("openingButtonImage");
+  var fb = document.getElementById("openingButtonFallback");
+  if(img){ img.style.display = "none"; }
+  if(fb){ fb.classList.remove("hidden"); }
+}
 function closeOpeningOverlay(){
+  releaseOpeningButton();
   var overlay = document.getElementById("openingOverlay");
-  if(overlay) overlay.classList.add("hidden");
+  if(overlay){ overlay.classList.add("hidden"); }
   window.scrollTo({top:0, behavior:"smooth"});
+}
+
+
+/* --- stable quiz scroll helpers --- */
+function scrollToFeedbackCard(){
+  setTimeout(function(){
+    var el = document.getElementById("feedback");
+    if(!el || el.classList.contains("hidden")) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 16;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 120);
+}
+function scrollToQuizTop(){
+  setTimeout(function(){
+    var el = document.getElementById("quiz");
+    if(!el || el.classList.contains("hidden")) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 8;
+    window.scrollTo({top:y, behavior:"smooth"});
+  }, 90);
 }
 
 
@@ -3320,6 +3366,8 @@ function startAllRandom(){
 }
 
 function startMockExam(){
+  isTimedExam = false;
+  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   mockAnswers = [];
@@ -3327,6 +3375,8 @@ function startMockExam(){
 }
 
 function startFinal20(){
+  isMockExam = false;
+  isTimedExam = false;
   const priority = [
     "横断歩道",
     "信号",
@@ -3358,6 +3408,8 @@ function startFinal20(){
 }
 
 function startMistakes(){
+  isMockExam = false;
+  isTimedExam = false;
   const saved = JSON.parse(localStorage.getItem("mayaBikeMistakes") || "[]");
   if(saved.length === 0){
     alert("まだ間違えた問題がないよ。まずは1回チャレンジ！");
@@ -3368,6 +3420,8 @@ function startMistakes(){
 }
 
 function startWeakOnly(){
+  isMockExam = false;
+  isTimedExam = false;
   const counts = JSON.parse(localStorage.getItem("mayaBikeMistakeCounts") || "{}");
   const weak = questions.filter(q => counts[q.q] >= 2);
 
@@ -3399,6 +3453,10 @@ function hideAllScreens40(){
 }
 
 function showSignBook40(){
+  /* reset mode showSignBook40 */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   hideAllScreens40();
   document.getElementById("signBook40").classList.remove("hidden");
@@ -3605,6 +3663,10 @@ function finishSignChoice(){
 }
 
 function showSignBook40(){
+  /* reset mode showSignBook40 */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3618,6 +3680,10 @@ function showSignBook40(){
 }
 
 function showSignGuide(){
+  /* reset mode showSignGuide */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
@@ -3631,6 +3697,10 @@ function showSignGuide(){
 }
 
 function showExamDay(){
+  /* reset mode showExamDay */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   clearInterval(timerId);
   document.getElementById("home").classList.add("hidden");
   document.getElementById("examDay").classList.add("hidden");
@@ -3656,6 +3726,10 @@ function startExamDayWarmup(){
 }
 
 function showChecklist(){
+  /* reset mode showChecklist */
+  clearInterval(timerId);
+  document.getElementById("timer").classList.add("hidden");
+  isTimedExam = false;
   document.getElementById("home").classList.add("hidden");
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
@@ -3672,6 +3746,8 @@ function startSigns(){
 }
 
 function startTimedExam(){
+  isTimedExam = true;
+  isMockExam = true;
   quiz = shuffle(allWrittenQuestions()).slice(0,30);
   isMockExam = true;
   isTimedExam = true;
@@ -3731,6 +3807,7 @@ function showQuestion(){
   document.getElementById("question").innerHTML = r(item.q);
   document.getElementById("feedback").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
+  scrollToQuizTop();
 }
 
 function answer(choice){
@@ -3739,6 +3816,7 @@ function answer(choice){
 
   const item = quiz[index];
   const ok = choice === item.a;
+  const fb = document.getElementById("feedback");
 
   if(isMockExam){
     if(ok){
@@ -3760,18 +3838,22 @@ function answer(choice){
       ok: ok
     });
 
-    const fb = document.getElementById("feedback");
-    fb.className = "bubble";
-    fb.innerHTML =
-      '<img src="uma_teacher.png" class="feedback-img" alt="模試">' +
-      "🧪 回答を記録したよ。<br>本番風なので、正解発表は最後にまとめて見るよ。";
+    fb.className = "bubble " + (ok ? "ok" : "ng");
+    if(ok){
+      fb.innerHTML =
+        '<img src="miko_happy.png" class="feedback-img" alt="回答記録">' +
+        "🧪 回答を記録したよ。<br>正誤は最後にまとめて確認しよう。";
+    }else{
+      fb.innerHTML =
+        '<img src="uma_warning.png" class="feedback-img" alt="回答記録">' +
+        "🧪 回答を記録したよ。<br>この問題は復習候補に入れておくね。";
+    }
     fb.classList.remove("hidden");
     document.getElementById("nextBtn").classList.remove("hidden");
-    
+    scrollToFeedbackCard();
     return;
   }
 
-  const fb = document.getElementById("feedback");
   fb.className = "bubble " + (ok ? "ok" : "ng");
 
   if(ok){
@@ -3800,8 +3882,7 @@ function answer(choice){
 
   fb.classList.remove("hidden");
   document.getElementById("nextBtn").classList.remove("hidden");
-  jumpToAnswer("feedback");
-  
+  scrollToFeedbackCard();
 }
 
 function nextQuestion(){
@@ -3810,6 +3891,7 @@ function nextQuestion(){
     finish();
   }else{
     showQuestion();
+    scrollToQuizTop();
   }
 }
 
@@ -3883,9 +3965,12 @@ function backHome(){
  const sb40=document.getElementById("signBook40"); if(sb40) sb40.classList.add("hidden");
  const sc40=document.getElementById("signChoiceQuiz40"); if(sc40) sc40.classList.add("hidden");
  clearInterval(timerId);
- document.getElementById("timer").classList.add("hidden");
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("home").classList.remove("hidden");
+ const timer=document.getElementById("timer"); if(timer) timer.classList.add("hidden");
+ ["quiz","result","mockReview","checklist","examDay","signGuide","signBook","signChoiceQuiz","signChoiceQuiz40"].forEach(function(id){
+   const el=document.getElementById(id); if(el) el.classList.add("hidden");
+ });
+ document.getElementById("home").classList.remove("hidden");
+ window.scrollTo({top:0, behavior:"smooth"});
 }
 
 /* ---- stable sign40 routing override ---- */
